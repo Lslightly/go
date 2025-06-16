@@ -6,6 +6,7 @@ package escape
 
 import (
 	"fmt"
+	"os"
 
 	"cmd/compile/internal/base"
 	"cmd/compile/internal/ir"
@@ -119,13 +120,47 @@ type escape struct {
 }
 
 func Funcs(all []*ir.Func) {
+	if base.Flag.LowerM >= 2 {
+		createEsg()
+		defer func() { destroyEsg() }()
+	}
 	ir.VisitFuncsBottomUp(all, Batch)
+	// 然后输出所有的统计信息
+	if base.Flag.LowerM >= 2 {
+		output_one_package_countAll()
+		getEsg().dump()
+	}
+}
+
+func output_one_package_countAll() {
+	file, err := os.OpenFile("countAll.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		fmt.Println("Error opening file:", err)
+		return
+	}
+	defer file.Close()
+
+	file_order := "return too_large dynamic_alloc global outerloop indirect coroutine callparam mapindex unknown"
+	file_num := fmt.Sprintf("*****#10# %d %d %d %d %d %d %d %d %d %d #",
+		ac.c_retrun, ac.c_too_large, ac.c_dynamic_alloc, ac.c_global_ref,
+		ac.c_outerloop_ref, ac.c_indirect_ref, ac.c_coroutine, ac.c_callparam,
+		ac.c_mapindex, ac.c_unknown)
+
+	fmt.Fprintf(file, "%s\n", file_num)          // log文件
+	fmt.Printf("%s\n%s\n", file_order, file_num) // stdout
 }
 
 // Batch performs escape analysis on a minimal batch of
 // functions.
 func Batch(fns []*ir.Func, recursive bool) {
 	var b batch
+
+	if base.Flag.LowerM >= 2 {
+		getEsg().b = &b
+		defer func() { getEsg().finishBatch() }()
+		defer func() { getEsg().b = nil }()
+	}
+
 	b.heapLoc.attrs = attrEscapes | attrPersists | attrMutates | attrCalls
 	b.mutatorLoc.attrs = attrMutates
 	b.calleeLoc.attrs = attrCalls
@@ -246,7 +281,9 @@ func (b *batch) flowClosure(k hole, clo *ir.ClosureExpr) {
 		n.SetByval(!loc.addrtaken && !loc.reassigned && n.Type().Size() <= 128)
 		if !n.Byval() {
 			if base.Flag.LowerM >= 2 {
-				fmt.Println("go wrap closure capture by reference", clo, n, "in", ir.FuncName(n.Curfn))
+				if clo.IsGoWrap {
+					fmt.Println("go wrap closure capture by reference", clo, n, "in", ir.FuncName(n.Curfn))
+				}
 			}
 			if logopt.Enabled() {
 				if clo.IsGoWrap {
@@ -259,7 +296,9 @@ func (b *batch) flowClosure(k hole, clo *ir.ClosureExpr) {
 			}
 		} else {
 			if base.Flag.LowerM >= 2 {
-				fmt.Println("go wrap closure capture by value", clo, n, "in", ir.FuncName(n.Curfn))
+				if clo.IsGoWrap {
+					fmt.Println("go wrap closure capture by value", clo, n, "in", ir.FuncName(n.Curfn))
+				}
 			}
 			if logopt.Enabled() {
 				if clo.IsGoWrap {

@@ -241,8 +241,8 @@ func (b *batch) flow(k hole, src *location) {
 				var e_curfn *ir.Func // TODO(mdempsky): Fix.
 				logopt.LogOpt(src.n.Pos(), "escapes", "escape", ir.FuncName(e_curfn), fmt.Sprintf("%v escapes to heap", src.n), explanation)
 			}
-
 		}
+		getEsg().fastpath(src, k.note(src.n, FPDstEscAddrSrc))
 		src.attrs |= attrEscapes | attrPersists | attrMutates | attrCalls
 		return
 	}

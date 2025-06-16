@@ -143,7 +143,7 @@ func (e *escape) stmt(n ir.Node) {
 		// TODO(mdempsky): Consider e.discard(n.Left).
 		n := n.(*ir.UnaryExpr)
 		e.exprSkipInit(e.discardHole(), n) // already visited n.Ninit
-	case ir.OSEND:
+	case ir.OSEND: //多线程
 		n := n.(*ir.SendStmt)
 		e.discard(n.Chan)
 		e.assignHeap(n.Value, "send", n)
@@ -187,6 +187,7 @@ func (e *escape) stmt(n ir.Node) {
 		e.call(nil, n)
 	case ir.OGO, ir.ODEFER:
 		n := n.(*ir.GoDeferStmt)
+		this_stmt_is_go_defer = true
 		e.goDeferStmt(n)
 
 	case ir.OTAILCALL:

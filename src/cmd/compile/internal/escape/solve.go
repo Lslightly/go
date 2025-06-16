@@ -102,12 +102,13 @@ func (b *batch) walkOne(root *location, walkgen uint32, enqueue func(*location))
 					if base.Flag.LowerM >= 2 {
 						fmt.Printf("%s: %v escapes to heap:\n", base.FmtPos(l.n.Pos()), l.n)
 					}
-					explanation := b.explainPath(root, l)
+					explanation := b.explainPath(root, l) //root<--l (root=&l)
 					if logopt.Enabled() {
 						var e_curfn *ir.Func // TODO(mdempsky): Fix.
 						logopt.LogOpt(l.n.Pos(), "escape", "escape", ir.FuncName(e_curfn), fmt.Sprintf("%v escapes to heap", l.n), explanation)
 					}
 				}
+				getEsg().fastpath(l, root.asHole().note(l.n, FPRootOutliveAddrSrc).shift(-1))
 				newAttrs |= attrEscapes | attrPersists | attrMutates | attrCalls
 			} else
 			// If l's address flows to a persistent location, then l needs
@@ -132,13 +133,16 @@ func (b *batch) walkOne(root *location, walkgen uint32, enqueue func(*location))
 					if base.Flag.LowerM >= 2 {
 						fmt.Printf("%s: parameter %v leaks to %s with derefs=%d:\n", base.FmtPos(l.n.Pos()), l.n, b.explainLoc(root), derefs)
 					}
+					is_parameter_leaks = true
 					explanation := b.explainPath(root, l)
+					is_parameter_leaks = false
 					if logopt.Enabled() {
 						var e_curfn *ir.Func // TODO(mdempsky): Fix.
 						logopt.LogOpt(l.n.Pos(), "leak", "escape", ir.FuncName(e_curfn),
 							fmt.Sprintf("parameter %v leaks to %s with derefs=%d", l.n, b.explainLoc(root), derefs), explanation)
 					}
 				}
+				getEsg().fastpath(l, root.asHole().note(l.n, FPParamLeak).shift(derefs))
 				l.leakTo(root, derefs)
 			}
 			if root.hasAttr(attrMutates) {
@@ -175,6 +179,11 @@ func (b *batch) walkOne(root *location, walkgen uint32, enqueue func(*location))
 
 // explainPath prints an explanation of how src flows to the walk root.
 func (b *batch) explainPath(root, src *location) []*logopt.LoggedOpt {
+	// 进入这个函数，可能有for循环的边
+	is_not_1_edge = true
+	whys = []one_why{}
+	escape_paths = []*location{}
+
 	visited := make(map[*location]bool)
 	pos := base.FmtPos(src.n.Pos())
 	var explanation []*logopt.LoggedOpt
@@ -194,6 +203,9 @@ func (b *batch) explainPath(root, src *location) []*logopt.LoggedOpt {
 		}
 
 		explanation = b.explainFlow(pos, dst, src, edge.derefs, edge.notes, explanation)
+		if is_not_1_edge { // 修改1
+			b.recordInfo(dst, src, edge.notes)
+		}
 
 		if dst == root {
 			break
@@ -201,6 +213,7 @@ func (b *batch) explainPath(root, src *location) []*logopt.LoggedOpt {
 		src = dst
 	}
 
+	b.countAll() // 修改2
 	return explanation
 }
 
@@ -209,7 +222,7 @@ func (b *batch) explainFlow(pos string, dst, srcloc *location, derefs int, notes
 	if derefs >= 0 {
 		ops = strings.Repeat("*", derefs)
 	}
-	print := base.Flag.LowerM >= 2
+	print := base.Flag.LowerM >= 2 && output_flow
 
 	flow := fmt.Sprintf("   flow: %s = %s%v:", b.explainLoc(dst), ops, b.explainLoc(srcloc))
 	if print {
@@ -226,17 +239,30 @@ func (b *batch) explainFlow(pos string, dst, srcloc *location, derefs int, notes
 		explanation = append(explanation, logopt.NewLoggedOpt(epos, epos, "escflow", "escape", ir.FuncName(e_curfn), flow))
 	}
 
-	for note := notes; note != nil; note = note.next {
-		if print {
-			fmt.Printf("%s:     from %v (%v) at %s\n", pos, note.where, note.why, base.FmtPos(note.where.Pos()))
-		}
-		if logopt.Enabled() {
-			var e_curfn *ir.Func // TODO(mdempsky): Fix.
-			notePos := note.where.Pos()
-			explanation = append(explanation, logopt.NewLoggedOpt(notePos, notePos, "escflow", "escape", ir.FuncName(e_curfn),
-				fmt.Sprintf("     from %v (%v)", note.where, note.why)))
+	// 如果我定义的Z小于2，则输出
+	if output_flow {
+		for note := notes; note != nil; note = note.next {
+			if print {
+				fmt.Printf("%s:     from %v (%v) at %s\n", pos, note.where, note.why, base.FmtPos(note.where.Pos()))
+			}
+			if logopt.Enabled() {
+				var e_curfn *ir.Func // TODO(mdempsky): Fix.
+				notePos := note.where.Pos()
+				explanation = append(explanation, logopt.NewLoggedOpt(notePos, notePos, "escflow", "escape", ir.FuncName(e_curfn),
+					fmt.Sprintf("     from %v (%v)", note.where, note.why)))
+			}
 		}
 	}
+
+	// 判断种类
+	if !is_not_1_edge {
+		whys = []one_why{} // 清空
+		escape_paths = []*location{}
+		// 是一条边，说明在graph.go里调用，记录一组即可，然后直接count
+		b.recordInfo(dst, srcloc, notes)
+		b.countAll()
+	}
+
 	return explanation
 }
 

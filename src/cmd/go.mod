@@ -15,6 +15,7 @@ require (
 )
 
 require (
+	github.com/dominikbraun/graph v0.23.0 // indirect
 	github.com/ianlancetaylor/demangle v0.0.0-20240912202439-0a2b6291aafd // indirect
 	golang.org/x/text v0.21.0 // indirect
 	rsc.io/markdown v0.0.0-20240306144322-0bf8f97ee8ef // indirect
