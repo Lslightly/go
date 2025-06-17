@@ -157,8 +157,8 @@ func Batch(fns []*ir.Func, recursive bool) {
 
 	if base.Flag.LowerM >= 2 {
 		getEsg().b = &b
-		defer func() { getEsg().finishBatch() }()
 		defer func() { getEsg().b = nil }()
+		defer func() { getEsg().finishBatch() }()
 	}
 
 	b.heapLoc.attrs = attrEscapes | attrPersists | attrMutates | attrCalls

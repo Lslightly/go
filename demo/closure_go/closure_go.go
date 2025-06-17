@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 func main() {
 	go_capture_by_ref()
 	go_capture_by_val()
@@ -23,7 +21,7 @@ func go_capture_by_val() {
 	x := 0
 	go func() {
 		y := x + 1
-		fmt.Println(y)
+		println(y)
 	}()
 	_ = x
 }
@@ -42,7 +40,7 @@ func defer_capture_by_val() {
 	x := 0
 	defer func() {
 		y := x + 1
-		fmt.Println(y)
+		println(y)
 	}()
 	_ = x
 }

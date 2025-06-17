@@ -10,6 +10,7 @@ import (
 	"cmd/compile/internal/logopt"
 	"cmd/internal/src"
 	"fmt"
+	"path/filepath"
 	"strings"
 )
 
@@ -108,7 +109,9 @@ func (b *batch) walkOne(root *location, walkgen uint32, enqueue func(*location))
 						logopt.LogOpt(l.n.Pos(), "escape", "escape", ir.FuncName(e_curfn), fmt.Sprintf("%v escapes to heap", l.n), explanation)
 					}
 				}
-				getEsg().fastpath(l, root.asHole().note(l.n, FPRootOutliveAddrSrc).shift(-1))
+				if base.Flag.LowerM >= 2 {
+					getEsg().fastpath(l, root.asHole().note(l.n, FPRootOutliveAddrSrc).shift(-1))
+				}
 				newAttrs |= attrEscapes | attrPersists | attrMutates | attrCalls
 			} else
 			// If l's address flows to a persistent location, then l needs
@@ -142,7 +145,9 @@ func (b *batch) walkOne(root *location, walkgen uint32, enqueue func(*location))
 							fmt.Sprintf("parameter %v leaks to %s with derefs=%d", l.n, b.explainLoc(root), derefs), explanation)
 					}
 				}
-				getEsg().fastpath(l, root.asHole().note(l.n, FPParamLeak).shift(derefs))
+				if base.Flag.LowerM >= 2 {
+					getEsg().fastpath(l, root.asHole().note(l.n, FPParamLeak).shift(derefs))
+				}
 				l.leakTo(root, derefs)
 			}
 			if root.hasAttr(attrMutates) {
@@ -278,6 +283,30 @@ func (b *batch) explainLoc(l *location) string {
 		return fmt.Sprintf("%v", l.n)
 	}
 	return fmt.Sprintf("{storage for %v}", l.n)
+}
+
+func (b *batch) explainLocPos(l *location) string {
+	if l == &b.heapLoc {
+		return "{heap}"
+	}
+	if l.n == nil {
+		return "{temp}"
+	}
+	posString := base.FmtPos(l.n.Pos())
+	elems := strings.Split(posString, ":")
+	if len(elems) == 3 { // pkg_base/file:line:col
+		file, line, col := elems[0], elems[1], elems[2]
+		file, pkg := filepath.Base(file), filepath.Base(filepath.Dir(file))
+		posString = strings.Join([]string{filepath.Join(pkg, file), line, col}, ":")
+	} else if len(elems) == 2 {
+		file, line := elems[0], elems[1]
+		file, pkg := filepath.Base(file), filepath.Base(filepath.Dir(file))
+		posString = filepath.Join(pkg, file) + ":" + line
+	}
+	if l.n.Op() == ir.ONAME {
+		return fmt.Sprintf("%v @ %s", l.n, posString)
+	}
+	return fmt.Sprintf("{storage for %v @ %s}", l.n, posString)
 }
 
 // outlives reports whether values stored in l may survive beyond

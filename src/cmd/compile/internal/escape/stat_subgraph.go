@@ -22,12 +22,13 @@ type locInfo struct {
 }
 type escapeLocations map[*location]*locInfo
 type escapeSubGraph struct {
-	elocs escapeLocations                     // escape related locations
-	b     *batch                              // points to current batch analyzed
-	gs    []graph.Graph[*location, *location] // whole program graphs
+	elocs escapeLocations                  // escape related locations
+	b     *batch                           // points to current batch analyzed
+	gs    []graph.Graph[string, *location] // whole program graphs
 }
 
-var _esg *escapeSubGraph = nil
+var _defaultesg = escapeSubGraph{}
+var _esg *escapeSubGraph = &_defaultesg
 
 func getEsg() *escapeSubGraph {
 	return _esg
@@ -36,7 +37,7 @@ func getEsg() *escapeSubGraph {
 func createEsg() {
 	_esg = &escapeSubGraph{
 		elocs: make(escapeLocations),
-		gs:    make([]graph.Graph[*location, *location], 0),
+		gs:    make([]graph.Graph[string, *location], 0),
 	}
 }
 
@@ -48,7 +49,9 @@ func (esg *escapeSubGraph) getLocInfo(key *location) *locInfo {
 	if info, ok := esg.elocs[key]; ok {
 		return info
 	}
-	info := &locInfo{}
+	info := &locInfo{
+		outs: make(map[hole]bool),
+	}
 	esg.elocs[key] = info
 	return info
 }
@@ -62,17 +65,14 @@ func (esg *escapeSubGraph) fastpath(src *location, hole hole) {
 }
 
 func (esg *escapeSubGraph) finishBatch() {
-	g := graph.New(func(l *location) *location { return l })
+	hash := func(l *location) string { return esg.b.explainLocPos(l) }
+	g := graph.New(hash, graph.Directed())
 	for src, info := range esg.elocs {
-		if err := g.AddVertex(src, graph.VertexAttribute("explain", esg.b.explainLoc(src))); err != nil {
-			continue
-		}
+		g.AddVertex(src)
 		for hole := range info.outs {
 			dst := hole.dst
-			if err := g.AddVertex(dst, graph.VertexAttribute("explain", esg.b.explainLoc(dst))); err != nil {
-				continue
-			}
-			g.AddEdge(src, dst, graph.EdgeAttribute("first-why", hole.notes.why))
+			g.AddVertex(dst)
+			g.AddEdge(hash(src), hash(dst), graph.EdgeAttribute("label", hole.notes.why))
 		}
 	}
 	esg.gs = append(esg.gs, g)
@@ -89,6 +89,8 @@ func (esg *escapeSubGraph) dump() {
 			continue
 		}
 		draw.DOT(g, file)
-		exec.Command("dot", "-Tsvg", filename, "-o", svg).Run()
+		if err := exec.Command("dot", "-Tsvg", filename, fmt.Sprintf("-o%s", svg)).Run(); err != nil {
+			fmt.Fprintln(os.Stderr, err)
+		}
 	}
 }
