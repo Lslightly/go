@@ -120,15 +120,10 @@ type escape struct {
 }
 
 func Funcs(all []*ir.Func) {
-	if base.Flag.LowerM >= 2 {
-		createEsg()
-		defer func() { destroyEsg() }()
-	}
 	ir.VisitFuncsBottomUp(all, Batch)
 	// 然后输出所有的统计信息
 	if base.Flag.LowerM >= 2 {
 		output_one_package_countAll()
-		getEsg().dump()
 	}
 }
 
@@ -156,8 +151,8 @@ func Batch(fns []*ir.Func, recursive bool) {
 	var b batch
 
 	if base.Flag.LowerM >= 2 {
-		getEsg().b = &b
-		defer func() { getEsg().b = nil }()
+		createEsg(&b)
+		defer func() { destroyEsg() }()
 		defer func() { getEsg().finishBatch() }()
 	}
 
