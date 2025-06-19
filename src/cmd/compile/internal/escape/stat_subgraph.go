@@ -5,8 +5,8 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/dominikbraun/graph"
-	"github.com/dominikbraun/graph/draw"
+	gn "gonum.org/v1/gonum/graph"
+	gndot "gonum.org/v1/gonum/graph/encoding/dot"
 )
 
 const (
@@ -19,13 +19,11 @@ const (
 
 var esgCnt int = 0
 
-type locInfo struct {
-	outs map[hole]bool // destinations to which current location escapes to
-}
-type escapeLocations map[*location]*locInfo
 type escapeSubGraph struct {
-	elocs escapeLocations // escape related locations
-	b     *batch          // points to current batch analyzed
+	loc2id map[*location]int64
+	nodes  []*escLocNode
+	edges  map[int64]map[int64]*escFlow
+	b      *batch // points to current batch analyzed
 }
 
 var _defaultesg = escapeSubGraph{}
@@ -37,8 +35,10 @@ func getEsg() *escapeSubGraph {
 
 func createEsg(b *batch) {
 	_esg = &escapeSubGraph{
-		elocs: make(escapeLocations),
-		b:     b,
+		loc2id: make(map[*location]int64),
+		nodes:  make([]*escLocNode, 0),
+		edges:  make(map[int64]map[int64]*escFlow),
+		b:      b,
 	}
 }
 
@@ -46,31 +46,168 @@ func destroyEsg() {
 	_esg = nil
 }
 
-func (esg *escapeSubGraph) getLocInfo(key *location) *locInfo {
-	if info, ok := esg.elocs[key]; ok {
-		return info
+func (esg *escapeSubGraph) createOrGetNode(loc *location) *escLocNode {
+	if id, ok := esg.loc2id[loc]; ok {
+		return esg.nodes[id]
 	}
-	info := &locInfo{
-		outs: make(map[hole]bool),
+	id := int64(len(esg.nodes))
+	esg.loc2id[loc] = id
+	node := &escLocNode{
+		id:  id,
+		loc: loc,
 	}
-	esg.elocs[key] = info
-	return info
+	esg.nodes = append(esg.nodes, node)
+	esg.edges[id] = make(map[int64]*escFlow)
+	return node
+}
+
+// Node returns the node with the given ID if it exists
+// in the graph, and nil otherwise.
+func (esg *escapeSubGraph) Node(id int64) gn.Node {
+	if id > int64(len(esg.nodes)) {
+		return nil
+	}
+	return esg.nodes[id]
+}
+
+// Nodes returns all the nodes in the graph.
+//
+// Nodes must not return nil.
+func (esg *escapeSubGraph) Nodes() gn.Nodes {
+	return &escLocNodeIter{
+		nodes: esg.nodes,
+		cur:   0,
+	}
+}
+
+// From returns all nodes that can be reached directly
+// from the node with the given ID.
+//
+// From must not return nil.
+func (esg *escapeSubGraph) From(id int64) gn.Nodes {
+	if id > int64(len(esg.nodes)) {
+		return &escLocNodeIter{
+			nodes: make([]*escLocNode, 0),
+			cur:   0,
+		}
+	}
+	outs := esg.edges[id]
+	nodes := make([]*escLocNode, 0, len(outs))
+	for _, flow := range outs {
+		nodes = append(nodes, flow.dst)
+	}
+	return &escLocNodeIter{
+		nodes: nodes,
+		cur:   0,
+	}
+}
+
+// HasEdgeBetween returns whether an edge exists between
+// nodes with IDs xid and yid without considering direction.
+func (esg *escapeSubGraph) HasEdgeBetween(xid, yid int64) bool {
+	return esg.Edge(xid, yid) != nil
+}
+
+// Edge returns the edge from u to v, with IDs uid and vid,
+// if such an edge exists and nil otherwise. The node v
+// must be directly reachable from u as defined by the
+// From method.
+func (esg *escapeSubGraph) Edge(uid, vid int64) gn.Edge {
+	outs := esg.edges[uid]
+	edge, exist := outs[vid]
+	if exist {
+		return edge
+	} else {
+		return nil
+	}
+}
+
+type escLocNode struct {
+	id  int64
+	loc *location
+}
+
+// returns a graph-unique integer ID.
+func (n *escLocNode) ID() int64 {
+	return n.id
+}
+
+type escLocNodeIter struct {
+	nodes []*escLocNode
+	cur   int
+}
+
+// Next advances the iterator and returns whether
+// the next call to the item method will return a
+// non-nil item.
+//
+// Next should be called prior to any call to the
+// iterator's item retrieval method after the
+// iterator has been obtained or reset.
+func (iter *escLocNodeIter) Next() bool {
+	iter.cur++
+	lenOfNodes := len(iter.nodes)
+	if iter.cur > lenOfNodes {
+		iter.cur = lenOfNodes
+	}
+	return iter.cur >= lenOfNodes
+}
+
+// Len returns the number of items remaining in the
+// iterator.
+func (iter *escLocNodeIter) Len() int {
+	return len(iter.nodes) - iter.cur
+}
+
+// Reset returns the iterator to its start position.
+func (iter *escLocNodeIter) Reset() {
+	iter.cur = 0
+}
+
+// Node returns the current Node from the iterator.
+func (iter *escLocNodeIter) Node() gn.Node {
+	return iter.nodes[iter.cur]
+}
+
+type escFlow struct {
+	src  *escLocNode
+	dst  *escLocNode
+	hole hole
+}
+
+// From returns the from node of the edge.
+func (f *escFlow) From() gn.Node {
+	return f.src
+}
+
+// To returns the to node of the edge.
+func (f *escFlow) To() gn.Node {
+	return f.dst
+}
+
+/*
+reverse is invalid
+*/
+func (f *escFlow) ReversedEdge() gn.Edge {
+	return f
 }
 
 /*
 why of the first note of hole must be FPDstEscAddrSrc/FPRootOutliveAddrSrc/FPParamLeak
 */
 func (esg *escapeSubGraph) fastpath(src *location, hole hole) {
-	srcLocInfo := esg.getLocInfo(src)
-	srcLocInfo.outs[hole] = true
+	dst := hole.dst
+	srcN, dstN := esg.createOrGetNode(src), esg.createOrGetNode(dst)
+	esg.edges[srcN.id][dstN.id] = &escFlow{
+		src:  srcN,
+		dst:  dstN,
+		hole: hole,
+	}
 }
 
-type locGraph graph.Graph[string, *location]
-
 func (esg *escapeSubGraph) finishBatch() {
-	g := esg.createGraph()
 	phase := "init"
-	esg.dump(g, esgCnt, phase)
+	esg.dump(esgCnt, phase)
 	esgCnt += 1
 	/*
 		1. x -(d, y)-> heap
@@ -79,54 +216,44 @@ func (esg *escapeSubGraph) finishBatch() {
 			add node attribute(can be counted)
 		3. for each source node, summarize all attributes(define priority)
 	*/
-	g = esg.removeHeap(g)
-	phase = "removeheap"
-	esg.dump(g, esgCnt, phase)
-	g = esg.backPropogate(g)
-	phase = "backPropogate"
-	esg.dump(g, esgCnt, phase)
-	g = esg.summarize(g)
-	phase = "summarize"
-	esg.dump(g, esgCnt, phase)
+	// esg.removeHeap()
+	// phase = "removeheap"
+	// esg.dump(esgCnt, phase)
+	// esg.backPropogate()
+	// phase = "backPropogate"
+	// esg.dump(esgCnt, phase)
+	// esg.summarize()
+	// phase = "summarize"
+	// esg.dump(esgCnt, phase)
 }
 
-func (esg *escapeSubGraph) createGraph() locGraph {
-	hash := func(l *location) string { return esg.b.explainLocPos(l) }
-	g := graph.New(hash, graph.Directed())
-	for src, info := range esg.elocs {
-		g.AddVertex(src)
-		for hole := range info.outs {
-			dst := hole.dst
-			g.AddVertex(dst)
-			g.AddEdge(hash(src), hash(dst), graph.EdgeAttribute("label", hole.notes.why))
-		}
-	}
-	return g
-}
-
-func (esg *escapeSubGraph) dump(g locGraph, esgId int, phase string) {
+func (esg *escapeSubGraph) dump(esgId int, phase string) {
 	os.MkdirAll("graphs", 0755)
-	filename := fmt.Sprintf("graphs/escape_subgraph_%d_%s.gv", esgId, phase)
-	svg := fmt.Sprintf("graphs/escape_subgraph_%d_%s.svg", esgId, phase)
-	file, err := os.Create(filename)
+	esgName := fmt.Sprintf("%d_%s", esgId, phase)
+	filename := fmt.Sprintf("graphs/escape_subgraph_%s.gv", esgName)
+	svg := fmt.Sprintf("graphs/escape_subgraph_%s.svg", esgName)
+	f, err := os.Create(filename)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "create subgraph %s failed\n", filename)
 		return
 	}
-	draw.DOT(g, file)
+	defer f.Close()
+	bs, err := gndot.Marshal(esg, esgName, "", "")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "marshal of %s failed\n", esgName)
+		return
+	}
+	f.Write(bs)
 	if err := exec.Command("dot", "-Tsvg", filename, fmt.Sprintf("-o%s", svg)).Run(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 	}
 }
 
-func (esg *escapeSubGraph) removeHeap(g locGraph) locGraph {
-	return g
+func (esg *escapeSubGraph) removeHeap() {
 }
 
-func (esg *escapeSubGraph) backPropogate(g locGraph) locGraph {
-	return g
+func (esg *escapeSubGraph) backPropogate() {
 }
 
-func (esg *escapeSubGraph) summarize(g locGraph) locGraph {
-	return g
+func (esg *escapeSubGraph) summarize() {
 }
