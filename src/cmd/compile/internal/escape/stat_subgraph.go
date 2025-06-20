@@ -76,7 +76,7 @@ func (esg *escapeSubGraph) Node(id int64) gn.Node {
 func (esg *escapeSubGraph) Nodes() gn.Nodes {
 	return &escLocNodeIter{
 		nodes: esg.nodes,
-		cur:   0,
+		cur:   -1,
 	}
 }
 
@@ -88,7 +88,7 @@ func (esg *escapeSubGraph) From(id int64) gn.Nodes {
 	if id > int64(len(esg.nodes)) {
 		return &escLocNodeIter{
 			nodes: make([]*escLocNode, 0),
-			cur:   0,
+			cur:   -1,
 		}
 	}
 	outs := esg.edges[id]
@@ -98,7 +98,7 @@ func (esg *escapeSubGraph) From(id int64) gn.Nodes {
 	}
 	return &escLocNodeIter{
 		nodes: nodes,
-		cur:   0,
+		cur:   -1,
 	}
 }
 
@@ -145,12 +145,13 @@ type escLocNodeIter struct {
 // iterator's item retrieval method after the
 // iterator has been obtained or reset.
 func (iter *escLocNodeIter) Next() bool {
-	iter.cur++
-	lenOfNodes := len(iter.nodes)
-	if iter.cur > lenOfNodes {
-		iter.cur = lenOfNodes
+	if iter.cur+1 < len(iter.nodes) {
+		iter.cur++
+		return true
+	} else {
+		iter.cur = len(iter.nodes) - 1
+		return false
 	}
-	return iter.cur >= lenOfNodes
 }
 
 // Len returns the number of items remaining in the
@@ -161,7 +162,7 @@ func (iter *escLocNodeIter) Len() int {
 
 // Reset returns the iterator to its start position.
 func (iter *escLocNodeIter) Reset() {
-	iter.cur = 0
+	iter.cur = -1
 }
 
 // Node returns the current Node from the iterator.
@@ -206,6 +207,9 @@ func (esg *escapeSubGraph) fastpath(src *location, hole hole) {
 }
 
 func (esg *escapeSubGraph) finishBatch() {
+	if len(esg.nodes) == 0 {
+		return
+	}
 	phase := "init"
 	esg.dump(esgCnt, phase)
 	esgCnt += 1
@@ -238,12 +242,17 @@ func (esg *escapeSubGraph) dump(esgId int, phase string) {
 		return
 	}
 	defer f.Close()
+	fmt.Println(len(esg.nodes))
 	bs, err := gndot.Marshal(esg, esgName, "", "")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "marshal of %s failed\n", esgName)
 		return
 	}
-	f.Write(bs)
+	n, err := f.Write(bs)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "write error %v\n", err)
+	}
+	fmt.Println(filename, n)
 	if err := exec.Command("dot", "-Tsvg", filename, fmt.Sprintf("-o%s", svg)).Run(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 	}
