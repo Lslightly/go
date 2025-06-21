@@ -292,16 +292,23 @@ func (b *batch) explainLocPos(l *location) string {
 	if l.n == nil {
 		return "{temp}"
 	}
+	printPkg := false
 	posString := base.FmtPos(l.n.Pos())
 	elems := strings.Split(posString, ":")
 	if len(elems) == 3 { // pkg_base/file:line:col
 		file, line, col := elems[0], elems[1], elems[2]
 		file, pkg := filepath.Base(file), filepath.Base(filepath.Dir(file))
-		posString = strings.Join([]string{filepath.Join(pkg, file), line, col}, ":")
+		if printPkg {
+			file = filepath.Join(pkg, file)
+		}
+		posString = strings.Join([]string{file, line, col}, ":")
 	} else if len(elems) == 2 {
 		file, line := elems[0], elems[1]
 		file, pkg := filepath.Base(file), filepath.Base(filepath.Dir(file))
-		posString = filepath.Join(pkg, file) + ":" + line
+		if printPkg {
+			file = filepath.Join(pkg, file)
+		}
+		posString = file + ":" + line
 	}
 	if l.n.Op() == ir.ONAME {
 		return fmt.Sprintf("%v @ %s", l.n, posString)
