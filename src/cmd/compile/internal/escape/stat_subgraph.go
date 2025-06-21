@@ -484,12 +484,6 @@ func (esg *escapeSubGraph) finishBatch() {
 func (esg *escapeSubGraph) dump(dumpRoot, phase string) {
 	dotfile := path.Join(dumpRoot, phase+".gv")
 	svg := path.Join(dumpRoot, phase+".svg")
-	f, err := os.Create(dotfile)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "create subgraph %s failed\n", dotfile)
-		return
-	}
-	defer f.Close()
 
 	// dump dot graph
 	bs, err := gndot.Marshal(esg, phase, "", "")
@@ -497,7 +491,7 @@ func (esg *escapeSubGraph) dump(dumpRoot, phase string) {
 		fmt.Fprintf(os.Stderr, "marshal of %s failed\n", phase)
 		return
 	}
-	n, err := f.Write(bs)
+	n, err := writeToFile(dotfile, string(bs))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "write error %v\n", err)
 	}
@@ -628,12 +622,12 @@ all,%d
 	writeToFile(path.Join("results", "all.csv"), content)
 }
 
-func writeToFile(fpath string, content string) {
+func writeToFile(fpath string, content string) (int, error) {
 	f, err := os.Create(fpath)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "create", fpath, "failed")
-		return
+		return 0, err
 	}
 	defer f.Close()
-	fmt.Fprint(f, content)
+	return fmt.Fprint(f, content)
 }
