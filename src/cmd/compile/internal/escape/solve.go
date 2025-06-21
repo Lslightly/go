@@ -10,7 +10,7 @@ import (
 	"cmd/compile/internal/logopt"
 	"cmd/internal/src"
 	"fmt"
-	"path/filepath"
+	"path"
 	"strings"
 )
 
@@ -297,16 +297,16 @@ func (b *batch) explainLocPos(l *location) string {
 	elems := strings.Split(posString, ":")
 	if len(elems) == 3 { // pkg_base/file:line:col
 		file, line, col := elems[0], elems[1], elems[2]
-		file, pkg := filepath.Base(file), filepath.Base(filepath.Dir(file))
+		file, pkg := path.Base(file), path.Base(path.Dir(file))
 		if printPkg {
-			file = filepath.Join(pkg, file)
+			file = path.Join(pkg, file)
 		}
 		posString = strings.Join([]string{file, line, col}, ":")
 	} else if len(elems) == 2 {
 		file, line := elems[0], elems[1]
-		file, pkg := filepath.Base(file), filepath.Base(filepath.Dir(file))
+		file, pkg := path.Base(file), path.Base(path.Dir(file))
 		if printPkg {
-			file = filepath.Join(pkg, file)
+			file = path.Join(pkg, file)
 		}
 		posString = file + ":" + line
 	}
