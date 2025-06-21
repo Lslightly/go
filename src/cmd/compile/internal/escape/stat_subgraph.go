@@ -388,7 +388,6 @@ func (f *escFlow) ReversedEdge() gn.Edge {
 // backPropogate returns back propogate reason to be added to src node
 func (f *escFlow) backPropogate() escapeReason {
 	dst := f.dst
-	dstLoc := dst.loc
 	r := dst.reason
 	// TODO add more reason
 	for note := f.hole.notes; note != nil; note = note.next {
@@ -405,7 +404,10 @@ func (f *escFlow) backPropogate() escapeReason {
 		}
 		r.add(ERClosure)
 	}
-	if dstLoc.isName(ir.PPARAMOUT) {
+	if f.src.loc.isName(ir.PPARAM) {
+		r.add(ERParamLeak)
+	}
+	if dst.loc.isName(ir.PPARAMOUT) {
 		r.add(ERReturn)
 	}
 	return r
@@ -475,9 +477,8 @@ func (esg *escapeSubGraph) finishBatch() {
 	esg.dump(dumpRoot, "1removeheap")
 	esg.backPropogate()
 	esg.dump(dumpRoot, "2backPropogate")
-	// esg.summarize()
-	// phase = "summarize"
-	// esg.dump(esgCnt, phase)
+	esg.summarize()
+	esg.dump(dumpRoot, "summarize")
 }
 
 func (esg *escapeSubGraph) dump(dumpRoot, phase string) {
@@ -530,9 +531,11 @@ func (esg *escapeSubGraph) removeHeap() {
 	}
 
 	// add ERHeap for in nodes of heap node
-	inNodesIter := esg.To(heapid)
-	for inNodesIter.Next() { // add ERHeap for each node outlived by heap
-		inNodesIter.Node().(*escLocNode).addReason(ERHeap)
+	flows := esg.EdgeTo(heapid)
+	for _, f := range flows {
+		r := f.backPropogate()
+		f.src.addReason(r)
+		f.src.addReason(ERHeap)
 	}
 	nr.RemoveNode(heapid)
 }
@@ -568,4 +571,69 @@ func (esg *escapeSubGraph) backPropogate() {
 }
 
 func (esg *escapeSubGraph) summarize() {
+	for _, node := range esg.nodes {
+		if node.reason.contains(ERRootStack | EROutliveRootStack) {
+			node.reason.del(EROutliveRootStack)
+		}
+	}
+
+	reason2cnt := make(map[escapeReason]int)
+	// the number of reason node has -> number of nodes has so many reasons
+	nodeReasonCnt := make(map[int]int)
+	type pair struct {
+		node *escLocNode
+		r    escapeReason
+	}
+	nodeReasonList := make([]pair, 0)
+	for _, node := range esg.nodes {
+		reasonCnt := 0
+		for r := range reason2xlabel {
+			if node.reason.contains(r) {
+				reason2cnt[r]++
+				reasonCnt++
+				nodeReasonList = append(nodeReasonList, pair{
+					node: node,
+					r:    r,
+				})
+			}
+		}
+		nodeReasonCnt[reasonCnt]++
+	}
+
+	r2cLines := make([]string, 0, len(reason2cnt))
+	for r, cnt := range reason2cnt {
+		r2cLines = append(r2cLines, fmt.Sprintf("%s,%d", reason2xlabel[r], cnt))
+	}
+	nrcLines := make([]string, 0, len(nodeReasonCnt))
+	for rc, cnt := range nodeReasonCnt {
+		nrcLines = append(nrcLines, fmt.Sprintf("%d,%d", rc, cnt))
+	}
+	nrLines := make([]string, 0, len(nodeReasonList))
+	for _, p := range nodeReasonList {
+		nrLines = append(nrLines, fmt.Sprintf("%d,%d", p.node.id, p.r))
+	}
+
+	content := fmt.Sprintf(`reason,count
+all,%d
+%s
+`, len(esg.nodes), strings.Join(r2cLines, "\n"))
+	writeToFile(path.Join("results", "reason2cnt.csv"), content)
+	content = fmt.Sprintf(`reason_cnt,node_cnt
+%s
+`, strings.Join(nrcLines, "\n"))
+	writeToFile(path.Join("results", "nodeReasonCnt.csv"), content)
+	content = fmt.Sprintf(`nodeid,reason
+%s
+`, strings.Join(nrLines, "\n"))
+	writeToFile(path.Join("results", "all.csv"), content)
+}
+
+func writeToFile(fpath string, content string) {
+	f, err := os.Create(fpath)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "create", fpath, "failed")
+		return
+	}
+	defer f.Close()
+	fmt.Fprint(f, content)
 }

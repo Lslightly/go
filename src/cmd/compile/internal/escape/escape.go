@@ -122,7 +122,9 @@ type escape struct {
 func Funcs(all []*ir.Func) {
 	if base.Flag.LowerM >= 2 {
 		os.RemoveAll("graphs")
+		os.RemoveAll("results")
 		os.MkdirAll("graphs", 0755)
+		os.MkdirAll("results", 0755)
 	}
 	ir.VisitFuncsBottomUp(all, Batch)
 	// 然后输出所有的统计信息
