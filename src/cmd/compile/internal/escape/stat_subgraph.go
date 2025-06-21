@@ -14,6 +14,7 @@ import (
 	gndot "gonum.org/v1/gonum/graph/encoding/dot"
 )
 
+// FP: fast path
 const (
 	FPDstEscAddrSrc      string = "dst = &src, dst(escape)"
 	FPRootOutliveAddrSrc string = "root = &l, outlives(root, l)"
@@ -22,31 +23,67 @@ const (
 	FPGo                 string = "go"
 )
 
+// bitstring for escape reason
 type escapeReason int64
 
 const (
 	ERHeap             escapeReason = 1 << iota // root is heap
 	ERRootStack                                 // root in stack
 	EROutliveRootStack                          // outlived by root in stack
-	ERClousre                                   // root is closure
+	ERClosure                                   // root is closure
+	ERGo                                        // root is go
 	ERReturn                                    // l is returned
+	ERParamLeak                                 // param leak
+	ERMapIdx                                    // m[index]
+	ERComm                                      // communication by send
+	ERAppend                                    // append
+	ERCopy                                      // copied slice
+	ERMust                                      // must be heap allocated
 	ERNumber           = iota
 )
 
-var reason2label map[escapeReason]string = map[escapeReason]string{
+var reason2xlabel map[escapeReason]string = map[escapeReason]string{
 	ERHeap:             "h",
 	ERRootStack:        "rs",
 	EROutliveRootStack: "ors",
-	ERClousre:          "clo",
+	ERClosure:          "clo",
+	ERGo:               "go",
 	ERReturn:           "ret",
+	ERParamLeak:        "param",
+	ERMapIdx:           "mapidx",
+	ERComm:             "send",
+	ERAppend:           "append",
+	ERCopy:             "copy",
+	ERMust:             "must",
 }
 
-var reason2color map[escapeReason]string = map[escapeReason]string{
+var reason2fillcolor map[escapeReason]string = map[escapeReason]string{
 	ERHeap:             "slategrey",
 	ERRootStack:        "lightgreen",
 	EROutliveRootStack: "darkgreen",
-	ERClousre:          "deepskyblue",
+	ERClosure:          "darkgreen",
+	ERGo:               "deepskyblue",
+	ERComm:             "deepskyblue",
 	ERReturn:           "gold",
+	ERParamLeak:        "gold",
+	ERMapIdx:           "red",
+	ERAppend:           "red",
+	ERCopy:             "red",
+	ERMust:             "red",
+}
+
+var why2reason map[string]escapeReason = map[string]escapeReason{
+	FPParamLeak:             ERParamLeak,
+	"key of map put":        ERMapIdx,
+	"send":                  ERComm,
+	"return":                ERReturn,
+	"appendee slice":        ERAppend,
+	"appended slice...":     ERAppend,
+	"copied slice":          ERCopy,
+	"too large for stack":   ERMust,
+	"too aligned for stack": ERMust,
+	"non-constant size":     ERMust,
+	"reference":             ERClosure,
 }
 
 func (er *escapeReason) add(r escapeReason) {
@@ -68,11 +105,11 @@ func (er *escapeReason) contains(r escapeReason) bool {
 var esgCnt int = 0
 
 type escapeSubGraph struct {
-	newid  int64 // new id to be generated
-	loc2id map[*location]int64
+	newid  int64               // new id to be generated
+	loc2id map[*location]int64 // location -> srcid
 	nodes  map[int64]*escLocNode
-	edges  map[int64]map[int64]*escFlow
-	b      *batch // points to current batch analyzed
+	edges  map[int64]map[int64]*escFlow // srcid -> dstid -> flow
+	b      *batch                       // points to current batch analyzed
 }
 
 var _defaultesg = escapeSubGraph{}
@@ -211,10 +248,11 @@ func (esg *escapeSubGraph) EdgeTo(id int64) []*escFlow {
 	return edges
 }
 
+// escape subgraph node
 type escLocNode struct {
 	id     int64
 	loc    *location
-	dotid  string
+	dotid  string // cache field for DOTID()
 	reason escapeReason
 }
 
@@ -224,6 +262,7 @@ func (n *escLocNode) ID() int64 {
 }
 
 // TODO add reason dump, test now
+// implement dot.Node
 func (n *escLocNode) DOTID() string {
 	if n.dotid == "" {
 		n.dotid = getEsg().b.explainLocPos(n.loc)
@@ -231,18 +270,20 @@ func (n *escLocNode) DOTID() string {
 	return n.dotid
 }
 
-func (n *escLocNode) addReason(r escapeReason) {
+func (n *escLocNode) addReason(r escapeReason) (changed bool) {
+	oldReason := n.reason
+	n.reason.del(ERRootStack) // ERRootStack should be set manually
 	n.reason.add(r)
+	return oldReason != n.reason
 }
 
 // add label and xlabel
 //
-// https://www.graphviz.org/docs/attrs/xlabel/
-// https://www.graphviz.org/docs/attrs/color/
+// https://www.graphviz.org/docs/attrs/
 func (n *escLocNode) Attributes() []encoding.Attribute {
 	resAttrs := make([]encoding.Attribute, 0)
 	rlabels := make([]string, 0, ERNumber)
-	for reason, label := range reason2label {
+	for reason, label := range reason2xlabel {
 		if n.reason.contains(reason) {
 			rlabels = append(rlabels, label)
 		}
@@ -252,7 +293,7 @@ func (n *escLocNode) Attributes() []encoding.Attribute {
 		Value: strings.Join(rlabels, ","),
 	})
 	colors := make([]string, 0, ERNumber)
-	for reason, color := range reason2color {
+	for reason, color := range reason2fillcolor {
 		if n.reason.contains(reason) {
 			colors = append(colors, color)
 		}
@@ -276,6 +317,7 @@ type escLocNodeIter struct {
 	cur   int
 }
 
+// call Next first and then Node to get the node from iterator
 func createIter(nodes []*escLocNode) *escLocNodeIter {
 	return &escLocNodeIter{
 		nodes: nodes,
@@ -319,6 +361,7 @@ func (iter *escLocNodeIter) Node() gn.Node {
 	return iter.nodes[iter.cur]
 }
 
+// escape subgraph edge
 type escFlow struct {
 	src  *escLocNode
 	dst  *escLocNode
@@ -348,9 +391,19 @@ func (f *escFlow) backPropogate() escapeReason {
 	dstLoc := dst.loc
 	r := dst.reason
 	// TODO add more reason
+	for note := f.hole.notes; note != nil; note = note.next {
+		if reason, ok := why2reason[note.why]; ok {
+			r.add(reason)
+		}
+		fmt.Println("where", note.where)
+		fmt.Println("why", note.why)
+	}
 	switch dst.loc.n.(type) {
 	case *ir.ClosureExpr:
-		r.add(ERClousre)
+		if dst.loc.n.(*ir.ClosureExpr).IsGoWrap {
+			r.add(ERGo)
+		}
+		r.add(ERClosure)
 	}
 	if dstLoc.isName(ir.PPARAMOUT) {
 		r.add(ERReturn)
@@ -436,6 +489,8 @@ func (esg *escapeSubGraph) dump(dumpRoot, phase string) {
 		return
 	}
 	defer f.Close()
+
+	// dump dot graph
 	bs, err := gndot.Marshal(esg, phase, "", "")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "marshal of %s failed\n", phase)
@@ -446,15 +501,24 @@ func (esg *escapeSubGraph) dump(dumpRoot, phase string) {
 		fmt.Fprintf(os.Stderr, "write error %v\n", err)
 	}
 	fmt.Println(dotfile, "write bytes:", n)
+
+	// create svg
 	if err := exec.Command("dot", "-Tsvg", dotfile, fmt.Sprintf("-o%s", svg)).Run(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 	}
+
+	// print node info
 	for id, node := range esg.nodes {
 		fmt.Printf("id %d: %s\n", id, node.DOTID())
 		fmt.Printf("\treason %#b\n", node.reason)
 	}
 }
 
+/*
+removeHeap first mark all nodes which does not have out edges
+as ERRootStack. Then it propogate ERHeap to each node outlived
+by heap. Finally it removes the heap node from the subgraph.
+*/
 func (esg *escapeSubGraph) removeHeap() {
 	nr := nodeRemover{}
 	heapid := esg.loc2id[&esg.b.heapLoc]
@@ -473,12 +537,20 @@ func (esg *escapeSubGraph) removeHeap() {
 	nr.RemoveNode(heapid)
 }
 
-// backPropogate from nodes which do not have out edges
+/*
+backPropogate starting from nodes which do not have out edges.
+It traverses in topological order of edge-reversed graph
+*/
 func (esg *escapeSubGraph) backPropogate() {
 	wl := make([]*escLocNode, 0)
 	// add nodes which do not have out edges
 	for id, node := range esg.nodes {
 		if len(esg.edges[id]) == 0 {
+			wl = append(wl, node)
+		}
+	}
+	for id, node := range esg.nodes { // then add nodes which have out edges
+		if len(esg.edges[id]) != 0 {
 			wl = append(wl, node)
 		}
 	}
@@ -488,8 +560,9 @@ func (esg *escapeSubGraph) backPropogate() {
 		flows := esg.EdgeTo(dst.id)
 		for _, f := range flows {
 			r := f.backPropogate()
-			f.src.addReason(r)
-			wl = append(wl, f.src)
+			if f.src.addReason(r) {
+				wl = append(wl, f.src)
+			}
 		}
 	}
 }
