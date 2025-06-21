@@ -53,8 +53,9 @@ func (esg *escapeSubGraph) createOrGetNode(loc *location) *escLocNode {
 	id := int64(len(esg.nodes))
 	esg.loc2id[loc] = id
 	node := &escLocNode{
-		id:  id,
-		loc: loc,
+		id:      id,
+		loc:     loc,
+		inNodes: make(map[*escLocNode]bool),
 	}
 	esg.nodes = append(esg.nodes, node)
 	esg.edges[id] = make(map[int64]*escFlow)
@@ -74,10 +75,7 @@ func (esg *escapeSubGraph) Node(id int64) gn.Node {
 //
 // Nodes must not return nil.
 func (esg *escapeSubGraph) Nodes() gn.Nodes {
-	return &escLocNodeIter{
-		nodes: esg.nodes,
-		cur:   -1,
-	}
+	return createIter(esg.nodes)
 }
 
 // From returns all nodes that can be reached directly
@@ -86,20 +84,14 @@ func (esg *escapeSubGraph) Nodes() gn.Nodes {
 // From must not return nil.
 func (esg *escapeSubGraph) From(id int64) gn.Nodes {
 	if id > int64(len(esg.nodes)) {
-		return &escLocNodeIter{
-			nodes: make([]*escLocNode, 0),
-			cur:   -1,
-		}
+		return createIter(make([]*escLocNode, 0))
 	}
 	outs := esg.edges[id]
 	nodes := make([]*escLocNode, 0, len(outs))
 	for _, flow := range outs {
 		nodes = append(nodes, flow.dst)
 	}
-	return &escLocNodeIter{
-		nodes: nodes,
-		cur:   -1,
-	}
+	return createIter(nodes)
 }
 
 // HasEdgeBetween returns whether an edge exists between
@@ -122,9 +114,28 @@ func (esg *escapeSubGraph) Edge(uid, vid int64) gn.Edge {
 	}
 }
 
+// HasEdgeFromTo returns whether an edge exists
+// in the graph from u to v with IDs uid and vid.
+func (esg *escapeSubGraph) HasEdgeFromTo(uid, vid int64) bool {
+	return esg.HasEdgeBetween(uid, vid)
+}
+
+// To returns all nodes that can reach directly
+// to the node with the given ID.
+//
+// To must not return nil.
+func (esg *escapeSubGraph) To(id int64) gn.Nodes {
+	inNodes := make([]*escLocNode, 0, len(esg.nodes[id].inNodes))
+	for node := range esg.nodes[id].inNodes {
+		inNodes = append(inNodes, node)
+	}
+	return createIter(inNodes)
+}
+
 type escLocNode struct {
-	id  int64
-	loc *location
+	id      int64
+	loc     *location
+	inNodes map[*escLocNode]bool
 }
 
 // returns a graph-unique integer ID.
@@ -135,6 +146,13 @@ func (n *escLocNode) ID() int64 {
 type escLocNodeIter struct {
 	nodes []*escLocNode
 	cur   int
+}
+
+func createIter(nodes []*escLocNode) *escLocNodeIter {
+	return &escLocNodeIter{
+		nodes: nodes,
+		cur:   -1,
+	}
 }
 
 // Next advances the iterator and returns whether
@@ -167,6 +185,9 @@ func (iter *escLocNodeIter) Reset() {
 
 // Node returns the current Node from the iterator.
 func (iter *escLocNodeIter) Node() gn.Node {
+	if iter.cur < 0 || iter.cur >= len(iter.nodes) {
+		return nil
+	}
 	return iter.nodes[iter.cur]
 }
 
@@ -199,6 +220,7 @@ why of the first note of hole must be FPDstEscAddrSrc/FPRootOutliveAddrSrc/FPPar
 func (esg *escapeSubGraph) fastpath(src *location, hole hole) {
 	dst := hole.dst
 	srcN, dstN := esg.createOrGetNode(src), esg.createOrGetNode(dst)
+	dstN.inNodes[srcN] = true
 	esg.edges[srcN.id][dstN.id] = &escFlow{
 		src:  srcN,
 		dst:  dstN,
