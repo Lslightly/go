@@ -78,9 +78,16 @@ func (b *batch) walkOne(root *location, walkgen uint32, enqueue func(*location))
 		}
 	}
 
-	todo := []*location{root} // LIFO queue
+	type todoItem struct {
+		l         *location
+		prevNotes *note // clonee of edge notes
+	}
+	todo := []todoItem{
+		{root, nil},
+	} // LIFO queue
 	for len(todo) > 0 {
-		l := todo[len(todo)-1]
+		item := todo[len(todo)-1]
+		l := item.l
 		todo = todo[:len(todo)-1]
 
 		derefs := l.derefs
@@ -110,7 +117,10 @@ func (b *batch) walkOne(root *location, walkgen uint32, enqueue func(*location))
 					}
 				}
 				if base.Flag.LowerM >= 2 {
-					getEsg().fastpath(l, root.asHole().note(l.n, FPRootOutliveAddrSrc).shift(-1))
+					hole := root.asHole()       // empty note
+					hole.notes = item.prevNotes // add prevNotes
+					getEsg().fastpath(l, hole.note(l.n, FPRootOutliveAddrSrc).shift(-1))
+
 				}
 				newAttrs |= attrEscapes | attrPersists | attrMutates | attrCalls
 			} else
@@ -146,7 +156,9 @@ func (b *batch) walkOne(root *location, walkgen uint32, enqueue func(*location))
 					}
 				}
 				if base.Flag.LowerM >= 2 {
-					getEsg().fastpath(l, root.asHole().note(l.n, FPParamLeak).shift(derefs))
+					hole := root.asHole()
+					hole.notes = item.prevNotes
+					getEsg().fastpath(l, hole.note(l.n, FPParamLeak).shift(derefs))
 				}
 				l.leakTo(root, derefs)
 			}
@@ -176,10 +188,39 @@ func (b *batch) walkOne(root *location, walkgen uint32, enqueue func(*location))
 				edge.src.derefs = d
 				edge.src.dst = l
 				edge.src.dstEdgeIdx = i
-				todo = append(todo, edge.src)
+
+				todo = append(todo, todoItem{
+					l:         edge.src,
+					prevNotes: cloneAndAppendNotes(edge.notes, item.prevNotes),
+				})
 			}
 		}
 	}
+}
+
+// cloneAndAppendNotes will clone clonee notes and append appendee to the tail of new notes
+func cloneAndAppendNotes(clonee *note, appendee *note) *note {
+	if clonee == nil {
+		return appendee
+	}
+	prev := &note{
+		next:  nil,
+		where: clonee.where,
+		why:   clonee.why,
+	}
+	root := prev
+	for clonee.next != nil {
+		clonee = clonee.next
+		cur := &note{
+			next:  nil,
+			where: clonee.where,
+			why:   clonee.why,
+		}
+		prev.next = cur
+		prev = cur
+	}
+	prev.next = appendee
+	return root
 }
 
 // explainPath prints an explanation of how src flows to the walk root.
