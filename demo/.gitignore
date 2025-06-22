@@ -5,5 +5,5 @@
 # 取消忽略所有目录
 !*/
 graphs
-results
+csv
 countAll.log
