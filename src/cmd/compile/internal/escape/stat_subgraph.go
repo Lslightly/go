@@ -121,7 +121,7 @@ func getEsg() *escapeSubGraph {
 
 func createEsg(b *batch) {
 	_esg = &escapeSubGraph{
-		newid:  0,
+		newid:  1, // start from 1 to avoid confusing default value 0 of loc2id[not exist location] with valid location nodeid
 		loc2id: make(map[*location]int64),
 		nodes:  make(map[int64]*escLocNode),
 		edges:  make(map[int64]map[int64]*escFlow),
@@ -250,7 +250,7 @@ func (esg *escapeSubGraph) EdgeTo(id int64) []*escFlow {
 
 // escape subgraph node
 type escLocNode struct {
-	id     int64
+	id     int64 // start from 1
 	loc    *location
 	dotid  string // cache field for DOTID()
 	reason escapeReason
@@ -516,12 +516,17 @@ by heap. Finally it removes the heap node from the subgraph.
 */
 func (esg *escapeSubGraph) removeHeap() {
 	nr := nodeRemover{}
-	heapid := esg.loc2id[&esg.b.heapLoc]
+	heapid, ok := esg.loc2id[&esg.b.heapLoc] // return default id 0 if heap does not exist
 	// add ERRootStackOutlive | ERRootStack for nodes which do have out edges, except heap node
 	for id, node := range esg.nodes {
 		if len(esg.edges[id]) == 0 && id != heapid {
 			node.reason |= ERRootStack | EROutliveRootStack
 		}
+	}
+
+	if !ok { // heap node does not exist
+		fmt.Fprintln(os.Stderr, "heap does not exist")
+		return
 	}
 
 	// add ERHeap for in nodes of heap node
