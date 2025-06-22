@@ -5,6 +5,8 @@ func main() {
 	go_capture_by_val()
 	defer_capture_by_ref()
 	defer_capture_by_val()
+	for_defer()
+	GoRoutine()
 }
 
 func go_capture_by_ref() {
@@ -43,4 +45,22 @@ func defer_capture_by_val() {
 		println(y)
 	}()
 	_ = x
+}
+
+func f(d *int) {
+	*d = *d + 1
+}
+
+func GoRoutine() {
+	x := 1
+	go f(&x)
+}
+
+func for_defer() {
+	y := 0
+	for i := 0; i < 10; i++ {
+		defer func() {
+			y = y + i
+		}()
+	}
 }
