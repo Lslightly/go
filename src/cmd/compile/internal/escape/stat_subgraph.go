@@ -516,7 +516,7 @@ func (esg *escapeSubGraph) finishBatch() {
 }
 
 var graphRoot string
-var resultsRoot string
+var csvRoot string
 
 func (esg *escapeSubGraph) dump(dumpRoot, phase string) {
 	dotfile := path.Join(dumpRoot, phase+".gv")
@@ -662,15 +662,15 @@ func (esg *escapeSubGraph) summarize() {
 all,%d
 %s
 `, len(esg.nodes), strings.Join(r2cLines, "\n"))
-	writeToFile(path.Join(resultsRoot, "reason2cnt.csv"), content)
+	writeToFile(path.Join(csvRoot, "reason2cnt.csv"), content)
 	content = fmt.Sprintf(`reason_cnt,node_cnt
 %s
 `, strings.Join(nrcLines, "\n"))
-	writeToFile(path.Join(resultsRoot, "nodeReasonCnt.csv"), content)
+	writeToFile(path.Join(csvRoot, "nodeReasonCnt.csv"), content)
 	content = fmt.Sprintf(`nodeid,reason
 %s
 `, strings.Join(nrLines, "\n"))
-	writeToFile(path.Join(resultsRoot, "all.csv"), content)
+	writeToFile(path.Join(csvRoot, "all.csv"), content)
 }
 
 func writeToFile(fpath string, content string) (int, error) {

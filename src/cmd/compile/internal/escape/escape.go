@@ -123,9 +123,9 @@ type escape struct {
 func Funcs(all []*ir.Func) {
 	if base.Flag.LowerM >= 2 {
 		graphRoot = path.Join(base.Flag.EAResultRoot, "graphs", base.Ctxt.Pkgpath)
-		resultsRoot = path.Join(base.Flag.EAResultRoot, "results", base.Ctxt.Pkgpath)
+		csvRoot = path.Join(base.Flag.EAResultRoot, "csv", base.Ctxt.Pkgpath)
 		os.MkdirAll(graphRoot, 0755)
-		os.MkdirAll(resultsRoot, 0755)
+		os.MkdirAll(csvRoot, 0755)
 	}
 	ir.VisitFuncsBottomUp(all, Batch)
 	// 然后输出所有的统计信息
