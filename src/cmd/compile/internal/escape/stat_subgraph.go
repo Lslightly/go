@@ -14,6 +14,8 @@ import (
 	gndot "gonum.org/v1/gonum/graph/encoding/dot"
 )
 
+var statDebug bool = false
+
 // FP: fast path
 const (
 	FPDstEscAddrSrc      string = "dst = &src, dst(escape)"
@@ -293,7 +295,9 @@ func (n *escLocNode) addReason(r escapeReason) (changed bool) {
 	oldReason := n.reason
 	n.reason.add(r)
 	n.reason.del(ERRootStack) // ERRootStack should be set manually
-	fmt.Fprintf(os.Stderr, "Update reason(id: %d): %#b -> %#b\n", n.id, oldReason, n.reason)
+	if statDebug {
+		fmt.Fprintf(os.Stderr, "Update reason(id: %d): %#b -> %#b\n", n.id, oldReason, n.reason)
+	}
 	return oldReason != n.reason
 }
 
@@ -418,8 +422,10 @@ func (f *escFlow) backPropogate() escapeReason {
 		if reason, ok := why2reason[note.why]; ok {
 			r.add(reason)
 		}
-		fmt.Fprintln(os.Stderr, "where", note.where)
-		fmt.Fprintln(os.Stderr, "why", note.why)
+		if statDebug {
+			fmt.Fprintln(os.Stderr, "where", note.where)
+			fmt.Fprintln(os.Stderr, "why", note.why)
+		}
 	}
 	switch dst.loc.n.(type) {
 	case *ir.ClosureExpr:
@@ -454,7 +460,9 @@ func (nr *nodeRemover) RemoveNode(rid int64) {
 			break
 		}
 	}
-	fmt.Fprintln(os.Stderr, "remove node", rid, esg.nodes[rid].Label())
+	if statDebug {
+		fmt.Fprintln(os.Stderr, "remove node", rid, esg.nodes[rid].Label())
+	}
 	delete(esg.nodes, rid)
 	for srcid := range esg.edges {
 		delete(esg.edges[srcid], rid)
@@ -512,18 +520,21 @@ func (esg *escapeSubGraph) dump(dumpRoot, phase string) {
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "write error %v\n", err)
 	}
-	fmt.Println(dotfile, "write bytes:", n)
+	if statDebug {
+		fmt.Fprintln(os.Stderr, dotfile, "write bytes:", n)
+	}
 
 	// create svg
 	if err := exec.Command("dot", "-Tsvg", dotfile, fmt.Sprintf("-o%s", svg)).Run(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 	}
 
-	// print node info
-	for id, node := range esg.nodes {
-		// TODO: add debug condition switch
-		fmt.Fprintf(os.Stderr, "id %d: %s\n", id, node.Label())
-		fmt.Fprintf(os.Stderr, "\treason %#b\n", node.reason)
+	if statDebug {
+		// print node info
+		for id, node := range esg.nodes {
+			fmt.Fprintf(os.Stderr, "id %d: %s\n", id, node.Label())
+			fmt.Fprintf(os.Stderr, "\treason %#b\n", node.reason)
+		}
 	}
 }
 
@@ -538,13 +549,17 @@ func (esg *escapeSubGraph) removeHeap() {
 	// add ERRootStackOutlive | ERRootStack for nodes which do have out edges, except heap node
 	for id, node := range esg.nodes {
 		if len(esg.edges[id]) == 0 && id != heapid {
-			fmt.Fprintln(os.Stderr, "find root stack node id:", id, "label:", node.Label())
+			if statDebug {
+				fmt.Fprintln(os.Stderr, "find root stack node id:", id, "label:", node.Label())
+			}
 			node.reason |= ERRootStack | EROutliveRootStack
 		}
 	}
 
 	if !ok { // heap node does not exist
-		fmt.Fprintln(os.Stderr, "heap does not exist")
+		if statDebug {
+			fmt.Fprintln(os.Stderr, "heap does not exist")
+		}
 		return
 	}
 
