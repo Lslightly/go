@@ -1,6 +1,6 @@
 package indirect
 
-func indirect() {
+func Indirect() {
 	var p **int
 	var i int
 	*p = &i
@@ -10,7 +10,7 @@ type S struct {
 	p *int
 }
 
-func dotptr() {
+func Dotptr() {
 	s := &S{
 		p: nil,
 	}
@@ -18,7 +18,7 @@ func dotptr() {
 	s.p = &a
 }
 
-func mapidx() {
+func Mapidx() {
 	var m map[*S]*int = make(map[*S]*int)
 	a := 1
 	s := &S{
