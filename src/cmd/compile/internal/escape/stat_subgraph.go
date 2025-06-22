@@ -252,7 +252,7 @@ func (esg *escapeSubGraph) EdgeTo(id int64) []*escFlow {
 type escLocNode struct {
 	id     int64 // start from 1
 	loc    *location
-	dotid  string // cache field for DOTID()
+	label  string // cache field for Label()
 	reason escapeReason
 }
 
@@ -263,11 +263,11 @@ func (n *escLocNode) ID() int64 {
 
 // TODO add reason dump, test now
 // implement dot.Node
-func (n *escLocNode) DOTID() string {
-	if n.dotid == "" {
-		n.dotid = getEsg().b.explainLocPos(n.loc)
+func (n *escLocNode) Label() string {
+	if n.label == "" {
+		n.label = getEsg().b.explainLocPos(n.loc)
 	}
-	return n.dotid
+	return n.label
 }
 
 func (n *escLocNode) addReason(r escapeReason) (changed bool) {
@@ -283,6 +283,10 @@ func (n *escLocNode) addReason(r escapeReason) (changed bool) {
 // https://www.graphviz.org/docs/attrs/
 func (n *escLocNode) Attributes() []encoding.Attribute {
 	resAttrs := make([]encoding.Attribute, 0)
+	resAttrs = append(resAttrs, encoding.Attribute{
+		Key:   "label",
+		Value: n.Label(),
+	})
 	rlabels := make([]string, 0, ERNumber)
 	for reason, label := range reason2xlabel {
 		if n.reason.contains(reason) {
@@ -431,19 +435,12 @@ func (nr *nodeRemover) RemoveNode(rid int64) {
 			break
 		}
 	}
+	fmt.Fprintln(os.Stderr, "remove node", rid, esg.nodes[rid].Label())
 	delete(esg.nodes, rid)
-	for srcid, outs := range esg.edges {
-		if srcid == rid { // out edge
-			delete(esg.edges, srcid)
-			break
-		}
-		for dstid := range outs { // in edge
-			if dstid == rid {
-				delete(esg.edges[srcid], dstid)
-				break
-			}
-		}
+	for srcid := range esg.edges {
+		delete(esg.edges[srcid], rid)
 	}
+	delete(esg.edges, rid) // delete out edges from rid
 }
 
 /*
@@ -505,7 +502,7 @@ func (esg *escapeSubGraph) dump(dumpRoot, phase string) {
 
 	// print node info
 	for id, node := range esg.nodes {
-		fmt.Printf("id %d: %s\n", id, node.DOTID())
+		fmt.Printf("id %d: %s\n", id, node.Label())
 		fmt.Printf("\treason %#b\n", node.reason)
 	}
 }
@@ -521,6 +518,7 @@ func (esg *escapeSubGraph) removeHeap() {
 	// add ERRootStackOutlive | ERRootStack for nodes which do have out edges, except heap node
 	for id, node := range esg.nodes {
 		if len(esg.edges[id]) == 0 && id != heapid {
+			fmt.Fprintln(os.Stderr, "find root stack node id:", id, "label:", node.Label())
 			node.reason |= ERRootStack | EROutliveRootStack
 		}
 	}
