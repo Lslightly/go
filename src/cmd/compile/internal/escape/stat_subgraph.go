@@ -272,8 +272,9 @@ func (n *escLocNode) DOTID() string {
 
 func (n *escLocNode) addReason(r escapeReason) (changed bool) {
 	oldReason := n.reason
-	n.reason.del(ERRootStack) // ERRootStack should be set manually
 	n.reason.add(r)
+	n.reason.del(ERRootStack) // ERRootStack should be set manually
+	fmt.Fprintf(os.Stderr, "Update reason(id: %d): %#b -> %#b\n", n.id, oldReason, n.reason)
 	return oldReason != n.reason
 }
 
