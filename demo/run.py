@@ -1,6 +1,11 @@
 import subprocess
 from pathlib import Path
 from typing import List
+from define import EscapeReason
+import networkx as nx
+import matplotlib.pyplot as plt
+from contextlib import redirect_stdout
+
 import pandas as pd
 
 dry_run = False
@@ -49,10 +54,9 @@ def collect(EAResultRoot: Path):
 
         For each package import path, create a new DataFrame by adding "pkg" column in DataFrame of pkg/import/path/all.csv using the relative path to EAResultRoot and dump the collected all packages' DataFrame in EAResultRoot/csv/all.csv
 
-    Args:
-        root (Path): EAResultRoot
     """
-    csv_root = EAResultRoot.joinpath("csv")
+    print(f"Collecting {EAResultRoot}...")
+    csv_root = EAResultRoot/"csv"
     all_dfs: List[pd.DataFrame] = []
     for csv_path in csv_root.rglob("all.csv"):
         # 计算包的相对路径
@@ -63,12 +67,97 @@ def collect(EAResultRoot: Path):
         all_dfs.append(df)
     if all_dfs:
         all_df = pd.concat(all_dfs, ignore_index=True)
-        all_df.to_csv(EAResultRoot.joinpath("all.csv"), index=False)
+        all_df.to_csv(EAResultRoot / "all.csv", index=False)
     else:
         print(f"No all.csv files found in {csv_root}.")
 
 def stat(EAResultRoot: Path):
-    pass
+    """
+        count escape reason according to reasons defined in escape/stat_subgraph.go
+
+        read from EAResultRoot/all.csv
+        
+        The header is:
+        nodeid,reason,pkg
+        
+        column  dtype
+        reason  define.EscapeReason
+        nodeid  int
+        pkg     string
+
+        1. count the number and percentile of nodes for each reason
+        2. count the distribution of number of reasons each node have
+        3. Draw a DAG. Each node is a group of reasons. Parent node's reasons contain children's reasons
+    """
+    print(f"Stat {EAResultRoot} ...")
+    log_path = EAResultRoot / "escape_reason_stat.txt"
+    with open(log_path, "w", encoding="utf-8") as f, redirect_stdout(f):
+        df = pd.read_csv(EAResultRoot / "all.csv")
+
+        # Convert numeric reason to EscapeReason enum object
+        df["reason_enum"] = df["reason"].apply(lambda val: EscapeReason(val))
+
+        # 1. Count frequency of each individual reason
+        from collections import Counter
+        all_reasons = []
+        for reasons in df["reason_enum"]:
+            all_reasons.extend(EscapeReason(reasons).list_reasons())
+
+        reason_counter = Counter(all_reasons)
+        total_nodes = len(df)
+        
+        print("[1] Frequency and percentage of each reason:")
+        for reason, count in reason_counter.items():
+            percent = count / total_nodes * 100
+            print(f"{reason.name:<20} {count:>5} ({percent:.2f}%)")
+
+        # 2. Distribution of number of reasons per node
+        df["num_reasons"] = df["reason_enum"].apply(lambda r: len(EscapeReason(r).list_reasons()))
+        num_reason_dist = df["num_reasons"].value_counts().sort_index()
+
+        print("\n[2] Distribution of number of reasons per node:")
+        for num, count in num_reason_dist.items():
+            print(f"{num} reasons: {count} nodes")
+
+        # 3. Directed DAG: reason combinations with subset relation
+        # group by sorted reason name tuple
+        def reasons_key(val: int):
+            return tuple(sorted(r.name for r in EscapeReason(val).list_reasons()))
+
+        grouped = df.groupby(df["reason"].apply(reasons_key))
+        reason_groups = [(set(key), len(group)) for key, group in grouped]
+
+        # 构建 DAG：每个节点是一个 reason 组合（用 tuple 表示），边表示严格包含关系
+        G = nx.DiGraph()
+
+        # 添加节点
+        for key_set, count in reason_groups:
+            key = tuple(sorted(key_set))  # node identifier: sorted tuple
+            label = "+".join(key) + f" ({count})"
+            G.add_node(key, label=label, reasons=key_set, count=count)
+
+        # 添加边（如果 A 是 B 的真超集，则 B -> A）
+        for i, (reasons_a, _) in enumerate(reason_groups):
+            for j, (reasons_b, _) in enumerate(reason_groups):
+                if i == j:
+                    continue
+                if reasons_a > reasons_b:  # A ⊃ B
+                    key_a = tuple(sorted(reasons_a))
+                    key_b = tuple(sorted(reasons_b))
+                    G.add_edge(key_b, key_a)  # edge B → A
+
+
+        # 可视化
+        print("\n[3] Reason DAG (subset relationships):")
+        pos = nx.spring_layout(G, seed=42, k=1.5)
+        labels = {node: G.nodes[node]["label"] for node in G.nodes}
+        nx.draw(G, pos, with_labels=True, labels=labels, node_size=1500, node_color='lightblue', font_size=8, edge_color='gray')
+        plt.title("EscapeReason DAG")
+        plt.tight_layout()
+
+        output_path = EAResultRoot / "escape_reason_dag.png"
+        plt.savefig(output_path, dpi=200)
+        plt.close()
     
 
 def main():
@@ -80,10 +169,11 @@ def main():
         "rootstack"
     ]]
     for repo in repos:
-        EAResultRoot = Path.cwd().joinpath("stat_root", repo)
+        EAResultRoot = Path.cwd()/"stat_root"/repo
         EAResultRoot.mkdir(parents=True, exist_ok=True)
-        build(repo, EAResultRoot)
-        collect(EAResultRoot)
+        # build(repo, EAResultRoot)
+        # collect(EAResultRoot)
+        stat(EAResultRoot)
 
 if __name__ == '__main__':
     main()

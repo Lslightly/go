@@ -1,0 +1,14 @@
+[1] Frequency and percentage of each reason:
+ERHeap                   1 (33.33%)
+ERStar                   1 (33.33%)
+EROutliveRootStack       1 (33.33%)
+ERReturn                 1 (33.33%)
+ERParamLeak              1 (33.33%)
+ERRootStack              1 (33.33%)
+
+[2] Distribution of number of reasons per node:
+1 reasons: 1 nodes
+2 reasons: 1 nodes
+3 reasons: 1 nodes
+
+[3] Reason DAG (subset relationships):

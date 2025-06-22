@@ -1,0 +1,8 @@
+[1] Frequency and percentage of each reason:
+EROutliveRootStack       1 (50.00%)
+ERRootStack              1 (50.00%)
+
+[2] Distribution of number of reasons per node:
+1 reasons: 2 nodes
+
+[3] Reason DAG (subset relationships):

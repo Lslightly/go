@@ -1,0 +1,8 @@
+[1] Frequency and percentage of each reason:
+ERHeap                   1 (100.00%)
+ERParamLeak              1 (100.00%)
+
+[2] Distribution of number of reasons per node:
+2 reasons: 1 nodes
+
+[3] Reason DAG (subset relationships):
