@@ -7,6 +7,7 @@ package escape
 import (
 	"fmt"
 	"os"
+	"path"
 
 	"cmd/compile/internal/base"
 	"cmd/compile/internal/ir"
@@ -121,10 +122,10 @@ type escape struct {
 
 func Funcs(all []*ir.Func) {
 	if base.Flag.LowerM >= 2 {
-		os.RemoveAll("graphs")
-		os.RemoveAll("results")
-		os.MkdirAll("graphs", 0755)
-		os.MkdirAll("results", 0755)
+		graphRoot = path.Join(base.Flag.EAResultRoot, "graphs", base.Ctxt.Pkgpath)
+		resultsRoot = path.Join(base.Flag.EAResultRoot, "results", base.Ctxt.Pkgpath)
+		os.MkdirAll(graphRoot, 0755)
+		os.MkdirAll(resultsRoot, 0755)
 	}
 	ir.VisitFuncsBottomUp(all, Batch)
 	// 然后输出所有的统计信息

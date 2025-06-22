@@ -14,7 +14,7 @@ import (
 	gndot "gonum.org/v1/gonum/graph/encoding/dot"
 )
 
-var statDebug bool = false
+var statDebug bool = true
 
 // FP: fast path
 const (
@@ -496,7 +496,7 @@ func (esg *escapeSubGraph) finishBatch() {
 	if len(esg.nodes) == 0 {
 		return
 	}
-	dumpRoot := path.Join("graphs", strconv.Itoa(esgCnt))
+	dumpRoot := path.Join(graphRoot, strconv.Itoa(esgCnt))
 	os.MkdirAll(dumpRoot, 0755)
 	esgCnt += 1
 	esg.dump(dumpRoot, "0init")
@@ -514,6 +514,9 @@ func (esg *escapeSubGraph) finishBatch() {
 	esg.summarize()
 	esg.dump(dumpRoot, "summarize")
 }
+
+var graphRoot string
+var resultsRoot string
 
 func (esg *escapeSubGraph) dump(dumpRoot, phase string) {
 	dotfile := path.Join(dumpRoot, phase+".gv")
@@ -659,15 +662,15 @@ func (esg *escapeSubGraph) summarize() {
 all,%d
 %s
 `, len(esg.nodes), strings.Join(r2cLines, "\n"))
-	writeToFile(path.Join("results", "reason2cnt.csv"), content)
+	writeToFile(path.Join(resultsRoot, "reason2cnt.csv"), content)
 	content = fmt.Sprintf(`reason_cnt,node_cnt
 %s
 `, strings.Join(nrcLines, "\n"))
-	writeToFile(path.Join("results", "nodeReasonCnt.csv"), content)
+	writeToFile(path.Join(resultsRoot, "nodeReasonCnt.csv"), content)
 	content = fmt.Sprintf(`nodeid,reason
 %s
 `, strings.Join(nrLines, "\n"))
-	writeToFile(path.Join("results", "all.csv"), content)
+	writeToFile(path.Join(resultsRoot, "all.csv"), content)
 }
 
 func writeToFile(fpath string, content string) (int, error) {

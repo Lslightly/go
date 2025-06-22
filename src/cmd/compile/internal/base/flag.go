@@ -127,6 +127,7 @@ type CmdFlags struct {
 	WB                 bool         "help:\"enable write barrier\"" // TODO: remove
 	PgoProfile         string       "help:\"read profile or pre-process profile from `file`\""
 	ErrorURL           bool         "help:\"print explanatory URL with error message if applicable\""
+	EAResultRoot       string       "help:\"escape analysis sub graph result root\""
 
 	// Configuration derived from flags; not a flag itself.
 	Cfg struct {
