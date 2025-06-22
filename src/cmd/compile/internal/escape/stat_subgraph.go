@@ -443,6 +443,15 @@ func (f *escFlow) backPropogate() escapeReason {
 	return r
 }
 
+func (f *escFlow) Attributes() []encoding.Attribute {
+	resAttrs := make([]encoding.Attribute, 0)
+	resAttrs = append(resAttrs, encoding.Attribute{
+		Key:   "label",
+		Value: strconv.Itoa(f.hole.derefs),
+	})
+	return resAttrs
+}
+
 type nodeRemover struct{}
 
 // RemoveNode removes the node with the given ID
