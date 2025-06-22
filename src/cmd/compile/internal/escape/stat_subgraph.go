@@ -399,8 +399,8 @@ func (f *escFlow) backPropogate() escapeReason {
 		if reason, ok := why2reason[note.why]; ok {
 			r.add(reason)
 		}
-		fmt.Println("where", note.where)
-		fmt.Println("why", note.why)
+		fmt.Fprintln(os.Stderr, "where", note.where)
+		fmt.Fprintln(os.Stderr, "why", note.why)
 	}
 	switch dst.loc.n.(type) {
 	case *ir.ClosureExpr:
@@ -502,8 +502,9 @@ func (esg *escapeSubGraph) dump(dumpRoot, phase string) {
 
 	// print node info
 	for id, node := range esg.nodes {
-		fmt.Printf("id %d: %s\n", id, node.Label())
-		fmt.Printf("\treason %#b\n", node.reason)
+		// TODO: add debug condition switch
+		fmt.Fprintf(os.Stderr, "id %d: %s\n", id, node.Label())
+		fmt.Fprintf(os.Stderr, "\treason %#b\n", node.reason)
 	}
 }
 
