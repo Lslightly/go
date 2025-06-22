@@ -21,6 +21,10 @@ const (
 	FPParamLeak          string = "param l leak, outlives(root, l)"
 	FPDefer              string = "defer"
 	FPGo                 string = "go"
+	FPToIndex            string = "assign to S[Index]"
+	FPToStar             string = "assign to *X"
+	FPToDotPtr           string = "assign to (*X).Sel"
+	FPToMapIndex         string = "assign to M[Index]"
 )
 
 // bitstring for escape reason
@@ -28,13 +32,16 @@ type escapeReason int64
 
 const (
 	ERHeap             escapeReason = 1 << iota // root is heap
+	ERStar                                      // root is *x
 	ERRootStack                                 // root in stack
 	EROutliveRootStack                          // outlived by root in stack
 	ERClosure                                   // root is closure
 	ERGo                                        // root is go
+	ERDefer                                     // root is defer
 	ERReturn                                    // l is returned
 	ERParamLeak                                 // param leak
 	ERMapIdx                                    // m[index]
+	ERSliceIdx                                  // s[index]
 	ERComm                                      // communication by send
 	ERAppend                                    // append
 	ERCopy                                      // copied slice
@@ -44,13 +51,16 @@ const (
 
 var reason2xlabel map[escapeReason]string = map[escapeReason]string{
 	ERHeap:             "h",
+	ERStar:             "*X",
 	ERRootStack:        "rs",
 	EROutliveRootStack: "ors",
 	ERClosure:          "clo",
 	ERGo:               "go",
+	ERDefer:            "defer",
 	ERReturn:           "ret",
 	ERParamLeak:        "param",
 	ERMapIdx:           "mapidx",
+	ERSliceIdx:         "sliceidx",
 	ERComm:             "send",
 	ERAppend:           "append",
 	ERCopy:             "copy",
@@ -59,14 +69,17 @@ var reason2xlabel map[escapeReason]string = map[escapeReason]string{
 
 var reason2fillcolor map[escapeReason]string = map[escapeReason]string{
 	ERHeap:             "slategrey",
+	ERStar:             "pink",
 	ERRootStack:        "lightgreen",
 	EROutliveRootStack: "darkgreen",
 	ERClosure:          "darkgreen",
+	ERDefer:            "darkgreen",
 	ERGo:               "deepskyblue",
 	ERComm:             "deepskyblue",
 	ERReturn:           "gold",
 	ERParamLeak:        "gold",
 	ERMapIdx:           "red",
+	ERSliceIdx:         "red",
 	ERAppend:           "red",
 	ERCopy:             "red",
 	ERMust:             "red",
@@ -74,6 +87,12 @@ var reason2fillcolor map[escapeReason]string = map[escapeReason]string{
 
 var why2reason map[string]escapeReason = map[string]escapeReason{
 	FPParamLeak:             ERParamLeak,
+	FPDefer:                 ERDefer,
+	FPGo:                    ERGo,
+	FPToIndex:               ERSliceIdx,
+	FPToStar:                ERStar,
+	FPToDotPtr:              ERStar,
+	FPToMapIndex:            ERMapIdx,
 	"key of map put":        ERMapIdx,
 	"send":                  ERComm,
 	"return":                ERReturn,
