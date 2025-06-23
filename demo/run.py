@@ -1,6 +1,7 @@
+import argparse
 import subprocess
 from pathlib import Path
-from typing import List
+from typing import Callable, List
 from define import EscapeReason
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -9,6 +10,8 @@ from contextlib import redirect_stdout
 import pandas as pd
 
 dry_run = False
+do_build = False
+demo_only = False
 
 def execute(cmd: str, cwd: str | None = None, stdout=None, stderr=None):
     if dry_run:
@@ -46,7 +49,7 @@ def build(repo: Path, EAResultRoot: Path):
     print(f"Building {repo}...")
     # bugs still exist
     # execute(f'go build -a -gcflags="all=-m=2 -earesultroot={EAResultRoot}" .', cwd=str(repo))
-    execute(f'go build -a -gcflags="-eareasonstat -earesultroot={EAResultRoot}" .', cwd=str(repo))
+    execute(f'go build -a -gcflags="all=-eareasonstat -earesultroot={EAResultRoot}" .', cwd=str(repo))
 
 def collect(EAResultRoot: Path):
     """ Collect all all.csv from EAResultRoot/csv.
@@ -159,22 +162,56 @@ def stat(EAResultRoot: Path):
         plt.savefig(output_path, dpi=200)
         plt.close()
     
+def run(repoRoot: Path, statRoot: Path, repo: str, repoBuild: Callable[[Path, Path], None]=build):
+    repoPath = repoRoot/repo
+    EAResultRoot = statRoot/repo
+    EAResultRoot.mkdir(parents=True, exist_ok=True)
+    if do_build:
+        build(repoPath, EAResultRoot)
+    collect(EAResultRoot)
+    stat(EAResultRoot)
 
-def main():
-    repos = [Path(s) for s in [
+def demo():
+    for repo in [
         "closure_go",
         "indirect",
         "paramleak",
         "ret",
         "rootstack"
-    ]]
-    for repo in repos:
-        EAResultRoot = Path.cwd()/"stat_root"/repo
-        EAResultRoot.mkdir(parents=True, exist_ok=True)
-        build(repo, EAResultRoot)
-        collect(EAResultRoot)
-        stat(EAResultRoot)
+    ]:
+        run(Path("."), Path.cwd()/"stat_root", repo)
 
-if __name__ == '__main__':
+def cli_build(repoPath: Path, EAResultRoot: Path):
+    execute("make clean", cwd=str(repoPath))
+    execute("make install", cwd=str(repoPath))
+
+def tidb_build(repoPath: Path, EAResultRoot: Path):
+    execute("make clean", cwd=str(repoPath))
+    execute("make", cwd=str(repoPath))
+    
+def escapeReasonRepos():
+    for repo, repobuild in [
+        ("cli", cli_build),
+        ("tidb", tidb_build),
+    ]:
+        run(
+            Path("/data/github_go/escapeReasonRepos"),
+            Path("/data/github_go/escapeReasonStatRoot"),
+            repo,
+            repobuild
+        )
+
+def main():
+    if demo_only:
+        demo()
+    else:
+        escapeReasonRepos()
+
+parser = argparse.ArgumentParser(prog="run")
+parser.add_argument("--build", action="store_true", help="Whether to build the project")
+parser.add_argument("--demo", action="store_true", help="Whether to run demo only")
+args = parser.parse_args()
+do_build = args.build
+demo_only = args.demo
+if __name__ == "__main__":
     main()
-
