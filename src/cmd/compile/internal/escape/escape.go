@@ -163,6 +163,9 @@ func Batch(fns []*ir.Func, recursive bool) {
 		defer func() { destroyEsg() }()
 		defer func() { getEsg().finishBatch() }()
 		defer func() {
+			if len(getEsg().nodes) == 0 {
+				return
+			}
 			fmt.Fprintln(os.Stderr, "finishBatch", esgCnt, "for pkg", base.Ctxt.Pkgpath)
 			fnNames := make([]string, 0, len(fns))
 			for _, fn := range fns {
