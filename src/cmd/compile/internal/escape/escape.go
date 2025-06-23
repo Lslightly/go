@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"strings"
 
 	"cmd/compile/internal/base"
 	"cmd/compile/internal/ir"
@@ -121,7 +122,7 @@ type escape struct {
 }
 
 func Funcs(all []*ir.Func) {
-	if base.Flag.LowerM >= 2 {
+	if base.Flag.EAReasonStat {
 		graphRoot = path.Join(base.Flag.EAResultRoot, "graphs", base.Ctxt.Pkgpath)
 		csvRoot = path.Join(base.Flag.EAResultRoot, "csv", base.Ctxt.Pkgpath)
 		os.MkdirAll(graphRoot, 0755)
@@ -157,10 +158,20 @@ func output_one_package_countAll() {
 func Batch(fns []*ir.Func, recursive bool) {
 	var b batch
 
-	if base.Flag.LowerM >= 2 {
+	if base.Flag.EAReasonStat {
 		createEsg(&b)
 		defer func() { destroyEsg() }()
 		defer func() { getEsg().finishBatch() }()
+		defer func() {
+			fmt.Fprintln(os.Stderr, "finishBatch", esgCnt, "for pkg", base.Ctxt.Pkgpath)
+			fnNames := make([]string, 0, len(fns))
+			for _, fn := range fns {
+				if fn != nil && fn.Sym() != nil {
+					fnNames = append(fnNames, fn.Sym().Name)
+				}
+			}
+			fmt.Fprintln(os.Stderr, "funcs:", strings.Join(fnNames, ","))
+		}()
 	}
 
 	b.heapLoc.attrs = attrEscapes | attrPersists | attrMutates | attrCalls

@@ -46,7 +46,7 @@ def build(repo: Path, EAResultRoot: Path):
     print(f"Building {repo}...")
     # bugs still exist
     # execute(f'go build -a -gcflags="all=-m=2 -earesultroot={EAResultRoot}" .', cwd=str(repo))
-    execute(f'go build -a -gcflags="-m=2 -earesultroot={EAResultRoot}" .', cwd=str(repo))
+    execute(f'go build -a -gcflags="-eareasonstat -earesultroot={EAResultRoot}" .', cwd=str(repo))
 
 def collect(EAResultRoot: Path):
     """ Collect all all.csv from EAResultRoot/csv.
@@ -171,8 +171,8 @@ def main():
     for repo in repos:
         EAResultRoot = Path.cwd()/"stat_root"/repo
         EAResultRoot.mkdir(parents=True, exist_ok=True)
-        # build(repo, EAResultRoot)
-        # collect(EAResultRoot)
+        build(repo, EAResultRoot)
+        collect(EAResultRoot)
         stat(EAResultRoot)
 
 if __name__ == '__main__':

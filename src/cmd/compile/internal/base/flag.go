@@ -128,6 +128,7 @@ type CmdFlags struct {
 	PgoProfile         string       "help:\"read profile or pre-process profile from `file`\""
 	ErrorURL           bool         "help:\"print explanatory URL with error message if applicable\""
 	EAResultRoot       string       "help:\"escape analysis sub graph result root\""
+	EAReasonStat       bool         "help:\"enable escape reason stat\""
 
 	// Configuration derived from flags; not a flag itself.
 	Cfg struct {

@@ -116,7 +116,7 @@ func (b *batch) walkOne(root *location, walkgen uint32, enqueue func(*location))
 						logopt.LogOpt(l.n.Pos(), "escape", "escape", ir.FuncName(e_curfn), fmt.Sprintf("%v escapes to heap", l.n), explanation)
 					}
 				}
-				if base.Flag.LowerM >= 2 {
+				if base.Flag.EAReasonStat {
 					hole := root.asHole()       // empty note
 					hole.notes = item.prevNotes // add prevNotes
 					getEsg().fastpath(l, hole.note(l.n, FPRootOutliveAddrSrc).shift(-1))
@@ -155,7 +155,7 @@ func (b *batch) walkOne(root *location, walkgen uint32, enqueue func(*location))
 							fmt.Sprintf("parameter %v leaks to %s with derefs=%d", l.n, b.explainLoc(root), derefs), explanation)
 					}
 				}
-				if base.Flag.LowerM >= 2 {
+				if base.Flag.EAReasonStat {
 					hole := root.asHole()
 					hole.notes = item.prevNotes
 					getEsg().fastpath(l, hole.note(l.n, FPParamLeak).shift(derefs))

@@ -189,7 +189,7 @@ func (k hole) note(where ir.Node, why string) hole {
 	if where == nil || why == "" {
 		base.Fatalf("note: missing where/why")
 	}
-	if base.Flag.LowerM >= 2 || logopt.Enabled() {
+	if base.Flag.LowerM >= 2 || base.Flag.EAReasonStat || logopt.Enabled() {
 		k.notes = &note{
 			next:  k.notes,
 			where: where,
@@ -242,7 +242,7 @@ func (b *batch) flow(k hole, src *location) {
 				logopt.LogOpt(src.n.Pos(), "escapes", "escape", ir.FuncName(e_curfn), fmt.Sprintf("%v escapes to heap", src.n), explanation)
 			}
 		}
-		if base.Flag.LowerM >= 2 {
+		if base.Flag.EAReasonStat {
 			getEsg().fastpath(src, k.note(src.n, FPDstEscAddrSrc))
 		}
 		src.attrs |= attrEscapes | attrPersists | attrMutates | attrCalls
