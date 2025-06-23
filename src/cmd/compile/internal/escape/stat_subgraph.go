@@ -14,7 +14,7 @@ import (
 	gndot "gonum.org/v1/gonum/graph/encoding/dot"
 )
 
-var statDebug bool = true
+var statDebug bool = false
 
 // FP: fast path
 const (
@@ -622,52 +622,12 @@ func (esg *escapeSubGraph) summarize() {
 		}
 	}
 
-	reason2cnt := make(map[escapeReason]int)
-	// the number of reason node has -> number of nodes has so many reasons
-	nodeReasonCnt := make(map[int]int)
-	type pair struct {
-		node *escLocNode
-		r    escapeReason
-	}
-	nodeReasonList := make([]pair, 0)
+	nrLines := make([]string, 0, len(esg.nodes))
 	for _, node := range esg.nodes {
-		reasonCnt := 0
-		for r := range reason2xlabel {
-			if node.reason.contains(r) {
-				reason2cnt[r]++
-				reasonCnt++
-				nodeReasonList = append(nodeReasonList, pair{
-					node: node,
-					r:    r,
-				})
-			}
-		}
-		nodeReasonCnt[reasonCnt]++
+		nrLines = append(nrLines, fmt.Sprintf("%d,%d", node.id, node.reason))
 	}
 
-	r2cLines := make([]string, 0, len(reason2cnt))
-	for r, cnt := range reason2cnt {
-		r2cLines = append(r2cLines, fmt.Sprintf("%s,%d", reason2xlabel[r], cnt))
-	}
-	nrcLines := make([]string, 0, len(nodeReasonCnt))
-	for rc, cnt := range nodeReasonCnt {
-		nrcLines = append(nrcLines, fmt.Sprintf("%d,%d", rc, cnt))
-	}
-	nrLines := make([]string, 0, len(nodeReasonList))
-	for _, p := range nodeReasonList {
-		nrLines = append(nrLines, fmt.Sprintf("%d,%d", p.node.id, p.r))
-	}
-
-	content := fmt.Sprintf(`reason,count
-all,%d
-%s
-`, len(esg.nodes), strings.Join(r2cLines, "\n"))
-	writeToFile(path.Join(csvRoot, "reason2cnt.csv"), content)
-	content = fmt.Sprintf(`reason_cnt,node_cnt
-%s
-`, strings.Join(nrcLines, "\n"))
-	writeToFile(path.Join(csvRoot, "nodeReasonCnt.csv"), content)
-	content = fmt.Sprintf(`nodeid,reason
+	content := fmt.Sprintf(`nodeid,reason
 %s
 `, strings.Join(nrLines, "\n"))
 	writeToFile(path.Join(csvRoot, "all.csv"), content)
