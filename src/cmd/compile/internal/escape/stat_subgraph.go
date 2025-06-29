@@ -129,16 +129,6 @@ func (er *escapeReason) contains(r escapeReason) bool {
 
 var esgCnt int = 0
 
-// encode encodes the escapeReason into a 2-byte array.
-func (er *escapeReason) encode() [2]uint8 {
-	v := uint16(*er)
-	return [2]uint8{uint8(v), uint8(v >> 8)}
-}
-
-func (er *escapeReason) decode(b [2]uint8) {
-	*er = escapeReason(b[0]) | escapeReason(b[1])<<8
-}
-
 type escapeSubGraph struct {
 	newid  int64               // new id to be generated
 	loc2id map[*location]int64 // location -> srcid
@@ -669,7 +659,15 @@ func (esg *escapeSubGraph) encodeLocLeakReason(loc *location, esc *leaks) {
 func (esg *escapeSubGraph) decodeAndSetLocLeakReason(loc *location, esc *leaks) {
 	id, ok := esg.loc2id[loc]
 	if !ok {
-		return
+		id = esg.newid
+		esg.newid++
+		esg.loc2id[loc] = id
+		node := &escLocNode{
+			id:  id,
+			loc: loc,
+		}
+		esg.nodes[id] = node
+		esg.edges[id] = make(map[int64]*escFlow)
 	}
 	node := esg.nodes[id]
 	node.reason = esc.decodeReason()
