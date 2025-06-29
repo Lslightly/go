@@ -42,6 +42,7 @@ const (
 	ERDefer                                     // root is defer
 	ERReturn                                    // l is returned
 	ERParamLeak                                 // param leak
+	ERCallArgument                              // root is call argument
 	ERMapIdx                                    // m[index]
 	ERSliceIdx                                  // s[index]
 	ERComm                                      // communication by send
@@ -61,6 +62,7 @@ var reason2xlabel map[escapeReason]string = map[escapeReason]string{
 	ERDefer:            "defer",
 	ERReturn:           "ret",
 	ERParamLeak:        "param",
+	ERCallArgument:     "arg",
 	ERMapIdx:           "mapidx",
 	ERSliceIdx:         "sliceidx",
 	ERComm:             "send",
@@ -80,6 +82,7 @@ var reason2fillcolor map[escapeReason]string = map[escapeReason]string{
 	ERComm:             "deepskyblue",
 	ERReturn:           "gold",
 	ERParamLeak:        "gold",
+	ERCallArgument:     "gold",
 	ERMapIdx:           "red",
 	ERSliceIdx:         "red",
 	ERAppend:           "red",
@@ -105,6 +108,7 @@ var why2reason map[string]escapeReason = map[string]escapeReason{
 	"too aligned for stack": ERMust,
 	"non-constant size":     ERMust,
 	"reference":             ERClosure,
+	"call parameter":        ERCallArgument,
 }
 
 func (er *escapeReason) add(r escapeReason) {
