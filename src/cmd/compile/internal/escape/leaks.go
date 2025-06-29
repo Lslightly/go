@@ -13,10 +13,13 @@ import (
 // A leaks represents a set of assignment flows from a parameter to
 // the heap, mutator, callee, or to any of its function's (first
 // numEscResults) result parameters.
-type leaks [8]uint8
+// The first 2 uint8 is the escape reason in stat_subgraph.go
+type leaks [2 + 8]uint8
 
 const (
-	leakHeap = iota
+	leakReason0 = iota
+	leakReason1
+	leakHeap
 	leakMutator
 	leakCallee
 	leakResult0
@@ -78,13 +81,28 @@ func (l *leaks) set(i, derefs int) {
 	l[i] = uint8(v)
 }
 
+func (l *leaks) encodeReason(er escapeReason) {
+	if er < 0 || er >= math.MaxUint16 {
+		base.Fatalf("invalid escape reason: %v", er)
+	}
+	v := uint16(er)
+	l[0] = uint8(v)
+	l[1] = uint8(v >> 8)
+}
+
+func (l *leaks) decodeReason() escapeReason {
+	// Decode the escape reason from the first two bytes.
+	// The escape reason is encoded as a 2-byte uint16.
+	return escapeReason(uint16(l[0]) | uint16(l[1])<<8)
+}
+
 // Optimize removes result flow paths that are equal in length or
 // longer than the shortest heap flow path.
 func (l *leaks) Optimize() {
 	// If we have a path to the heap, then there's no use in
 	// keeping equal or longer paths elsewhere.
 	if x := l.Heap(); x >= 0 {
-		for i := 1; i < len(*l); i++ {
+		for i := leakHeap + 1; i < len(*l); i++ {
 			if l.get(i) >= x {
 				l.set(i, -1)
 			}
@@ -96,11 +114,12 @@ var leakTagCache = map[leaks]string{}
 
 // Encode converts l into a binary string for export data.
 func (l leaks) Encode() string {
-	if l.Heap() == 0 {
-		// Space optimization: empty string encodes more
-		// efficiently in export data.
-		return ""
-	}
+	// don't optmize for escape reason
+	// if l.Heap() == 0 {
+	// 	// Space optimization: empty string encodes more
+	// 	// efficiently in export data.
+	// 	return ""
+	// }
 	if s, ok := leakTagCache[l]; ok {
 		return s
 	}

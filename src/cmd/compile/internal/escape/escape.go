@@ -157,24 +157,11 @@ func output_one_package_countAll() {
 // functions.
 func Batch(fns []*ir.Func, recursive bool) {
 	var b batch
+	base.Flag.EAReasonStat = true // always set to true for tag
 
 	if base.Flag.EAReasonStat {
 		createEsg(&b)
 		defer func() { destroyEsg() }()
-		defer func() { getEsg().finishBatch() }()
-		defer func() {
-			if len(getEsg().nodes) == 0 {
-				return
-			}
-			fmt.Fprintln(os.Stderr, "finishBatch", esgCnt, "for pkg", base.Ctxt.Pkgpath)
-			fnNames := make([]string, 0, len(fns))
-			for _, fn := range fns {
-				if fn != nil && fn.Sym() != nil {
-					fnNames = append(fnNames, fn.Sym().Name)
-				}
-			}
-			fmt.Fprintln(os.Stderr, "funcs:", strings.Join(fnNames, ","))
-		}()
 	}
 
 	b.heapLoc.attrs = attrEscapes | attrPersists | attrMutates | attrCalls
@@ -211,6 +198,23 @@ func Batch(fns []*ir.Func, recursive bool) {
 	}
 
 	b.walkAll()
+
+	if base.Flag.EAReasonStat {
+		func() {
+			if len(getEsg().nodes) == 0 {
+				return
+			}
+			fmt.Fprintln(os.Stderr, "finishBatch", esgCnt, "for pkg", base.Ctxt.Pkgpath)
+			fnNames := make([]string, 0, len(fns))
+			for _, fn := range fns {
+				if fn != nil && fn.Sym() != nil {
+					fnNames = append(fnNames, fn.Sym().Name)
+				}
+			}
+			fmt.Fprintln(os.Stderr, "funcs:", strings.Join(fnNames, ","))
+		}()
+		getEsg().finishBatch()
+	}
 	b.finish(fns)
 }
 
@@ -536,6 +540,8 @@ func (b *batch) paramTag(fn *ir.Func, narg int, f *types.Field) string {
 	if diagnose && !loc.hasAttr(attrEscapes) {
 		b.reportLeaks(f.Pos, name(), esc, fn.Type())
 	}
+
+	getEsg().encodeLocLeakReason(loc, &esc)
 
 	return esc.Encode()
 }

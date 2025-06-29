@@ -387,7 +387,9 @@ func (e *escape) tagHole(ks []hole, fn *ir.Name, param *types.Field) hole {
 		}
 	}
 
-	return e.teeHole(tagKs...)
+	tee := e.teeHole(tagKs...)
+	getEsg().decodeAndSetLocLeakReason(tee.dst, &esc)
+	return tee
 }
 
 func hasNonStringPointers(t *types.Type) bool {
