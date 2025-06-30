@@ -157,7 +157,6 @@ func output_one_package_countAll() {
 // functions.
 func Batch(fns []*ir.Func, recursive bool) {
 	var b batch
-	base.Flag.EAReasonStat = true // always set to true for tag
 
 	if base.Flag.EAReasonStat {
 		createEsg(&b)
@@ -541,7 +540,9 @@ func (b *batch) paramTag(fn *ir.Func, narg int, f *types.Field) string {
 		b.reportLeaks(f.Pos, name(), esc, fn.Type())
 	}
 
-	getEsg().encodeLocLeakReason(loc, &esc)
+	if base.Flag.EAReasonStat {
+		getEsg().encodeLocLeakReason(loc, &esc)
+	}
 
 	return esc.Encode()
 }

@@ -6,6 +6,7 @@ package escape
 
 import (
 	"cmd/compile/internal/base"
+	"fmt"
 	"math"
 	"strings"
 )
@@ -114,12 +115,11 @@ var leakTagCache = map[leaks]string{}
 
 // Encode converts l into a binary string for export data.
 func (l leaks) Encode() string {
-	// don't optmize for escape reason
-	// if l.Heap() == 0 {
-	// 	// Space optimization: empty string encodes more
-	// 	// efficiently in export data.
-	// 	return ""
-	// }
+	if l.Heap() == 0 {
+		// Space optimization: empty string encodes more
+		// efficiently in export data.
+		return string(l[:leakHeap])
+	}
 	if s, ok := leakTagCache[l]; ok {
 		return s
 	}
@@ -128,7 +128,7 @@ func (l leaks) Encode() string {
 	for n > 0 && l[n-1] == 0 {
 		n--
 	}
-	s := "esc:" + string(l[:n])
+	s := string(l[:leakHeap]) + "esc:" + string(l[min(leakHeap, n):n])
 	leakTagCache[l] = s
 	return s
 }
@@ -136,10 +136,19 @@ func (l leaks) Encode() string {
 // parseLeaks parses a binary string representing a leaks.
 func parseLeaks(s string) leaks {
 	var l leaks
-	if !strings.HasPrefix(s, "esc:") {
+	fmt.Printf("%v", []byte(s))
+	// don't use s == "" here
+	if !strings.HasPrefix(s, "esc:") && (len(s) == leakHeap || len(s) == 0) {
 		l.AddHeap(0)
+		if len(s) == leakHeap {
+			copy(l[:leakHeap], s[:leakHeap]) // copy Reasons
+		}
 		return l
 	}
-	copy(l[:], s[4:])
+	if !strings.HasPrefix(s, "esc:") {
+		copy(l[:leakHeap], s[:leakHeap]) // copy Reasons
+		s = s[leakHeap:]
+	}
+	copy(l[leakHeap:], s[4:])
 	return l
 }
