@@ -298,6 +298,17 @@ func xremoveall(p string) {
 	os.RemoveAll(p)
 }
 
+// xmove move src to dst
+func xmove(src string, dst string) {
+	if vflag > 2 {
+		errprintf("mv %s %s\n", src, dst)
+	}
+	err := os.Rename(src, dst)
+	if err != nil {
+		fatalf("%v", err)
+	}
+}
+
 // xreaddir replaces dst with a list of the names of the files and subdirectories in dir.
 // The names are relative to dir; they are not full paths.
 func xreaddir(dir string) []string {
