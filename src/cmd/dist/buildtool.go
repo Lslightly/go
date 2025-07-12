@@ -58,6 +58,7 @@ var bootstrapDirs = []string{
 	"cmd/internal/telemetry/counter",
 	"cmd/link",
 	"cmd/link/internal/...",
+	"cmd/vendor/...",
 	"compress/flate",
 	"compress/zlib",
 	"container/heap",
@@ -166,7 +167,9 @@ func bootstrapBuildTools() {
 
 	// Copy source code into $GOROOT/pkg/bootstrap and rewrite import paths.
 	minBootstrapVers := requiredBootstrapVersion(goModVersion()) // require the minimum required go version to build this go version in the go.mod file
-	writefile("module bootstrap\ngo "+minBootstrapVers+"\n", pathf("%s/%s", base, "go.mod"), 0)
+	// Copy cmd/go.mod
+	cmdMod := readfile(pathf("%s/src/cmd/%s", goroot, "go.mod"))
+	writefile(generateNewCmdMod(cmdMod, minBootstrapVers), pathf("%s/%s", base, "go.mod"), 0)
 	for _, dir := range bootstrapDirs {
 		recurse := strings.HasSuffix(dir, "/...")
 		dir = strings.TrimSuffix(dir, "/...")
@@ -211,6 +214,9 @@ func bootstrapBuildTools() {
 		})
 	}
 
+	// Move cmd/vendor to vendor
+	xmove(pathf("%s/%s", base, "cmd/vendor"), pathf("%s/%s", base, "vendor"))
+
 	// Set up environment for invoking Go bootstrap toolchains go command.
 	// GOROOT points at Go bootstrap GOROOT,
 	// GOPATH points at our bootstrap workspace,
@@ -243,6 +249,7 @@ func bootstrapBuildTools() {
 		pathf("%s/bin/go", goroot_bootstrap),
 		"install",
 		"-tags=math_big_pure_go compiler_bootstrap purego",
+		"-mod=vendor",
 	}
 	if vflag > 0 {
 		cmd = append(cmd, "-v")
@@ -267,6 +274,15 @@ func bootstrapBuildTools() {
 	if vflag > 0 {
 		xprintf("\n")
 	}
+}
+
+func generateNewCmdMod(cmdMod, minBootstrapVers string) string {
+	cmdMod = strings.ReplaceAll(cmdMod, "module cmd", "module bootstrap")
+	m := regexp.MustCompile(`(?m)^go (1.\d+)$`).FindStringSubmatch(cmdMod)
+	if m == nil {
+		fatalf("cmd go.mod does not contain go 1.X")
+	}
+	return strings.ReplaceAll(cmdMod, fmt.Sprintf("go %s", m[1]), fmt.Sprintf("go %s", minBootstrapVers))
 }
 
 var ssaRewriteFileSubstring = filepath.FromSlash("src/cmd/compile/internal/ssa/rewrite")
