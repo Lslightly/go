@@ -118,6 +118,11 @@ func (l leaks) Encode() string {
 	if l.Heap() == 0 {
 		// Space optimization: empty string encodes more
 		// efficiently in export data.
+		if l[leakReason0] == 0 && l[leakReason1] == 0 {
+			// Space optimization: zero reason and zero esc
+			return ""
+		}
+		// New for escape reason statistic, the first two bits should be encoded if reason is not empty
 		return string(l[:leakHeap])
 	}
 	if s, ok := leakTagCache[l]; ok {
@@ -136,19 +141,27 @@ func (l leaks) Encode() string {
 // parseLeaks parses a binary string representing a leaks.
 func parseLeaks(s string) leaks {
 	var l leaks
-	fmt.Printf("%v", []byte(s))
-	// don't use s == "" here
+	if base.Flag.EAReasonStat {
+		if len(s) != 0 && !strings.HasPrefix(s, "esc:") && byte(s[0]) != 0 && byte(s[1]) != 0 {
+			fmt.Printf("parseLeaks reason [%v, %v], esc %v\n", byte(s[0]), byte(s[1]), []byte(s[2:]))
+		}
+	}
+	// don't use s == "" here because the len(s) can be non-zero while s is ""
 	if !strings.HasPrefix(s, "esc:") && (len(s) == leakHeap || len(s) == 0) {
+		// Two cases: 1. reason+empty string. 2. empty string
 		l.AddHeap(0)
 		if len(s) == leakHeap {
+			// reason + empty string
 			copy(l[:leakHeap], s[:leakHeap]) // copy Reasons
 		}
 		return l
 	}
 	if !strings.HasPrefix(s, "esc:") {
+		// reason + esc:
 		copy(l[:leakHeap], s[:leakHeap]) // copy Reasons
 		s = s[leakHeap:]
 	}
+	// esc:...
 	copy(l[leakHeap:], s[4:])
 	return l
 }
