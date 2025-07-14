@@ -51,12 +51,13 @@ def build(repo: Path, EAResultRoot: Path):
     # execute(f'go build -a -gcflags="all=-m=2 -earesultroot={EAResultRoot}" .', cwd=str(repo))
     execute(f'go build -a -gcflags="all=-eareasonstat -earesultroot={EAResultRoot}" .', cwd=str(repo))
 
-def collect(EAResultRoot: Path):
+def collect(EAResultRoot: Path) -> bool:
     """ Collect all all.csv from EAResultRoot/csv.
         The result is written under EAResultRoot/csv.
 
         For each package import path, create a new DataFrame by adding "pkg" column in DataFrame of pkg/import/path/all.csv using the relative path to EAResultRoot and dump the collected all packages' DataFrame in EAResultRoot/csv/all.csv
 
+        return False if there is no all.csv
     """
     print(f"Collecting {EAResultRoot}...")
     csv_root = EAResultRoot/"csv"
@@ -71,8 +72,10 @@ def collect(EAResultRoot: Path):
     if all_dfs:
         all_df = pd.concat(all_dfs, ignore_index=True)
         all_df.to_csv(EAResultRoot / "all.csv", index=False)
+        return True
     else:
         print(f"No all.csv files found in {csv_root}.")
+        return False
 
 def stat(EAResultRoot: Path):
     """
@@ -168,16 +171,18 @@ def run(repoRoot: Path, statRoot: Path, repo: str, repoBuild: Callable[[Path, Pa
     EAResultRoot.mkdir(parents=True, exist_ok=True)
     if do_build:
         build(repoPath, EAResultRoot)
-    collect(EAResultRoot)
-    stat(EAResultRoot)
+    has_csv = collect(EAResultRoot)
+    if has_csv:
+        stat(EAResultRoot)
 
 def demo():
     for repo in [
-        "closure_go",
-        "indirect",
-        "paramleak",
-        "ret",
-        "rootstack"
+        # "closure_go",
+        # "indirect",
+        # "paramleak",
+        # "ret",
+        # "rootstack",
+        "easyPkg",
     ]:
         run(Path("."), Path.cwd()/"stat_root", repo)
 
@@ -188,11 +193,33 @@ def cli_build(repoPath: Path, EAResultRoot: Path):
 def tidb_build(repoPath: Path, EAResultRoot: Path):
     execute("make clean", cwd=str(repoPath))
     execute("make", cwd=str(repoPath))
+
+def grpc_go_build(repoPath: Path, EAResultRoot: Path):
+    execute("make deps", cwd=str(repoPath))
+    execute("make build", cwd=str(repoPath))
+
+def rclone_build(repoPath: Path, EAResultRoot: Path):
+    execute(f'make BUILD_ARG=\'-a -gcflags="all=-eareasonstat -earesultroot={EAResultRoot}"\'', cwd=str(repoPath))
     
 def escapeReasonRepos():
     for repo, repobuild in [
-        ("cli", cli_build),
-        ("tidb", tidb_build),
+        # ("cli", cli_build),
+        # ("tidb", tidb_build),
+        # ("hugo", build),
+        # ("gogs", build),
+        # ("grpc-go", grpc_go_build),
+        # ("rclone", rclone_build)
+
+        # build method unknown
+        ("sonic", build),
+        ("fastgo", build), # fail
+        ("hertz", build),
+        ("hertz/cmd/hz", build),
+        ("hertz/internal/bytesconv", build),
+        ("hertz/internal/bytestr", build),
+        ("kitex", build),
+        ("kitex/client", build),
+        ("kitex/server", build),
     ]:
         run(
             Path("/data/github_go/escapeReasonRepos"),
