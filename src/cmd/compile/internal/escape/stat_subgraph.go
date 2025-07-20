@@ -1,6 +1,7 @@
 package escape
 
 import (
+	"cmd/compile/internal/base"
 	"cmd/compile/internal/ir"
 	"fmt"
 	"os"
@@ -628,10 +629,14 @@ func (esg *escapeSubGraph) summarize() {
 
 	nrLines := make([]string, 0, len(esg.nodes))
 	for _, node := range esg.nodes {
-		nrLines = append(nrLines, fmt.Sprintf("%d,%d", node.id, node.reason))
+		locPos := "<nil>"
+		if node.loc.n != nil {
+			locPos = base.FmtPos(node.loc.n.Pos())
+		}
+		nrLines = append(nrLines, fmt.Sprintf("%d,%d,%s", node.id, node.reason, locPos))
 	}
 
-	content := fmt.Sprintf(`nodeid,reason
+	content := fmt.Sprintf(`nodeid,reason,loc
 %s
 `, strings.Join(nrLines, "\n"))
 	writeToFile(path.Join(csvRoot, "all.csv"), content)
