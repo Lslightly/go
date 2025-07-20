@@ -312,7 +312,10 @@ func (e *escape) teeHole(ks ...hole) hole {
 		return e.discardHole()
 	}
 	if len(ks) == 1 {
-		return ks[0]
+		// introduce tmp hole to avoid tagging same location with same reason
+		loc := e.newLoc(nil, false)
+		e.flow(ks[0], loc)
+		return loc.asHole()
 	}
 	// TODO(mdempsky): Optimize if there's only one non-discard hole?
 
