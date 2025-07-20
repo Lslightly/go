@@ -141,7 +141,7 @@ func (l leaks) Encode() string {
 // parseLeaks parses a binary string representing a leaks.
 func parseLeaks(s string) leaks {
 	var l leaks
-	if base.Flag.EAReasonStat {
+	if base.Flag.EAReasonDebug {
 		if len(s) != 0 && !strings.HasPrefix(s, "esc:") && (byte(s[0]) != 0 || byte(s[1]) != 0) {
 			fmt.Printf("parseLeaks reason [%v, %v], esc %v\n", byte(s[0]), byte(s[1]), []byte(s[2:]))
 		}

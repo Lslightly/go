@@ -368,7 +368,7 @@ func (e *escape) tagHole(ks []hole, fn *ir.Name, param *types.Field) hole {
 	// Call to previously tagged function.
 
 	var tagKs []hole
-	if base.Flag.EAReasonStat {
+	if base.Flag.EAReasonDebug {
 		fmt.Println("tagHole", fn.Sym().Name, "called")
 	}
 	esc := parseLeaks(param.Note)

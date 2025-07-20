@@ -129,6 +129,7 @@ type CmdFlags struct {
 	ErrorURL           bool         "help:\"print explanatory URL with error message if applicable\""
 	EAResultRoot       string       "help:\"escape analysis sub graph result root\""
 	EAReasonStat       bool         "help:\"enable escape reason stat\""
+	EAReasonDebug      bool         "help:\"enable escape reason debug\""
 
 	// Configuration derived from flags; not a flag itself.
 	Cfg struct {

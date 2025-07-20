@@ -203,14 +203,18 @@ func Batch(fns []*ir.Func, recursive bool) {
 			if len(getEsg().nodes) == 0 {
 				return
 			}
-			fmt.Fprintln(os.Stderr, "finishBatch", esgCnt, "for pkg", base.Ctxt.Pkgpath)
+			if base.Flag.EAReasonDebug {
+				fmt.Fprintln(os.Stderr, "finishBatch", esgCnt, "for pkg", base.Ctxt.Pkgpath)
+			}
 			fnNames := make([]string, 0, len(fns))
 			for _, fn := range fns {
 				if fn != nil && fn.Sym() != nil {
 					fnNames = append(fnNames, fn.Sym().Name)
 				}
 			}
-			fmt.Fprintln(os.Stderr, "funcs:", strings.Join(fnNames, ","))
+			if base.Flag.EAReasonDebug {
+				fmt.Fprintln(os.Stderr, "funcs:", strings.Join(fnNames, ","))
+			}
 		}()
 		getEsg().finishBatch()
 	}
