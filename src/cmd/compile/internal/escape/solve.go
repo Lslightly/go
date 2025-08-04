@@ -249,9 +249,9 @@ func (b *batch) explainPath(root, src *location) []*logopt.LoggedOpt {
 		}
 
 		explanation = b.explainFlow(pos, dst, src, edge.derefs, edge.notes, explanation)
-		if is_not_1_edge { // 修改1
-			b.recordInfo(dst, src, edge.notes)
-		}
+		// if is_not_1_edge { // 修改1
+		// 	b.recordInfo(dst, src, edge.notes)
+		// }
 
 		if dst == root {
 			break
@@ -259,7 +259,7 @@ func (b *batch) explainPath(root, src *location) []*logopt.LoggedOpt {
 		src = dst
 	}
 
-	b.countAll() // 修改2
+	// b.countAll() // 修改2
 	return explanation
 }
 
@@ -300,14 +300,14 @@ func (b *batch) explainFlow(pos string, dst, srcloc *location, derefs int, notes
 		}
 	}
 
-	// 判断种类
-	if !is_not_1_edge {
-		whys = []one_why{} // 清空
-		escape_paths = []*location{}
-		// 是一条边，说明在graph.go里调用，记录一组即可，然后直接count
-		b.recordInfo(dst, srcloc, notes)
-		b.countAll()
-	}
+	// // 判断种类
+	// if !is_not_1_edge {
+	// 	whys = []one_why{} // 清空
+	// 	escape_paths = []*location{}
+	// 	// 是一条边，说明在graph.go里调用，记录一组即可，然后直接count
+	// 	b.recordInfo(dst, srcloc, notes)
+	// 	b.countAll()
+	// }
 
 	return explanation
 }
