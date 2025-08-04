@@ -501,10 +501,12 @@ func (esg *escapeSubGraph) finishBatch() {
 	if len(esg.nodes) == 0 {
 		return
 	}
-	dumpRoot := path.Join(graphRoot, strconv.Itoa(esgCnt))
-	os.MkdirAll(dumpRoot, 0755)
+	graphBatchRoot := path.Join(graphRoot, strconv.Itoa(esgCnt))
+	csvBatchRoot := path.Join(csvRoot, strconv.Itoa(esgCnt))
+	os.MkdirAll(graphBatchRoot, 0755)
+	os.MkdirAll(csvBatchRoot, 0755)
 	esgCnt += 1
-	esg.dump(dumpRoot, "0init")
+	esg.dump(graphBatchRoot, "0init")
 	/*
 		1. x -(d, y)-> heap
 			remove heap(can be counted)
@@ -513,11 +515,11 @@ func (esg *escapeSubGraph) finishBatch() {
 		3. for each source node, summarize all attributes(define priority)
 	*/
 	esg.removeHeap()
-	esg.dump(dumpRoot, "1removeheap")
+	esg.dump(graphBatchRoot, "1removeheap")
 	esg.backPropogate()
-	esg.dump(dumpRoot, "2backPropogate")
-	esg.summarize()
-	esg.dump(dumpRoot, "summarize")
+	esg.dump(graphBatchRoot, "2backPropogate")
+	esg.summarize(csvBatchRoot)
+	esg.dump(graphBatchRoot, "summarize")
 }
 
 var graphRoot string
@@ -620,7 +622,7 @@ func (esg *escapeSubGraph) backPropogate() {
 	}
 }
 
-func (esg *escapeSubGraph) summarize() {
+func (esg *escapeSubGraph) summarize(csvBatchRoot string) {
 	for _, node := range esg.nodes {
 		if node.reason.contains(ERRootStack | EROutliveRootStack) {
 			node.reason.del(EROutliveRootStack)
@@ -639,7 +641,7 @@ func (esg *escapeSubGraph) summarize() {
 	content := fmt.Sprintf(`nodeid,reason,loc
 %s
 `, strings.Join(nrLines, "\n"))
-	writeToFile(path.Join(csvRoot, "all.csv"), content)
+	writeToFile(path.Join(csvBatchRoot, "all.csv"), content)
 }
 
 func writeToFile(fpath string, content string) (int, error) {

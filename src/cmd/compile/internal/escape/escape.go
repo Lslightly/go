@@ -125,8 +125,8 @@ func Funcs(all []*ir.Func) {
 	if base.Flag.EAReasonStat {
 		graphRoot = path.Join(base.Flag.EAResultRoot, "graphs", base.Ctxt.Pkgpath)
 		csvRoot = path.Join(base.Flag.EAResultRoot, "csv", base.Ctxt.Pkgpath)
-		os.MkdirAll(graphRoot, 0755)
-		os.MkdirAll(csvRoot, 0755)
+		os.RemoveAll(graphRoot)
+		os.RemoveAll(csvRoot)
 	}
 	ir.VisitFuncsBottomUp(all, Batch)
 	// 然后输出所有的统计信息
