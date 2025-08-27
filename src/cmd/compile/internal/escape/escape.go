@@ -122,9 +122,9 @@ type escape struct {
 }
 
 func Funcs(all []*ir.Func) {
-	if base.Flag.EAReasonStat {
-		graphRoot = path.Join(base.Flag.EAResultRoot, "graphs", base.Ctxt.Pkgpath)
-		csvRoot = path.Join(base.Flag.EAResultRoot, "csv", base.Ctxt.Pkgpath)
+	if isEAReasonStatEnabled() {
+		graphRoot = path.Join(eaResultRoot(), "graphs", base.Ctxt.Pkgpath)
+		csvRoot = path.Join(eaResultRoot(), "csv", base.Ctxt.Pkgpath)
 		os.RemoveAll(graphRoot)
 		os.RemoveAll(csvRoot)
 	}
@@ -158,7 +158,7 @@ func output_one_package_countAll() {
 func Batch(fns []*ir.Func, recursive bool) {
 	var b batch
 
-	if base.Flag.EAReasonStat {
+	if isEAReasonStatEnabled() {
 		createEsg(&b)
 		defer func() { destroyEsg() }()
 	}
@@ -198,12 +198,12 @@ func Batch(fns []*ir.Func, recursive bool) {
 
 	b.walkAll()
 
-	if base.Flag.EAReasonStat {
+	if isEAReasonStatEnabled() {
 		func() {
 			if len(getEsg().nodes) == 0 {
 				return
 			}
-			if base.Flag.EAReasonDebug {
+			if isEAReasonDebug() {
 				fmt.Fprintln(os.Stderr, "finishBatch", esgCnt, "for pkg", base.Ctxt.Pkgpath)
 			}
 			fnNames := make([]string, 0, len(fns))
@@ -212,7 +212,7 @@ func Batch(fns []*ir.Func, recursive bool) {
 					fnNames = append(fnNames, fn.Sym().Name)
 				}
 			}
-			if base.Flag.EAReasonDebug {
+			if isEAReasonDebug() {
 				fmt.Fprintln(os.Stderr, "funcs:", strings.Join(fnNames, ","))
 			}
 		}()
@@ -544,7 +544,7 @@ func (b *batch) paramTag(fn *ir.Func, narg int, f *types.Field) string {
 		b.reportLeaks(f.Pos, name(), esc, fn.Type())
 	}
 
-	if base.Flag.EAReasonStat {
+	if isEAReasonStatEnabled() {
 		getEsg().encodeLocLeakReason(loc, &esc)
 	}
 

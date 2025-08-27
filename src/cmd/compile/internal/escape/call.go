@@ -368,7 +368,7 @@ func (e *escape) tagHole(ks []hole, fn *ir.Name, param *types.Field) hole {
 	// Call to previously tagged function.
 
 	var tagKs []hole
-	if base.Flag.EAReasonDebug {
+	if isEAReasonDebug() {
 		fmt.Println("tagHole", fn.Sym().Name, "called")
 	}
 	esc := parseLeaks(param.Note)
@@ -392,7 +392,7 @@ func (e *escape) tagHole(ks []hole, fn *ir.Name, param *types.Field) hole {
 	}
 
 	tee := e.teeHole(tagKs...)
-	if base.Flag.EAReasonStat {
+	if isEAReasonStatEnabled() {
 		getEsg().decodeAndSetLocLeakReason(tee.dst, &esc)
 	}
 	return tee

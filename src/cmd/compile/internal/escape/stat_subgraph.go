@@ -1,3 +1,6 @@
+/*
+Escape Reason Statistics of SubGraph
+*/
 package escape
 
 import (
@@ -16,6 +19,43 @@ import (
 )
 
 var statDebug bool = false
+
+/*
+enabled:
+EAReasonStat=1 go build
+go build -a -gcflags="-eareasonstat"
+
+EAReasonStat=0 go build // disabled
+*/
+func isEAReasonStatEnabled() (res bool) {
+	v, ok := os.LookupEnv("EAReasonStat")
+	res = res || (ok && v != "0")
+	res = res || (base.Flag.EAReasonStat)
+	return
+}
+
+/*
+enabled:
+EAReasonDebug=1 go build
+go build -a -gcflags="-eareasondebug"
+
+disabled:
+EAReasonDebug=0 go build
+*/
+func isEAReasonDebug() (res bool) {
+	v, ok := os.LookupEnv("EAReasonDebug")
+	res = res || (ok && v != "0")
+	res = res || base.Flag.EAReasonDebug
+	return
+}
+
+func eaResultRoot() string {
+	v, ok := os.LookupEnv("EAResultRoot")
+	if ok {
+		return v
+	}
+	return base.Flag.EAResultRoot
+}
 
 // FP: fast path
 const (
