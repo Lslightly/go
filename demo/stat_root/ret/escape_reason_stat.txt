@@ -1,3 +1,4 @@
+Number of nodes: 3
 [1] Frequency and percentage of each reason:
 ERHeap                   1 (33.33%)
 ERStar                   1 (33.33%)

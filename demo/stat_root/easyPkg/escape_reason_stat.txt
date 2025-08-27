@@ -1,3 +1,4 @@
+Number of nodes: 22
 [1] Frequency and percentage of each reason:
 ERRootStack             11 (50.00%)
 ERReturn                 5 (22.73%)

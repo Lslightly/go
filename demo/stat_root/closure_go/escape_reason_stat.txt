@@ -1,3 +1,4 @@
+Number of nodes: 27
 [1] Frequency and percentage of each reason:
 ERHeap                  16 (59.26%)
 ERGo                     2 (7.41%)
