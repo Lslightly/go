@@ -212,7 +212,8 @@ def rclone_build(repoPath: Path, EAResultRoot: Path):
     
 def escapeReasonRepos():
     for repo, repobuild in [
-        ("cli", cli_build),
+        ("fzf", build),
+        # ("cli", cli_build),
         # ("tidb", tidb_build),
         # ("hugo", build),
         # ("gogs", build),
