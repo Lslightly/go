@@ -7,7 +7,6 @@ package escape
 import (
 	"fmt"
 	"os"
-	"path"
 	"strings"
 
 	"cmd/compile/internal/base"
@@ -123,10 +122,7 @@ type escape struct {
 
 func Funcs(all []*ir.Func) {
 	if isEAReasonStatEnabled() {
-		graphRoot = path.Join(eaResultRoot(), "graphs", base.Ctxt.Pkgpath)
-		csvRoot = path.Join(eaResultRoot(), "csv", base.Ctxt.Pkgpath)
-		os.RemoveAll(graphRoot)
-		os.RemoveAll(csvRoot)
+		initEAResultRoot()
 	}
 	ir.VisitFuncsBottomUp(all, Batch)
 	// 然后输出所有的统计信息

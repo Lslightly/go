@@ -537,14 +537,35 @@ func (esg *escapeSubGraph) fastpath(src *location, hole hole) {
 	}
 }
 
+func esgLog(msg string) {
+	if _, err := os.Stat(esgLogPath); os.IsNotExist(err) {
+		fmt.Fprintf(os.Stderr, "%s does not exist\n", esgLogPath)
+		return
+	}
+	f, err := os.OpenFile(esgLogPath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0o664)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "append %s failed\n", esgLogPath)
+	}
+	defer f.Close()
+	fmt.Fprintln(f, msg)
+}
+
 func (esg *escapeSubGraph) finishBatch() {
 	if len(esg.nodes) == 0 {
 		return
 	}
 	graphBatchRoot := path.Join(graphRoot, strconv.Itoa(esgCnt))
 	csvBatchRoot := path.Join(csvRoot, strconv.Itoa(esgCnt))
-	os.MkdirAll(graphBatchRoot, 0755)
-	os.MkdirAll(csvBatchRoot, 0755)
+	if err := os.MkdirAll(graphBatchRoot, 0o755); err != nil {
+		esgLog(fmt.Sprintf("FAIL: graph batch root %s", graphBatchRoot))
+	} else {
+		esgLog(fmt.Sprintf("SUCC: graph batch root %s", graphBatchRoot))
+	}
+	if err := os.MkdirAll(csvBatchRoot, 0o755); err != nil {
+		esgLog(fmt.Sprintf("FAIL: csv batch root %s", csvBatchRoot))
+	} else {
+		esgLog(fmt.Sprintf("SUCC: csv batch root %s", csvBatchRoot))
+	}
 	esgCnt += 1
 	esg.dump(graphBatchRoot, "0init")
 	/*
@@ -562,8 +583,22 @@ func (esg *escapeSubGraph) finishBatch() {
 	esg.dump(graphBatchRoot, "summarize")
 }
 
-var graphRoot string
-var csvRoot string
+var graphRoot, csvRoot, esgLogPath string
+
+func initEAResultRoot() {
+	graphRoot = path.Join(eaResultRoot(), "graphs", base.Ctxt.Pkgpath)
+	csvRoot = path.Join(eaResultRoot(), "csv", base.Ctxt.Pkgpath)
+	esgLogsRoot := path.Join(eaResultRoot(), "logs", base.Ctxt.Pkgpath)
+	for _, root := range []string{graphRoot, csvRoot, esgLogsRoot} {
+		os.MkdirAll(root, 0o755)
+	}
+	esgLogPath = path.Join(esgLogsRoot, "esg.log")
+	f, err := os.Create(esgLogPath)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "create %s failed", esgLogPath)
+	}
+	defer f.Close()
+}
 
 func (esg *escapeSubGraph) dump(dumpRoot, phase string) {
 	dotfile := path.Join(dumpRoot, phase+".gv")

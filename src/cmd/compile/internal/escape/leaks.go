@@ -133,7 +133,7 @@ func (l leaks) Encode() string {
 	for n > 0 && l[n-1] == 0 {
 		n--
 	}
-	s := string(l[:leakHeap]) + "esc:" + string(l[min(leakHeap, n):n])
+	s := string(l[:leakHeap]) + "esc:" + string(l[min(leakHeap, n):n]) // TODO: use [leakHeap:max(leakHeap, n)]
 	leakTagCache[l] = s
 	return s
 }
