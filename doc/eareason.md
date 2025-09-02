@@ -27,3 +27,9 @@
 `ERMapIdx`是由于作为map的key导致逃逸
 `ERMust`是必须在堆上分配的，比如makeslice大小超过了限制
 
+## 统计结果
+
+EAResultRoot / "escape_reason_stat.txt"
+EAResultRoot / "all.csv"
+EAResultRoot / "escape_reason_dag.png"
+三个文件是总计结果
