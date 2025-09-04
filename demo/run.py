@@ -26,7 +26,7 @@ def execute(cmd: str, cwd: str | None = None, stdout=None, stderr=None, env=None
 
 
 def build(repo: Path, EAResultRoot: Path):
-    """ Use 'go build -a -gcflags="all=-m=2" .' command
+    """ Use 'go build -a .' command
         to generate graphs and csv under EAResultRoot, i.e.
             EAResultRoot/
                 graphs/
@@ -40,18 +40,14 @@ def build(repo: Path, EAResultRoot: Path):
                 csv/
                     pkg1/import/path
                         all.csv
-                        nodeReasonCnt.csv
-                        reason2cnt.csv
                     ...
     Args:
         dir (str): source dir
         EAResultRoot (str): root of escape analysis result
     """
     print(f"Building {repo}...")
-    # bugs still exist
-    # execute(f'go build -a -gcflags="all=-m=2 -earesultroot={EAResultRoot}" .', cwd=str(repo))
     execute(
-        f'go build -a -gcflags="all=-eareasonstat -earesultroot={EAResultRoot}" .',
+        'go build -a .',
         cwd=str(repo),
         env={
             "EAReasonStat": "1",
@@ -187,6 +183,7 @@ def run(repoRoot: Path, statRoot: Path, repo: str, repoBuild: Callable[[Path, Pa
 def demo():
     for repo in [
         "closure_go",
+        "go_interprocedural",
         "indirect",
         "paramleak",
         "ret",
