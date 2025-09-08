@@ -1,44 +1,14 @@
-package main
+// Copyright 2018 The Go Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
 
-import (
-	"strings"
-	"testing"
-)
+/*
+Tests for leaks parsing with escape reasons
+*/
 
-// A leaks represents a set of assignment flows from a parameter to
-// the heap, mutator, callee, or to any of its function's (first
-// numEscResults) result parameters.
-// The first 2 uint8 is the escape reason in stat_subgraph.go
-type leaks [2 + 8]uint8
+package escape
 
-func (l *leaks) AddHeap(derefs int) { l[leakHeap] = uint8(derefs) + 1 }
-
-const (
-	leakReason0 = iota
-	leakReason1
-	leakHeap
-	leakMutator
-	leakCallee
-	leakResult0
-)
-
-func parseLeaks(s string) leaks {
-	var l leaks
-	// don't use s == "" here
-	if !strings.HasPrefix(s, "esc:") && (len(s) == leakHeap || len(s) == 0) {
-		l.AddHeap(0)
-		if len(s) == leakHeap {
-			copy(l[:leakHeap], s[:leakHeap]) // copy Reasons
-		}
-		return l
-	}
-	if !strings.HasPrefix(s, "esc:") {
-		copy(l[:leakHeap], s[:leakHeap]) // copy Reasons
-		s = s[leakHeap:]
-	}
-	copy(l[leakHeap:], s[4:])
-	return l
-}
+import "testing"
 
 func TestEmpty(t *testing.T) {
 	l := parseLeaks("")

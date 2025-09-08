@@ -13,6 +13,5 @@ options:
 
 stat_root: 存放其他项目的逃逸根因统计结果
 fixtures: 存放测试项目
-reason: 测试逃逸根因的编码是否正确，是cmd/compile/internal/escape的根因测试版
 
 
