@@ -1,0 +1,6 @@
+nodeid,reason,loc,pkg
+1,817,/home/lqw/mygit/go1.24.2/demo/go_interprocedural/main.go:6:2,main
+3,513,/home/lqw/mygit/go1.24.2/demo/go_interprocedural/main.go:7:6,main
+1,33,/home/lqw/mygit/go1.24.2/demo/go_interprocedural/main.go:15:5,main
+3,817,/home/lqw/mygit/go1.24.2/demo/go_interprocedural/main.go:13:27,main
+4,305,/home/lqw/mygit/go1.24.2/demo/go_interprocedural/main.go:13:18,main

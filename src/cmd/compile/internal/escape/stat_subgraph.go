@@ -173,6 +173,16 @@ func (er *escapeReason) contains(r escapeReason) bool {
 	}
 }
 
+func (er escapeReason) towhys() []string {
+	whys := make([]string, 0)
+	for why, reason := range why2reason {
+		if er.contains(reason) {
+			whys = append(whys, why)
+		}
+	}
+	return whys
+}
+
 var esgCnt int = 0
 
 type escapeSubGraph struct {
@@ -495,9 +505,13 @@ func (f *escFlow) backPropogate() escapeReason {
 
 func (f *escFlow) Attributes() []encoding.Attribute {
 	resAttrs := make([]encoding.Attribute, 0)
+	whys := make([]string, 0)
+	for note := f.hole.notes; note != nil; note = note.next {
+		whys = append(whys, note.why)
+	}
 	resAttrs = append(resAttrs, encoding.Attribute{
 		Key:   "label",
-		Value: strconv.Itoa(f.hole.derefs),
+		Value: strconv.Itoa(f.hole.derefs) + "\nwhy:\n" + strings.Join(whys, "\n"),
 	})
 	return resAttrs
 }
@@ -741,21 +755,4 @@ func (esg *escapeSubGraph) encodeLocLeakReason(loc *location, esc *leaks) {
 	}
 	node := esg.nodes[id]
 	esc.encodeReason(node.reason)
-}
-
-func (esg *escapeSubGraph) decodeAndSetLocLeakReason(loc *location, esc *leaks) {
-	id, ok := esg.loc2id[loc]
-	if !ok {
-		id = esg.newid
-		esg.newid++
-		esg.loc2id[loc] = id
-		node := &escLocNode{
-			id:  id,
-			loc: loc,
-		}
-		esg.nodes[id] = node
-		esg.edges[id] = make(map[int64]*escFlow)
-	}
-	node := esg.nodes[id]
-	node.reason = esc.decodeReason()
 }

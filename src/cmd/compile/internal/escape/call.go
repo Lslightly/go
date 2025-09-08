@@ -10,7 +10,6 @@ import (
 	"cmd/compile/internal/typecheck"
 	"cmd/compile/internal/types"
 	"cmd/internal/src"
-	"fmt"
 	"strings"
 )
 
@@ -368,9 +367,6 @@ func (e *escape) tagHole(ks []hole, fn *ir.Name, param *types.Field) hole {
 	// Call to previously tagged function.
 
 	var tagKs []hole
-	if isEAReasonDebug() {
-		fmt.Println("tagHole", fn.Sym().Name, "called")
-	}
 	esc := parseLeaks(param.Note)
 
 	if x := esc.Heap(); x >= 0 {
@@ -393,7 +389,16 @@ func (e *escape) tagHole(ks []hole, fn *ir.Name, param *types.Field) hole {
 
 	tee := e.teeHole(tagKs...)
 	if isEAReasonStatEnabled() {
-		getEsg().decodeAndSetLocLeakReason(tee.dst, &esc)
+		// the tee hole carries the inter-procedural escape reason
+		for _, why := range esc.decodeReason().towhys() {
+			var where ir.Node
+			if param.Nname != nil {
+				where = param.Nname.(*ir.Name)
+			} else {
+				where = fn
+			}
+			tee = tee.note(where, why)
+		}
 	}
 	return tee
 }
