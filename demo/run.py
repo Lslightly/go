@@ -47,7 +47,7 @@ def build(repo: Path, EAResultRoot: Path):
         EAResultRoot (str): root of escape analysis result
     """
     print(f"Building {repo}...")
-    cmd = f'{str((Path.cwd()/"../bin/go").resolve().absolute())} build -a .'
+    cmd = 'go build -a .'
     tmpEnv = os.environ
     tmpEnv["EAReasonStat"] = "1"
     tmpEnv["EAResultRoot"] = str(EAResultRoot)
