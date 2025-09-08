@@ -68,7 +68,7 @@ def collect(EAResultRoot: Path) -> bool:
     all_dfs: List[pd.DataFrame] = []
     for csv_path in csv_root.rglob("all.csv"):
         # 计算包的相对路径
-        pkg_path = csv_path.parent.relative_to(csv_root)
+        pkg_path = csv_path.parent.parent.relative_to(csv_root)
         # 读取csv
         df = pd.read_csv(csv_path)
         df["pkg"] = str(pkg_path)
