@@ -25,9 +25,14 @@ enabled:
 EAReasonStat=1 go build
 go build -a -gcflags="-eareasonstat"
 
+don't enable EAReason when building standard library
+
 EAReasonStat=0 go build // disabled
 */
 func isEAReasonStatEnabled() (res bool) {
+	if base.Flag.Std {
+		return false
+	}
 	v, ok := os.LookupEnv("EAReasonStat")
 	res = res || (ok && v != "0")
 	res = res || (base.Flag.EAReasonStat)
