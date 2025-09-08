@@ -1,8 +1,9 @@
 package main
 
 import (
-	"demo/easyPkg/utils"
+	"demo/fixtures/easyPkg/utils"
 )
+
 func main() {
 	x := 1
 	_ = utils.Util(&x)

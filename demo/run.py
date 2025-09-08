@@ -6,6 +6,7 @@ from define import EscapeReason
 import networkx as nx
 import matplotlib.pyplot as plt
 from contextlib import redirect_stdout
+import os
 
 import pandas as pd
 
@@ -46,14 +47,18 @@ def build(repo: Path, EAResultRoot: Path):
         EAResultRoot (str): root of escape analysis result
     """
     print(f"Building {repo}...")
+    cmd = f'{str((Path.cwd()/"../bin/go").resolve().absolute())} build -a .'
+    tmpEnv = os.environ
+    tmpEnv["EAReasonStat"] = "1"
+    tmpEnv["EAResultRoot"] = str(EAResultRoot)
+    print(f"Cmd: {cmd}")
     execute(
-        'go build -a .',
+        cmd,
         cwd=str(repo),
-        env={
-            "EAReasonStat": "1",
-            "EAResultRoot": EAResultRoot,
-        }
+        env=tmpEnv,
     )
+    del tmpEnv["EAReasonStat"]
+    del tmpEnv["EAResultRoot"]
 
 def collect(EAResultRoot: Path) -> bool:
     """ Collect all all.csv from EAResultRoot/csv.
@@ -190,7 +195,7 @@ def demo():
         "rootstack",
         "easyPkg",
     ]:
-        run(Path("."), Path.cwd()/"stat_root", repo)
+        run(Path.cwd()/"fixtures", Path.cwd()/"stat_root", repo)
 
 def cli_build(repoPath: Path, EAResultRoot: Path):
     execute("make clean", cwd=str(repoPath))
