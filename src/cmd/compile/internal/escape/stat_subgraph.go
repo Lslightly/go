@@ -230,6 +230,14 @@ func (esg *escapeSubGraph) createOrGetNode(loc *location) *escLocNode {
 	return node
 }
 
+// NewNode returns a new node with a unique ID.
+// To implemnt NodeAdder interface
+func (esg *escapeSubGraph) NewNode() gn.Node
+
+// AddNode adds n to the graph.
+// To implemnt NodeAdder interface
+func (esg *escapeSubGraph) AddNode(n gn.Node)
+
 // Node returns the node with the given ID if it exists
 // in the graph, and nil otherwise.
 func (esg *escapeSubGraph) Node(id int64) gn.Node {
@@ -262,6 +270,14 @@ func (esg *escapeSubGraph) From(id int64) gn.Nodes {
 	}
 	return createIter(nodes)
 }
+
+// NewEdge returns a new edge from, to.
+// To implement EdgeAdder interface
+func (esg *escapeSubGraph) NewEdge(from, to gn.Node) gn.Edge
+
+// SetEdge adds e, an edge from one node to another, to the graph.
+// To implement EdgeAdder interface
+func (esg *escapeSubGraph) SetEdge(e gn.Edge)
 
 // EdgeFrom returns all edges from id
 func (esg *escapeSubGraph) EdgeFrom(id int64) []*escFlow {
