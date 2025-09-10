@@ -10,3 +10,4 @@ countAll.log
 __pycache__
 *.s
 stat_root/*/logs
+*.png
