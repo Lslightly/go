@@ -586,7 +586,7 @@ func (esg *escapeSubGraph) finishBatch() {
 		esgLog(fmt.Sprintf("SUCC: csv batch root %s", csvBatchRoot))
 	}
 	esgCnt += 1
-	esg.dump(graphBatchRoot, "0init")
+	esg.dump(graphBatchRoot, phase2name[0])
 	/*
 		1. x -(d, y)-> heap
 			remove heap(can be counted)
@@ -595,11 +595,11 @@ func (esg *escapeSubGraph) finishBatch() {
 		3. for each source node, summarize all attributes(define priority)
 	*/
 	esg.removeHeap()
-	esg.dump(graphBatchRoot, "1removeheap")
+	esg.dump(graphBatchRoot, phase2name[1])
 	esg.backPropogate()
-	esg.dump(graphBatchRoot, "2backPropogate")
+	esg.dump(graphBatchRoot, phase2name[2])
 	esg.summarize(csvBatchRoot)
-	esg.dump(graphBatchRoot, "summarize")
+	esg.dump(graphBatchRoot, phase2name[3])
 }
 
 var graphRoot, csvRoot, esgLogPath string
@@ -617,6 +617,13 @@ func initEAResultRoot() {
 		fmt.Fprintf(os.Stderr, "create %s failed", esgLogPath)
 	}
 	defer f.Close()
+}
+
+var phase2name [4]string = [4]string{
+	0: "0init",
+	1: "1removeheap",
+	2: "2backPropogate",
+	3: "summarize",
 }
 
 func (esg *escapeSubGraph) dump(dumpRoot, phase string) {
