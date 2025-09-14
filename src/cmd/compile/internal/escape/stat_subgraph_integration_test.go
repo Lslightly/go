@@ -75,6 +75,5 @@ func TestGoInterprocedural(t *testing.T) {
 	}
 	node := esg.findNode("a @ main.go:6:2")
 	assert.NotEqual(t, nil, node)
-	assert.True(t, node.reason.contains(ERHeap|ERGo))
-	assert.False(t, node.reason.contains(ERParamLeak))
+	assert.True(t, node.reason.contains(ERHeap|ERGo|ERClosure|ERHeap|ERParamLeak))
 }

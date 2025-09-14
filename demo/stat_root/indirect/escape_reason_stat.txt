@@ -2,7 +2,7 @@ Number of nodes: 4
 [1] Frequency and percentage of each reason:
 ERHeap                   4 (100.00%)
 ERStar                   2 (50.00%)
-ERSliceIdx               2 (50.00%)
+ERMapIdx                 2 (50.00%)
 
 [2] Distribution of number of reasons per node:
 2 reasons: 4 nodes

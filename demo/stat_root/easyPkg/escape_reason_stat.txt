@@ -3,14 +3,12 @@ Number of nodes: 4
 ERHeap                   2 (50.00%)
 ERStar                   2 (50.00%)
 ERParamLeak              3 (75.00%)
-ERMapIdx                 1 (25.00%)
 EROutliveRootStack       1 (25.00%)
 ERReturn                 1 (25.00%)
 ERRootStack              1 (25.00%)
 
 [2] Distribution of number of reasons per node:
 1 reasons: 1 nodes
-3 reasons: 2 nodes
-4 reasons: 1 nodes
+3 reasons: 3 nodes
 
 [3] Reason DAG (subset relationships):

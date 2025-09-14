@@ -1,5 +1,5 @@
 nodeid,reason,loc,pkg
-1,771,/home/lqw/mygit/go1.24.2/demo/fixtures/easyPkg/main.go:10:2,main
+1,259,/home/lqw/mygit/go1.24.2/demo/fixtures/easyPkg/main.go:10:2,main
 1,259,/home/lqw/mygit/go1.24.2/demo/fixtures/easyPkg/utils/utils.go:9:13,demo/fixtures/easyPkg/utils
 1,392,/home/lqw/mygit/go1.24.2/demo/fixtures/easyPkg/utils/utils.go:4:11,demo/fixtures/easyPkg/utils
 2,4,/home/lqw/mygit/go1.24.2/demo/fixtures/easyPkg/utils/utils.go:4:19,demo/fixtures/easyPkg/utils

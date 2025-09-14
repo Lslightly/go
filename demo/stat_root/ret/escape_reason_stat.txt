@@ -1,11 +1,11 @@
 Number of nodes: 6
 [1] Frequency and percentage of each reason:
-ERHeap                   1 (16.67%)
-ERStar                   1 (16.67%)
 EROutliveRootStack       3 (50.00%)
 ERReturn                 3 (50.00%)
 ERParamLeak              1 (16.67%)
 ERRootStack              2 (33.33%)
+ERHeap                   1 (16.67%)
+ERStar                   1 (16.67%)
 
 [2] Distribution of number of reasons per node:
 1 reasons: 2 nodes
