@@ -117,6 +117,15 @@ var reason2xlabel map[escapeReason]string = map[escapeReason]string{
 	ERMust:             "must",
 }
 
+func xlabel2reason(xlabel string) (escapeReason, bool) {
+	for k, v := range reason2xlabel {
+		if v == xlabel {
+			return k, true
+		}
+	}
+	return ERNumber, false // not found
+}
+
 var reason2fillcolor map[escapeReason]string = map[escapeReason]string{
 	ERHeap:             "slategrey",
 	ERStar:             "pink",
@@ -230,13 +239,30 @@ func (esg *escapeSubGraph) createOrGetNode(loc *location) *escLocNode {
 	return node
 }
 
-// NewNode returns a new node with a unique ID.
+// NewNode returns a new Node with a unique
+// arbitrary ID.
 // To implemnt NodeAdder interface
-func (esg *escapeSubGraph) NewNode() gn.Node
+func (esg *escapeSubGraph) NewNode() gn.Node {
+	id := esg.newid
+	esg.newid++
+	node := &escLocNode{
+		id:  id,
+		loc: nil,
+	}
+	return node
+}
 
-// AddNode adds n to the graph.
+// AddNode adds a node to the graph. AddNode panics if
+// the added node ID matches an existing node ID.
 // To implemnt NodeAdder interface
-func (esg *escapeSubGraph) AddNode(n gn.Node)
+func (esg *escapeSubGraph) AddNode(n gn.Node) {
+	nid := n.ID()
+	if _, ok := esg.nodes[nid]; ok {
+		panic(fmt.Sprintf("node %d already exists in escapeSubGraph\n", nid))
+	}
+	esg.nodes[nid] = n.(*escLocNode)
+	esg.edges[nid] = make(map[int64]*escFlow)
+}
 
 // Node returns the node with the given ID if it exists
 // in the graph, and nil otherwise.
@@ -271,13 +297,35 @@ func (esg *escapeSubGraph) From(id int64) gn.Nodes {
 	return createIter(nodes)
 }
 
-// NewEdge returns a new edge from, to.
+// NewEdge returns a new Edge from the source to the destination node.
 // To implement EdgeAdder interface
-func (esg *escapeSubGraph) NewEdge(from, to gn.Node) gn.Edge
+func (esg *escapeSubGraph) NewEdge(from, to gn.Node) gn.Edge {
+	return &escFlow{
+		src:  from.(*escLocNode),
+		dst:  to.(*escLocNode),
+		hole: hole{},
+	}
+}
 
-// SetEdge adds e, an edge from one node to another, to the graph.
+// SetEdge adds an edge from one node to another.
+// If the graph supports node addition the nodes
+// will be added if they do not exist, otherwise
+// SetEdge will panic.
+// The behavior of an EdgeAdder when the IDs
+// returned by e.From() and e.To() are equal is
+// implementation-dependent.
+// Whether e, e.From() and e.To() are stored
+// within the graph is implementation dependent.
 // To implement EdgeAdder interface
-func (esg *escapeSubGraph) SetEdge(e gn.Edge)
+func (esg *escapeSubGraph) SetEdge(e gn.Edge) {
+	from, to := e.From(), e.To()
+	for _, n := range []gn.Node{from, to} {
+		if v := esg.Node(n.ID()); v == nil {
+			esg.AddNode(n)
+		}
+	}
+	esg.edges[from.ID()][to.ID()] = e.(*escFlow)
+}
 
 // EdgeFrom returns all edges from id
 func (esg *escapeSubGraph) EdgeFrom(id int64) []*escFlow {
@@ -367,6 +415,10 @@ func (n *escLocNode) Label() string {
 	return n.label
 }
 
+func (n *escLocNode) String() string {
+	return fmt.Sprintf("node %d\n  label: %s\n  reason: %s\n", n.id, n.Label(), n.reasonsStr())
+}
+
 func (n *escLocNode) addReason(r escapeReason) (changed bool) {
 	oldReason := n.reason
 	n.reason.add(r)
@@ -375,6 +427,16 @@ func (n *escLocNode) addReason(r escapeReason) (changed bool) {
 		fmt.Fprintf(os.Stderr, "Update reason(id: %d): %#b -> %#b\n", n.id, oldReason, n.reason)
 	}
 	return oldReason != n.reason
+}
+
+func (n *escLocNode) reasonsStr() string {
+	rlabels := make([]string, 0, ERNumber)
+	for reason, label := range reason2xlabel {
+		if n.reason.contains(reason) {
+			rlabels = append(rlabels, label)
+		}
+	}
+	return strings.Join(rlabels, ",")
 }
 
 // add label and xlabel
@@ -386,15 +448,9 @@ func (n *escLocNode) Attributes() []encoding.Attribute {
 		Key:   "label",
 		Value: n.Label(),
 	})
-	rlabels := make([]string, 0, ERNumber)
-	for reason, label := range reason2xlabel {
-		if n.reason.contains(reason) {
-			rlabels = append(rlabels, label)
-		}
-	}
 	resAttrs = append(resAttrs, encoding.Attribute{
 		Key:   "xlabel",
-		Value: strings.Join(rlabels, ","),
+		Value: n.reasonsStr(),
 	})
 	colors := make([]string, 0, ERNumber)
 	for reason, color := range reason2fillcolor {
@@ -414,6 +470,22 @@ func (n *escLocNode) Attributes() []encoding.Attribute {
 			})
 	}
 	return resAttrs
+}
+
+func (n *escLocNode) SetAttribute(attr encoding.Attribute) error {
+	switch attr.Key {
+	case "label":
+		n.label = attr.Value
+	case "xlabel":
+		for rlabel := range strings.SplitSeq(attr.Value, ",") {
+			r, ok := xlabel2reason(rlabel)
+			if !ok {
+				return fmt.Errorf("%s is not reason", rlabel)
+			}
+			n.reason |= r
+		}
+	}
+	return nil
 }
 
 type escLocNodeIter struct {
@@ -470,6 +542,10 @@ type escFlow struct {
 	src  *escLocNode
 	dst  *escLocNode
 	hole hole
+	// cached whys of hole, also used for test.
+	// Notice that the field contains why which is not in why2reason.
+	// But when backPropogate, only why in why2reason will be back propogated.
+	whys []string
 }
 
 // From returns the from node of the edge.
@@ -494,13 +570,12 @@ func (f *escFlow) backPropogate() escapeReason {
 	dst := f.dst
 	r := dst.reason
 	// TODO add more reason
-	for note := f.hole.notes; note != nil; note = note.next {
-		if reason, ok := why2reason[note.why]; ok {
+	for _, why := range f.whys {
+		if reason, ok := why2reason[why]; ok {
 			r.add(reason)
-		}
-		if statDebug {
-			fmt.Fprintln(os.Stderr, "where", note.where)
-			fmt.Fprintln(os.Stderr, "why", note.why)
+			if statDebug {
+				fmt.Fprintln(os.Stderr, "why", why)
+			}
 		}
 	}
 	switch dst.loc.n.(type) {
@@ -521,15 +596,23 @@ func (f *escFlow) backPropogate() escapeReason {
 
 func (f *escFlow) Attributes() []encoding.Attribute {
 	resAttrs := make([]encoding.Attribute, 0)
-	whys := make([]string, 0)
-	for note := f.hole.notes; note != nil; note = note.next {
-		whys = append(whys, note.why)
-	}
 	resAttrs = append(resAttrs, encoding.Attribute{
 		Key:   "label",
-		Value: strconv.Itoa(f.hole.derefs) + "\nwhy:\n" + strings.Join(whys, "\n"),
+		Value: strings.Join(f.whys, "\n"),
+	})
+	resAttrs = append(resAttrs, encoding.Attribute{
+		Key:   "xlabel",
+		Value: strconv.Itoa(f.hole.derefs),
 	})
 	return resAttrs
+}
+
+func (f *escFlow) SetAttribute(attr encoding.Attribute) error {
+	switch attr.Key {
+	case "label":
+		f.whys = append(f.whys, strings.Split(attr.Value, "\n")...)
+	}
+	return nil
 }
 
 type nodeRemover struct{}
@@ -602,7 +685,8 @@ func (esg *escapeSubGraph) finishBatch() {
 		esgLog(fmt.Sprintf("SUCC: csv batch root %s", csvBatchRoot))
 	}
 	esgCnt += 1
-	esg.dump(graphBatchRoot, phase2name[0])
+	esg.initSetUp()
+	esg.dump(graphBatchRoot, phase2name[pInit])
 	/*
 		1. x -(d, y)-> heap
 			remove heap(can be counted)
@@ -611,11 +695,11 @@ func (esg *escapeSubGraph) finishBatch() {
 		3. for each source node, summarize all attributes(define priority)
 	*/
 	esg.removeHeap()
-	esg.dump(graphBatchRoot, phase2name[1])
+	esg.dump(graphBatchRoot, phase2name[pRemoveHeap])
 	esg.backPropogate()
-	esg.dump(graphBatchRoot, phase2name[2])
+	esg.dump(graphBatchRoot, phase2name[pBackPropogate])
 	esg.summarize(csvBatchRoot)
-	esg.dump(graphBatchRoot, phase2name[3])
+	esg.dump(graphBatchRoot, phase2name[pSummarize])
 }
 
 var graphRoot, csvRoot, esgLogPath string
@@ -635,11 +719,20 @@ func initEAResultRoot() {
 	defer f.Close()
 }
 
+type phaseTy int
+
+const (
+	pInit phaseTy = iota
+	pRemoveHeap
+	pBackPropogate
+	pSummarize
+)
+
 var phase2name [4]string = [4]string{
-	0: "0init",
-	1: "1removeheap",
-	2: "2backPropogate",
-	3: "summarize",
+	"0init",
+	"1removeheap",
+	"2backPropogate",
+	"summarize",
 }
 
 func (esg *escapeSubGraph) dump(dumpRoot, phase string) {
@@ -670,6 +763,19 @@ func (esg *escapeSubGraph) dump(dumpRoot, phase string) {
 		for id, node := range esg.nodes {
 			fmt.Fprintf(os.Stderr, "id %d: %s\n", id, node.Label())
 			fmt.Fprintf(os.Stderr, "\treason %#b\n", node.reason)
+		}
+	}
+}
+
+/*
+initSetUp prepares some fields for nodes and edges for faster computation
+*/
+func (esg *escapeSubGraph) initSetUp() {
+	for _, toedges := range esg.edges {
+		for _, flow := range toedges {
+			for note := flow.hole.notes; note != nil; note = note.next {
+				flow.whys = append(flow.whys, note.why)
+			}
 		}
 	}
 }

@@ -1,9 +1,12 @@
 package escape
 
 import (
+	"fmt"
+	"internal/testenv"
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 	"testing"
 
 	gndot "gonum.org/v1/gonum/graph/encoding/dot"
@@ -19,7 +22,7 @@ func (f fixture) allcsv() string {
 	return filepath.Join(f.statRoot, f.name, "all.csv")
 }
 
-func (f fixture) graph(pkg string, batch int, phase int) string {
+func (f fixture) graph(pkg string, batch int, phase phaseTy) string {
 	return filepath.Join(f.statRoot, f.name, "graphs", pkg, strconv.Itoa(batch), phase2name[phase]+".gv")
 }
 
@@ -27,16 +30,16 @@ func (f fixture) csv(pkg string, batch int) string {
 	return filepath.Join(f.statRoot, f.name, "csv", pkg, strconv.Itoa(batch), "all.csv")
 }
 
-func goroot() string {
-	return os.Getenv("GOROOT")
+func goroot(t *testing.T) string {
+	return testenv.GOROOT(t)
 }
 
-func demoDir() string {
-	return filepath.Join(goroot(), "demo")
+func demoDir(t *testing.T) string {
+	return filepath.Join(goroot(t), "demo")
 }
 
-func demoStatRootDir() string {
-	return filepath.Join(demoDir(), "stat_root")
+func demoStatRootDir(t *testing.T) string {
+	return filepath.Join(demoDir(t), "stat_root")
 }
 
 func unmarshalEsg(graphPath string) (*escapeSubGraph, error) {
@@ -44,7 +47,13 @@ func unmarshalEsg(graphPath string) (*escapeSubGraph, error) {
 	if err != nil {
 		return nil, err
 	}
-	esg := &escapeSubGraph{}
+	esg := &escapeSubGraph{
+		newid:  1,
+		loc2id: make(map[*location]int64),
+		nodes:  make(map[int64]*escLocNode),
+		edges:  make(map[int64]map[int64]*escFlow),
+		b:      nil,
+	}
 	err = gndot.Unmarshal(bs, esg)
 	if err != nil {
 		return nil, err
@@ -58,10 +67,16 @@ func TestGoInterprocedural(t *testing.T) {
 		pkgs: []string{
 			"main",
 		},
-		statRoot: demoStatRootDir(),
+		statRoot: demoStatRootDir(t),
 	}
-	_, err := unmarshalEsg(fixture.graph("main", 0, 3))
+	esg, err := unmarshalEsg(fixture.graph("main", 0, pSummarize))
 	if err != nil {
 		t.Fatal(err)
+	}
+	for _, src := range esg.nodes {
+		fmt.Println(src)
+		for dst, flow := range esg.edges[src.ID()] {
+			fmt.Printf("  dst %d\n  flow: %s\n", dst, strings.Join(flow.whys, "\n    "))
+		}
 	}
 }
