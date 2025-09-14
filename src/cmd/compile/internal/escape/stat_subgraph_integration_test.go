@@ -61,6 +61,12 @@ func unmarshalEsg(graphPath string) (*escapeSubGraph, error) {
 	return esg, nil
 }
 
+func scope(t *testing.T, graphPath string, test func(esg *escapeSubGraph)) {
+	esg, err := unmarshalEsg(graphPath)
+	assert.Nil(t, err)
+	test(esg)
+}
+
 func TestGoInterprocedural(t *testing.T) {
 	fixture := fixture{
 		name: "go_interprocedural",
@@ -69,11 +75,33 @@ func TestGoInterprocedural(t *testing.T) {
 		},
 		statRoot: demoStatRootDir(t),
 	}
-	esg, err := unmarshalEsg(fixture.graph("main", 1, pSummarize))
-	if err != nil {
-		t.Fatal(err)
-	}
-	node := esg.findNode("a @ main.go:6:2")
-	assert.NotEqual(t, nil, node)
-	assert.True(t, node.reason.contains(ERHeap|ERGo|ERClosure|ERHeap|ERParamLeak))
+
+	scope(t, fixture.graph("main", 1, pInit), func(esg *escapeSubGraph) {
+		a := esg.findNode("a @ main.go:6:2")
+		assert.NotNil(t, a)
+		outedges := esg.EdgeFrom(a.id)
+		assert.Equal(t, 1, len(outedges))
+		flow := outedges[0]
+		heap := flow.dst
+		assert.Equal(t, "{heap}", heap.label)
+		assert.Subset(t, flow.whys, []string{FPGo, FPDstEscAddrSrc})
+
+		wg := esg.findNode("wg @ main.go:7:6")
+		assert.NotNil(t, wg)
+		outedges = esg.EdgeFrom(wg.id)
+		assert.Equal(t, 1, len(outedges))
+		flow = outedges[0]
+		assert.Equal(t, heap, flow.dst)
+		assert.Subset(t, flow.whys, []string{FPDstEscAddrSrc})
+	})
+
+	scope(t, fixture.graph("main", 1, pSummarize), func(esg *escapeSubGraph) {
+		a := esg.findNode("a @ main.go:6:2")
+		assert.NotNil(t, a)
+		assert.True(t, a.reason.contains(ERHeap|ERGo|ERClosure|ERHeap|ERParamLeak))
+
+		wg := esg.findNode("wg @ main.go:7:6")
+		assert.NotNil(t, wg)
+		assert.True(t, wg.reason.contains(ERClosure|ERGo|ERHeap|ERParamLeak))
+	})
 }
