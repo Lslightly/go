@@ -166,16 +166,18 @@ var why2reason map[string]escapeReason = map[string]escapeReason{
 	"call parameter":        ERCallArgument,
 }
 
-func (er *escapeReason) add(r escapeReason) {
-	*er |= r
+func (er escapeReason) add(r escapeReason) escapeReason {
+	er |= r
+	return er
 }
 
-func (er *escapeReason) del(r escapeReason) {
-	*er &= ^r
+func (er escapeReason) del(r escapeReason) escapeReason {
+	er &= ^r
+	return er
 }
 
-func (er *escapeReason) contains(r escapeReason) bool {
-	if *er&r == r {
+func (er escapeReason) contains(r escapeReason) bool {
+	if er&r == r {
 		return true
 	} else {
 		return false
@@ -421,8 +423,7 @@ func (n *escLocNode) String() string {
 
 func (n *escLocNode) addReason(r escapeReason) (changed bool) {
 	oldReason := n.reason
-	n.reason.add(r)
-	n.reason.del(ERRootStack) // ERRootStack should be set manually
+	n.reason = n.reason.add(r).del(ERRootStack) // ERRootStack should be set manually
 	if statDebug {
 		fmt.Fprintf(os.Stderr, "Update reason(id: %d): %#b -> %#b\n", n.id, oldReason, n.reason)
 	}
@@ -572,7 +573,7 @@ func (f *escFlow) backPropogate() escapeReason {
 	// TODO add more reason
 	for _, why := range f.whys {
 		if reason, ok := why2reason[why]; ok {
-			r.add(reason)
+			r = r.add(reason)
 			if statDebug {
 				fmt.Fprintln(os.Stderr, "why", why)
 			}
@@ -581,15 +582,15 @@ func (f *escFlow) backPropogate() escapeReason {
 	switch dst.loc.n.(type) {
 	case *ir.ClosureExpr:
 		if dst.loc.n.(*ir.ClosureExpr).IsGoWrap {
-			r.add(ERGo)
+			r = r.add(ERGo)
 		}
-		r.add(ERClosure)
+		r = r.add(ERClosure)
 	}
 	if f.src.loc.isName(ir.PPARAM) {
-		r.add(ERParamLeak)
+		r = r.add(ERParamLeak)
 	}
 	if dst.loc.isName(ir.PPARAMOUT) {
-		r.add(ERReturn)
+		r = r.add(ERReturn)
 	}
 	return r
 }
@@ -848,7 +849,7 @@ func (esg *escapeSubGraph) backPropogate() {
 func (esg *escapeSubGraph) summarize(csvBatchRoot string) {
 	for _, node := range esg.nodes {
 		if node.reason.contains(ERRootStack | EROutliveRootStack) {
-			node.reason.del(EROutliveRootStack)
+			node.reason = node.reason.del(EROutliveRootStack)
 		}
 	}
 
