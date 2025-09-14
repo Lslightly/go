@@ -87,7 +87,7 @@ const (
 	ERGo                                        // root is go
 	ERDefer                                     // root is defer
 	ERReturn                                    // l is returned
-	ERParamLeak                                 // param leak
+	ERParamLeak                                 // param leak, only mark parameters as param leak
 	ERCallArgument                              // root is call argument
 	ERMapIdx                                    // m[index]
 	ERSliceIdx                                  // s[index]
@@ -884,4 +884,13 @@ func (esg *escapeSubGraph) encodeLocLeakReason(loc *location, esc *leaks) {
 	}
 	node := esg.nodes[id]
 	esc.encodeReason(node.reason)
+}
+
+func (esg *escapeSubGraph) findNode(label string) *escLocNode {
+	for _, node := range esg.nodes {
+		if strings.Contains(node.label, label) {
+			return node
+		}
+	}
+	return nil
 }

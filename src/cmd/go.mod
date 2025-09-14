@@ -15,6 +15,13 @@ require (
 )
 
 require (
+	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/stretchr/testify v1.11.1 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
+)
+
+require (
 	github.com/ianlancetaylor/demangle v0.0.0-20240912202439-0a2b6291aafd // indirect
 	golang.org/x/text v0.26.0 // indirect
 	gonum.org/v1/gonum v0.16.0

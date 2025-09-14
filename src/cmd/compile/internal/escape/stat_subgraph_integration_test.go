@@ -1,13 +1,13 @@
 package escape
 
 import (
-	"fmt"
 	"internal/testenv"
 	"os"
 	"path/filepath"
 	"strconv"
-	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 
 	gndot "gonum.org/v1/gonum/graph/encoding/dot"
 )
@@ -69,14 +69,12 @@ func TestGoInterprocedural(t *testing.T) {
 		},
 		statRoot: demoStatRootDir(t),
 	}
-	esg, err := unmarshalEsg(fixture.graph("main", 0, pSummarize))
+	esg, err := unmarshalEsg(fixture.graph("main", 1, pSummarize))
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, src := range esg.nodes {
-		fmt.Println(src)
-		for dst, flow := range esg.edges[src.ID()] {
-			fmt.Printf("  dst %d\n  flow: %s\n", dst, strings.Join(flow.whys, "\n    "))
-		}
-	}
+	node := esg.findNode("a @ main.go:6:2")
+	assert.NotEqual(t, nil, node)
+	assert.True(t, node.reason.contains(ERHeap|ERGo))
+	assert.False(t, node.reason.contains(ERParamLeak))
 }
