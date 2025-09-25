@@ -1,0 +1,83 @@
+package main
+
+import (
+	"runtime"
+	"time"
+)
+
+const (
+	N       int = 3_000_000_000 // 访问次数
+	fixLen  int = 512 * 1024 * 1024 / 8
+	CoreNum int = 256
+)
+
+func main() {
+	runtime.GOMAXPROCS(CoreNum)
+	localTime := accessLocalAlloc()
+	remoteTime := accessRemoteAlloc()
+	println("remote alloc access time:", remoteTime.String())
+	println("local alloc access time:", localTime.String())
+	println("remote/local:", float64(remoteTime)/float64(localTime))
+}
+
+func averageTime(durations []time.Duration) time.Duration {
+	var total time.Duration
+	for _, d := range durations {
+		total += d
+	}
+	return total / time.Duration(len(durations))
+}
+
+func accessRemoteAlloc() time.Duration {
+	timeCh := make(chan time.Duration, CoreNum-1)
+	useSumCh := make(chan int, CoreNum-1)
+	for range CoreNum - 1 {
+		remoteData := make([]int, fixLen) // 512M
+		go func() {
+			start := time.Now()
+			sum := 0
+			for j := range N {
+				remoteData[j%fixLen] = j
+				sum += remoteData[j%fixLen]
+			}
+			elapsed := time.Since(start)
+			timeCh <- elapsed
+			useSumCh <- sum
+		}()
+	}
+	durations := make([]time.Duration, CoreNum-1)
+	for i := range CoreNum - 1 {
+		durations[i] = <-timeCh
+	}
+	for range CoreNum - 1 {
+		<-useSumCh
+	}
+	return averageTime(durations)
+}
+
+func accessLocalAlloc() time.Duration {
+	timeCh := make(chan time.Duration, CoreNum-1)
+	useSumCh := make(chan int, CoreNum-1)
+	for range CoreNum - 1 {
+		go func() {
+			localData := make([]int, fixLen) // 512M
+			start := time.Now()
+			sum := 0
+			for j := range N {
+				localData[j%fixLen] = j
+				sum += localData[j%fixLen]
+			}
+			elapsed := time.Since(start)
+			timeCh <- elapsed
+			useSumCh <- sum
+		}()
+	}
+	durations := make([]time.Duration, CoreNum-1)
+	for i := range CoreNum - 1 {
+		durations[i] = <-timeCh
+	}
+	for range CoreNum - 1 {
+		<-useSumCh
+	}
+	return averageTime(durations)
+}
