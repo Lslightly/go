@@ -12,11 +12,13 @@ import (
 	"runtime"
 	"runtime/pprof"
 	"time"
+
+	"golang.org/x/sys/unix"
 )
 
 const (
 	N       int = 1_000_000_000        // 访问次数
-	fixLen  int = 33 * 1024 * 1024 / 8 // 33MiB []int, L3 cache is 32MiB
+	fixLen  int = 64 * 1024 * 1024 / 8 // 64MiB []int, L3 cache is 32MiB
 	CoreNum int = 256
 )
 
@@ -68,9 +70,15 @@ func accessRemoteAlloc() time.Duration {
 	timeCh := make(chan time.Duration, CoreNum/2)
 	useSumCh := make(chan int, CoreNum/2)
 	// set := genSet()
+	runtime.LockOSThread()
+	defer runtime.UnlockOSThread()
+	setCpu(CoreNum / 2)
 	for i := range CoreNum / 2 {
 		remoteData := make([]int, fixLen)
 		go func(i int) {
+			runtime.LockOSThread()
+			defer runtime.UnlockOSThread()
+			setCpu(i)
 			start := time.Now()
 			sum := 0
 			for j := range N {
@@ -80,8 +88,10 @@ func accessRemoteAlloc() time.Duration {
 			elapsed := time.Since(start)
 			timeCh <- elapsed
 			useSumCh <- sum
+			assertCpuAffinity(i)
 		}(i)
 	}
+	assertCpuAffinity(CoreNum / 2)
 	durations := make([]time.Duration, CoreNum/2)
 	for i := range CoreNum / 2 {
 		durations[i] = <-timeCh
@@ -105,12 +115,35 @@ func inSet(i int, set map[int]struct{}) bool {
 	return ok
 }
 
+func setCpu(cpu int) {
+	cpuSet := unix.CPUSet{}
+	cpuSet.Set(cpu)
+	unix.SchedSetaffinity(0, &cpuSet)
+}
+
+func assertCpuAffinity(expected int) {
+	cpuSet := unix.CPUSet{}
+	err := unix.SchedGetaffinity(0, &cpuSet)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if !cpuSet.IsSet(expected) {
+		log.Fatalf("expected cpu %d, got %v", expected, cpuSet)
+	}
+}
+
 func accessLocalAlloc() time.Duration {
 	timeCh := make(chan time.Duration, CoreNum/2)
 	useSumCh := make(chan int, CoreNum/2)
 	// set := genSet()
+	runtime.LockOSThread()
+	defer runtime.UnlockOSThread()
+	setCpu(CoreNum / 2)
 	for i := range CoreNum / 2 {
 		go func(i int) {
+			runtime.LockOSThread()
+			defer runtime.UnlockOSThread()
+			setCpu(i)
 			localData := make([]int, fixLen)
 			start := time.Now()
 			sum := 0
@@ -121,8 +154,10 @@ func accessLocalAlloc() time.Duration {
 			elapsed := time.Since(start)
 			timeCh <- elapsed
 			useSumCh <- sum
+			assertCpuAffinity(i)
 		}(i)
 	}
+	assertCpuAffinity(CoreNum / 2)
 	durations := make([]time.Duration, CoreNum/2)
 	for i := range CoreNum / 2 {
 		durations[i] = <-timeCh
