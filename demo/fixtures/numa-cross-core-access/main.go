@@ -15,8 +15,8 @@ import (
 )
 
 const (
-	N       int = 1_000_000_000 // 访问次数
-	fixLen  int = 512 * 1024 * 1024 / 8
+	N       int = 1_000_000_000        // 访问次数
+	fixLen  int = 33 * 1024 * 1024 / 8 // 33MiB []int, L3 cache is 32MiB
 	CoreNum int = 256
 )
 
@@ -67,20 +67,10 @@ func averageTime(durations []time.Duration) time.Duration {
 func accessRemoteAlloc() time.Duration {
 	timeCh := make(chan time.Duration, CoreNum/2)
 	useSumCh := make(chan int, CoreNum/2)
-	set := genSet()
-	runtime.LockOSThread()
-	defer runtime.UnlockOSThread()
+	// set := genSet()
 	for i := range CoreNum / 2 {
-		if inSet(i, set) {
-			println(i, "alloc at core:", getCurrentCPU())
-		}
-		remoteData := make([]int, fixLen) // 512M
+		remoteData := make([]int, fixLen)
 		go func(i int) {
-			runtime.LockOSThread()
-			defer runtime.UnlockOSThread()
-			if inSet(i, set) {
-				println(i, "local core begin:", getCurrentCPU())
-			}
 			start := time.Now()
 			sum := 0
 			for j := range N {
@@ -90,9 +80,6 @@ func accessRemoteAlloc() time.Duration {
 			elapsed := time.Since(start)
 			timeCh <- elapsed
 			useSumCh <- sum
-			if inSet(i, set) {
-				println(i, "local core finish:", getCurrentCPU())
-			}
 		}(i)
 	}
 	durations := make([]time.Duration, CoreNum/2)
@@ -121,15 +108,10 @@ func inSet(i int, set map[int]struct{}) bool {
 func accessLocalAlloc() time.Duration {
 	timeCh := make(chan time.Duration, CoreNum/2)
 	useSumCh := make(chan int, CoreNum/2)
-	set := genSet()
+	// set := genSet()
 	for i := range CoreNum / 2 {
 		go func(i int) {
-			runtime.LockOSThread()
-			defer runtime.UnlockOSThread()
-			if inSet(i, set) {
-				println(i, "local core begin:", getCurrentCPU())
-			}
-			localData := make([]int, fixLen) // 512M
+			localData := make([]int, fixLen)
 			start := time.Now()
 			sum := 0
 			for j := range N {
@@ -139,9 +121,6 @@ func accessLocalAlloc() time.Duration {
 			elapsed := time.Since(start)
 			timeCh <- elapsed
 			useSumCh <- sum
-			if inSet(i, set) {
-				println(i, "local core finish:", getCurrentCPU())
-			}
 		}(i)
 	}
 	durations := make([]time.Duration, CoreNum/2)
