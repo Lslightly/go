@@ -85,7 +85,13 @@ func (b *batch) walkOne(root *location, walkgen uint32, enqueue func(*location))
 	todo := []todoItem{
 		{root, nil},
 	} // LIFO queue
+	rootEscape := root.hasAttr(attrEscapes)
+	if isEAReasonStatEnabled() && rootEscape && isEAReasonDebug() {
+		fmt.Println("walkOne root", b.explainLocPos(root), root.attrs)
+	}
 	for len(todo) > 0 {
+		fastpathAdded := false
+
 		item := todo[len(todo)-1]
 		l := item.l
 		todo = todo[:len(todo)-1]
@@ -117,8 +123,16 @@ func (b *batch) walkOne(root *location, walkgen uint32, enqueue func(*location))
 					}
 				}
 				if isEAReasonStatEnabled() {
+					fastpathAdded = true
 					hole := root.asHole()       // empty note
 					hole.notes = item.prevNotes // add prevNotes
+					if rootEscape && isEAReasonDebug() {
+						whysStr := "<nil>"
+						if hole.notes != nil {
+							whysStr = strings.Join(hole.notes.whysString(), ", ")
+						}
+						fmt.Println("walkOne: root outlives l:", b.explainLocPos(l), "whys:", whysStr)
+					}
 					getEsg().fastpath(l, hole.note(l.n, FPRootOutliveAddrSrc).shift(-1))
 
 				}
@@ -156,8 +170,16 @@ func (b *batch) walkOne(root *location, walkgen uint32, enqueue func(*location))
 					}
 				}
 				if isEAReasonStatEnabled() {
+					fastpathAdded = true
 					hole := root.asHole()
 					hole.notes = item.prevNotes
+					if rootEscape && isEAReasonDebug() {
+						whysStr := "<nil>"
+						if hole.notes != nil {
+							whysStr = strings.Join(hole.notes.whysString(), ", ")
+						}
+						fmt.Println("walkOne: root outlives l:", b.explainLocPos(l), "whys:", whysStr)
+					}
 					getEsg().fastpath(l, hole.note(l.n, FPParamLeak).shift(derefs))
 				}
 				l.leakTo(root, derefs)
@@ -178,8 +200,36 @@ func (b *batch) walkOne(root *location, walkgen uint32, enqueue func(*location))
 			}
 		}
 
+		if isEAReasonStatEnabled() && rootEscape && !fastpathAdded && root != l {
+			fastpathAdded = true
+			hole := root.asHole()
+			hole.notes = item.prevNotes
+			for _, edge := range l.edges {
+				if edge.src.n != nil {
+					hole = hole.note(edge.src.n, FPRootEscape)
+					break
+				}
+			}
+			getEsg().fastpath(l, hole.shift(derefs))
+		}
+
+		if isEAReasonStatEnabled() && rootEscape && isEAReasonDebug() {
+			fmt.Printf("walkOne: append todo begin for %v\n", b.explainLocPos(l))
+		}
 		for i, edge := range l.edges {
 			if edge.src.hasAttr(attrEscapes) {
+				if isEAReasonStatEnabled() {
+					d := edge.src.derefs
+					if derefs+edge.derefs < d {
+						d = max(derefs+edge.derefs, -1)
+					}
+					hole := root.asHole().shift(d)
+					hole.notes = cloneAndAppendNotes(edge.notes, item.prevNotes)
+					getEsg().fastpath(edge.src, hole)
+					if isEAReasonDebug() {
+						fmt.Printf("walkOne: edge.src escapes, skip: %v to %v\n", b.explainLocPos(edge.src), b.explainLocPos(root))
+					}
+				}
 				continue
 			}
 			d := derefs + edge.derefs
@@ -189,11 +239,25 @@ func (b *batch) walkOne(root *location, walkgen uint32, enqueue func(*location))
 				edge.src.dst = l
 				edge.src.dstEdgeIdx = i
 
+				if isEAReasonStatEnabled() && rootEscape && isEAReasonDebug() {
+					whysStr := "<nil>"
+					if edge.notes != nil {
+						whysStr = strings.Join(edge.notes.whysString(), ", ")
+					}
+					srcLocStr := "<nil>"
+					if edge.src != nil {
+						srcLocStr = b.explainLocPos(edge.src)
+					}
+					fmt.Printf("walkOne: edge: {src: %s, d%d, whys: %s}\n", srcLocStr, d, whysStr)
+				}
 				todo = append(todo, todoItem{
 					l:         edge.src,
 					prevNotes: cloneAndAppendNotes(edge.notes, item.prevNotes),
 				})
 			}
+		}
+		if isEAReasonStatEnabled() && rootEscape && isEAReasonDebug() {
+			fmt.Printf("walkOne: append todo end for %v\n", b.explainLocPos(l))
 		}
 	}
 }
@@ -331,7 +395,7 @@ func (b *batch) explainLocPos(l *location) string {
 		return "{heap}"
 	}
 	if l.n == nil {
-		return "{temp}"
+		return fmt.Sprintf("{temp %p}", l)
 	}
 	printPkg := false
 	posString := base.FmtPos(l.n.Pos())

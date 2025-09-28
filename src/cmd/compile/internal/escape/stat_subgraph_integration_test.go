@@ -4,6 +4,7 @@ import (
 	"internal/testenv"
 	"os"
 	"path/filepath"
+	"slices"
 	"strconv"
 	"testing"
 
@@ -77,22 +78,65 @@ func TestGoInterprocedural(t *testing.T) {
 	}
 
 	scope(t, fixture.graph("main", 1, pInit), func(esg *escapeSubGraph) {
+		heap := esg.findNode("{heap}")
+		assert.NotNil(t, heap)
 		a := esg.findNode("a @ main.go:6:2")
 		assert.NotNil(t, a)
 		outedges := esg.EdgeFrom(a.id)
-		assert.Equal(t, 1, len(outedges))
-		flow := outedges[0]
-		heap := flow.dst
-		assert.Equal(t, "{heap}", heap.label)
-		assert.Subset(t, flow.whys, []string{FPGo, FPDstEscAddrSrc})
+		assert.Equal(t, 2, len(outedges))
+
+		toHeapEdge, ok := esg.Edge(a.ID(), heap.ID()).(*escFlow)
+		assert.NotNil(t, toHeapEdge)
+		assert.True(t, ok)
+		assert.Subset(t, toHeapEdge.whys, []string{FPGo, FPRootOutliveAddrSrc})
+
+		var toTmpEdge *escFlow
+		for _, edge := range outedges {
+			if edge != toHeapEdge {
+				toTmpEdge = edge
+			}
+		}
+		toNode := toTmpEdge.dst
+		assert.Equal(t, 1, len(esg.EdgeFrom(toNode.id)))
+		toHeapEdge, ok = esg.Edge(toNode.ID(), heap.ID()).(*escFlow)
+		assert.NotNil(t, esg.Edge(toNode.ID(), heap.ID()))
+		assert.True(t, ok)
+		assert.Subset(t, toHeapEdge.whys, []string{FPRootEscape})
 
 		wg := esg.findNode("wg @ main.go:7:6")
 		assert.NotNil(t, wg)
 		outedges = esg.EdgeFrom(wg.id)
-		assert.Equal(t, 1, len(outedges))
-		flow = outedges[0]
-		assert.Equal(t, heap, flow.dst)
-		assert.Subset(t, flow.whys, []string{FPDstEscAddrSrc})
+		assert.Equal(t, 3, len(outedges))
+
+		toHeapEdge, ok = esg.Edge(wg.ID(), heap.ID()).(*escFlow)
+		assert.NotNil(t, toHeapEdge)
+		assert.True(t, ok)
+		assert.Subset(t, toHeapEdge.whys, []string{FPGo, FPRootOutliveAddrSrc})
+
+		leftEdges := make([]*escFlow, 0, 2)
+		for _, edge := range outedges {
+			if edge != toHeapEdge {
+				leftEdges = append(leftEdges, edge)
+			}
+		}
+		toWgWaitEdgeId := 0
+		if slices.Index(leftEdges[0].whys, FPGo) >= 0 {
+			toWgWaitEdgeId = 1
+		}
+		wgWaitTmpNode := leftEdges[toWgWaitEdgeId].dst
+		wgWaitTmp2HeapEdge, ok := esg.Edge(wgWaitTmpNode.ID(), heap.ID()).(*escFlow)
+		assert.NotNil(t, wgWaitTmp2HeapEdge)
+		assert.True(t, ok)
+		assert.Subset(t, wgWaitTmp2HeapEdge.whys, []string{FPRootEscape})
+
+		toIntTransferEdge := leftEdges[1-toWgWaitEdgeId]
+		assert.NotNil(t, toIntTransferEdge)
+		assert.Subset(t, toIntTransferEdge.whys, []string{FPGo})
+		intTransferTmpNode := toIntTransferEdge.dst
+		intTransferTmp2HeapEdge, ok := esg.Edge(intTransferTmpNode.ID(), heap.ID()).(*escFlow)
+		assert.NotNil(t, intTransferTmp2HeapEdge)
+		assert.True(t, ok)
+		assert.Subset(t, intTransferTmp2HeapEdge.whys, []string{FPRootEscape})
 	})
 
 	scope(t, fixture.graph("main", 1, pSummarize), func(esg *escapeSubGraph) {

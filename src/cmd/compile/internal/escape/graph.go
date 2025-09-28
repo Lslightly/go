@@ -10,6 +10,7 @@ import (
 	"cmd/compile/internal/logopt"
 	"cmd/compile/internal/types"
 	"fmt"
+	"strings"
 )
 
 // Below we implement the methods for walking the AST and recording
@@ -179,10 +180,30 @@ type hole struct {
 	addrtaken bool
 }
 
+func (k hole) debugString(b *batch) string {
+	format := "-(d%d, n=%s, at=%v)-> %s"
+	notesWhys := "<nil>"
+	if k.notes != nil {
+		notesWhys = strings.Join(k.notes.whysString(), ", ")
+	}
+	dstLocStr := "<nil>"
+	if k.dst != nil {
+		dstLocStr = b.explainLocPos(k.dst)
+	}
+	return fmt.Sprintf(format, k.derefs, notesWhys, k.addrtaken, dstLocStr)
+}
+
 type note struct {
 	next  *note
 	where ir.Node
 	why   string
+}
+
+func (n *note) whysString() (whys []string) {
+	for pn := n; pn != nil; pn = pn.next {
+		whys = append(whys, pn.why)
+	}
+	return whys
 }
 
 func (k hole) note(where ir.Node, why string) hole {
@@ -229,6 +250,9 @@ func (b *batch) flow(k hole, src *location) {
 	}
 	if dst == src && k.derefs >= 0 { // dst = dst, dst = *dst, ...
 		return
+	}
+	if isEAReasonStatEnabled() && isEAReasonDebug() {
+		fmt.Println("flow:", b.explainLocPos(src), k.debugString(b))
 	}
 	if dst.hasAttr(attrEscapes) && k.derefs < 0 { // dst = &src
 		if base.Flag.LowerM >= 2 || logopt.Enabled() {
@@ -312,7 +336,11 @@ func (e *escape) teeHole(ks ...hole) hole {
 		return e.discardHole()
 	}
 	if len(ks) == 1 {
-		return ks[0]
+		// Introduce tmp hole to avoid sharing same dst location with same reason.
+		// Otherwise, holes from same src location to same dst location(like heap location) will be overwritten in fastpath of stat_subgraph
+		loc := e.newLoc(nil, false)
+		e.flow(ks[0], loc)
+		return loc.asHole()
 	}
 	// TODO(mdempsky): Optimize if there's only one non-discard hole?
 

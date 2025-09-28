@@ -73,6 +73,7 @@ const (
 	FPToStar             string = "assign to *X"
 	FPToDotPtr           string = "assign to (*X).Sel"
 	FPToMapIndex         string = "assign to M[Index]"
+	FPRootEscape         string = "root escape"
 )
 
 // bitstring for escape reason
@@ -299,9 +300,9 @@ func (esg *escapeSubGraph) From(id int64) gn.Nodes {
 // To implement EdgeAdder interface
 func (esg *escapeSubGraph) NewEdge(from, to gn.Node) gn.Edge {
 	return &escFlow{
-		src:  from.(*escLocNode),
-		dst:  to.(*escLocNode),
-		hole: hole{},
+		src:   from.(*escLocNode),
+		dst:   to.(*escLocNode),
+		holes: make([]hole, 0),
 	}
 }
 
@@ -539,9 +540,9 @@ func (iter *escLocNodeIter) Node() gn.Node {
 
 // escape subgraph edge
 type escFlow struct {
-	src  *escLocNode
-	dst  *escLocNode
-	hole hole
+	src   *escLocNode
+	dst   *escLocNode
+	holes []hole
 	// cached whys of hole, also used for test.
 	// Notice that the field contains why which is not in why2reason.
 	// But when backPropogate, only why in why2reason will be back propogated.
@@ -601,8 +602,14 @@ func (f *escFlow) Attributes() []encoding.Attribute {
 		Value: strings.Join(f.whys, "\n"),
 	})
 	resAttrs = append(resAttrs, encoding.Attribute{
-		Key:   "xlabel",
-		Value: strconv.Itoa(f.hole.derefs),
+		Key: "xlabel",
+		Value: func() string {
+			derefStrs := make([]string, 0, len(f.holes))
+			for _, hole := range f.holes {
+				derefStrs = append(derefStrs, strconv.Itoa(hole.derefs))
+			}
+			return strings.Join(derefStrs, ", ")
+		}(),
 	})
 	return resAttrs
 }
@@ -644,14 +651,26 @@ func (nr *nodeRemover) RemoveNode(rid int64) {
 
 /*
 why of the first note of hole must be FPDstEscAddrSrc/FPRootOutliveAddrSrc/FPParamLeak
+Notice that fastpath only hashes through src and dst node.
+If src and dst location are the same, then the hole will be overwritten.
 */
-func (esg *escapeSubGraph) fastpath(src *location, hole hole) {
-	dst := hole.dst
+func (esg *escapeSubGraph) fastpath(src *location, newh hole) {
+	dst := newh.dst
 	srcN, dstN := esg.createOrGetNode(src), esg.createOrGetNode(dst)
-	esg.edges[srcN.id][dstN.id] = &escFlow{
-		src:  srcN,
-		dst:  dstN,
-		hole: hole,
+	if flow, ok := esg.edges[srcN.id][dstN.id]; ok {
+		if isEAReasonDebug() {
+			fmt.Printf("fastpath %v -> %v, add hole %s\n", esg.b.explainLocPos(src), esg.b.explainLocPos(dst), strings.Join(newh.notes.whysString(), ", "))
+		}
+		flow.holes = append(flow.holes, newh)
+	} else {
+		if isEAReasonDebug() {
+			fmt.Printf("fastpath new flow %v -> %v, hole %s\n", esg.b.explainLocPos(src), esg.b.explainLocPos(dst), strings.Join(newh.notes.whysString(), ", "))
+		}
+		esg.edges[srcN.id][dstN.id] = &escFlow{
+			src:   srcN,
+			dst:   dstN,
+			holes: []hole{newh},
+		}
 	}
 }
 
@@ -773,8 +792,10 @@ initSetUp prepares some fields for nodes and edges for faster computation
 func (esg *escapeSubGraph) initSetUp() {
 	for _, toedges := range esg.edges {
 		for _, flow := range toedges {
-			for note := flow.hole.notes; note != nil; note = note.next {
-				flow.whys = append(flow.whys, note.why)
+			for _, hole := range flow.holes {
+				for note := hole.notes; note != nil; note = note.next {
+					flow.whys = append(flow.whys, note.why)
+				}
 			}
 		}
 	}

@@ -1,3 +1,5 @@
+//go:build !NeverUsed
+
 package escape
 
 import (

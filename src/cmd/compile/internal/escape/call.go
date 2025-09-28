@@ -10,6 +10,7 @@ import (
 	"cmd/compile/internal/typecheck"
 	"cmd/compile/internal/types"
 	"cmd/internal/src"
+	"fmt"
 	"strings"
 )
 
@@ -19,6 +20,9 @@ import (
 func (e *escape) call(ks []hole, call ir.Node) {
 	argument := func(k hole, arg ir.Node) {
 		// TODO(mdempsky): Should be "call argument".
+		if isEAReasonStatEnabled() && isEAReasonDebug() {
+			fmt.Println("argument:", arg, k.debugString(e.batch))
+		}
 		e.expr(k.note(call, "call parameter"), arg)
 	}
 
@@ -398,6 +402,21 @@ func (e *escape) tagHole(ks []hole, fn *ir.Name, param *types.Field) hole {
 				where = fn
 			}
 			tee = tee.note(where, why)
+		}
+		if isEAReasonStatEnabled() && isEAReasonDebug() {
+			fmt.Println(
+				"teeHole:",
+				tee.debugString(e.batch),
+				"=> tagKs: {",
+				func() string {
+					strs := make([]string, 0, len(tagKs))
+					for _, k := range tagKs {
+						strs = append(strs, k.debugString(e.batch))
+					}
+					return strings.Join(strs, ", ")
+				}(),
+				"}",
+			)
 		}
 	}
 	return tee
