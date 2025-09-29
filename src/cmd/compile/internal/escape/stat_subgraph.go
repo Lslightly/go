@@ -7,9 +7,11 @@ import (
 	"cmd/compile/internal/base"
 	"cmd/compile/internal/ir"
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"path"
+	"runtime"
 	"strconv"
 	"strings"
 
@@ -189,6 +191,10 @@ func (er escapeReason) towhys() []string {
 		}
 	}
 	return whys
+}
+
+func (er escapeReason) empty() bool {
+	return er == 0
 }
 
 var esgCnt int = 0
@@ -575,7 +581,7 @@ func (f *escFlow) backPropogate() escapeReason {
 		if reason, ok := why2reason[why]; ok {
 			r = r.add(reason)
 			if statDebug {
-				fmt.Fprintln(os.Stderr, "why", why)
+				getLogger().Println("why", why)
 			}
 		}
 	}
@@ -584,7 +590,6 @@ func (f *escFlow) backPropogate() escapeReason {
 		if dst.loc.n.(*ir.ClosureExpr).IsGoWrap {
 			r = r.add(ERGo)
 		}
-		r = r.add(ERClosure)
 	}
 	if f.src.loc.isName(ir.PPARAM) {
 		r = r.add(ERParamLeak)
@@ -640,7 +645,7 @@ func (nr *nodeRemover) RemoveNode(rid int64) {
 		}
 	}
 	if statDebug {
-		fmt.Fprintln(os.Stderr, "remove node", rid, esg.nodes[rid].Label())
+		getLogger().Println("remove node", rid, esg.nodes[rid].Label())
 	}
 	delete(esg.nodes, rid)
 	for srcid := range esg.edges {
@@ -659,12 +664,14 @@ func (esg *escapeSubGraph) fastpath(src *location, newh hole) {
 	srcN, dstN := esg.createOrGetNode(src), esg.createOrGetNode(dst)
 	if flow, ok := esg.edges[srcN.id][dstN.id]; ok {
 		if isEAReasonDebug() {
-			fmt.Printf("fastpath %v -> %v, add hole %s\n", esg.b.explainLocPos(src), esg.b.explainLocPos(dst), strings.Join(newh.notes.whysString(), ", "))
+			_, file, line, _ := runtime.Caller(1)
+			getLogger().Printf("fastpath: caller: %s:%d, %v -> %v, add hole %s\n", path.Base(file), line, esg.b.explainLocPos(src), esg.b.explainLocPos(dst), strings.Join(newh.notes.whysString(), ", "))
 		}
 		flow.holes = append(flow.holes, newh)
 	} else {
 		if isEAReasonDebug() {
-			fmt.Printf("fastpath new flow %v -> %v, hole %s\n", esg.b.explainLocPos(src), esg.b.explainLocPos(dst), strings.Join(newh.notes.whysString(), ", "))
+			_, file, line, _ := runtime.Caller(1)
+			getLogger().Printf("fastpath: caller: %s:%d, new flow %v -> %v, hole %s\n", path.Base(file), line, esg.b.explainLocPos(src), esg.b.explainLocPos(dst), strings.Join(newh.notes.whysString(), ", "))
 		}
 		esg.edges[srcN.id][dstN.id] = &escFlow{
 			src:   srcN,
@@ -672,6 +679,11 @@ func (esg *escapeSubGraph) fastpath(src *location, newh hole) {
 			holes: []hole{newh},
 		}
 	}
+}
+
+func (esg *escapeSubGraph) markLocReason(loc *location, reason escapeReason) {
+	node := esg.createOrGetNode(loc)
+	node.addReason(reason)
 }
 
 func esgLog(msg string) {
@@ -723,7 +735,14 @@ func (esg *escapeSubGraph) finishBatch() {
 
 var graphRoot, csvRoot, esgLogPath string
 
-func initEAResultRoot() {
+var logger *log.Logger
+
+func getLogger() *log.Logger {
+	return logger
+}
+
+func initEAReason() {
+	logger = log.New(os.Stdout, "ER: ", log.Lshortfile)
 	graphRoot = path.Join(eaResultRoot(), "graphs", base.Ctxt.Pkgpath)
 	csvRoot = path.Join(eaResultRoot(), "csv", base.Ctxt.Pkgpath)
 	esgLogsRoot := path.Join(eaResultRoot(), "logs", base.Ctxt.Pkgpath)
@@ -811,7 +830,7 @@ func (esg *escapeSubGraph) removeHeap() {
 	heapid, ok := esg.loc2id[&esg.b.heapLoc] // return default id 0 if heap does not exist
 	// add ERRootStackOutlive | ERRootStack for nodes which do have out edges, except heap node
 	for id, node := range esg.nodes {
-		if len(esg.edges[id]) == 0 && id != heapid {
+		if len(esg.edges[id]) == 0 && id != heapid && !node.reason.contains(ERHeap) {
 			if statDebug {
 				fmt.Fprintln(os.Stderr, "find root stack node id:", id, "label:", node.Label())
 			}

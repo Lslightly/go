@@ -13,7 +13,7 @@ func main() {
 func intTransfer(px *int, wg *sync.WaitGroup) {
 	wg.Add(1)
 	go func() {
-		(*px)++
-		wg.Done()
+		(*px)++   // capture by value
+		wg.Done() // capture by value
 	}()
 }

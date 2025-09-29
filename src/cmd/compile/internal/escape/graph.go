@@ -251,8 +251,9 @@ func (b *batch) flow(k hole, src *location) {
 	if dst == src && k.derefs >= 0 { // dst = dst, dst = *dst, ...
 		return
 	}
+
 	if isEAReasonStatEnabled() && isEAReasonDebug() {
-		fmt.Println("flow:", b.explainLocPos(src), k.debugString(b))
+		getLogger().Println("flow:", b.explainLocPos(src), k.debugString(b))
 	}
 	if dst.hasAttr(attrEscapes) && k.derefs < 0 { // dst = &src
 		if base.Flag.LowerM >= 2 || logopt.Enabled() {

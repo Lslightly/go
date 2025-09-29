@@ -122,7 +122,7 @@ type escape struct {
 
 func Funcs(all []*ir.Func) {
 	if isEAReasonStatEnabled() {
-		initEAResultRoot()
+		initEAReason()
 	}
 	ir.VisitFuncsBottomUp(all, Batch)
 	// 然后输出所有的统计信息
@@ -299,7 +299,7 @@ func (b *batch) flowClosure(k hole, clo *ir.ClosureExpr) {
 		// Capture by value for variables <= 128 bytes that are never reassigned.
 		n.SetByval(!loc.addrtaken && !loc.reassigned && n.Type().Size() <= 128)
 		if !n.Byval() {
-			if base.Flag.LowerM >= 2 {
+			if base.Flag.LowerM >= 2 || isEAReasonDebug() {
 				if clo.IsGoWrap {
 					fmt.Println("go wrap closure capture by reference", clo, n, "in", ir.FuncName(n.Curfn))
 				}
@@ -314,7 +314,7 @@ func (b *batch) flowClosure(k hole, clo *ir.ClosureExpr) {
 				base.FatalfAt(n.Pos(), "dictionary variable not captured by value")
 			}
 		} else {
-			if base.Flag.LowerM >= 2 {
+			if base.Flag.LowerM >= 2 || isEAReasonDebug() {
 				if clo.IsGoWrap {
 					fmt.Println("go wrap closure capture by value", clo, n, "in", ir.FuncName(n.Curfn))
 				}
@@ -338,6 +338,8 @@ func (b *batch) flowClosure(k hole, clo *ir.ClosureExpr) {
 		k := k
 		if !cv.Byval() {
 			k = k.addr(cv, "reference")
+		} else {
+			k = k.note(cv, "by value")
 		}
 		b.flow(k.note(cv, "captured by a closure"), loc)
 	}
