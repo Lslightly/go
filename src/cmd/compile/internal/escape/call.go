@@ -393,8 +393,9 @@ func (e *escape) tagHole(ks []hole, fn *ir.Name, param *types.Field) hole {
 
 	tee := e.teeHole(tagKs...)
 	if isEAReasonStatEnabled() {
+		reason := esc.decodeReason()
 		// the tee hole carries the inter-procedural escape reason
-		for _, why := range esc.decodeReason().towhys() {
+		for _, why := range reason.towhys() {
 			var where ir.Node
 			if param.Nname != nil {
 				where = param.Nname.(*ir.Name)
@@ -404,9 +405,11 @@ func (e *escape) tagHole(ks []hole, fn *ir.Name, param *types.Field) hole {
 			tee = tee.note(where, why)
 		}
 		if isEAReasonStatEnabled() && isEAReasonDebug() {
-			fmt.Println(
+			getLogger().Println(
 				"teeHole:",
 				tee.debugString(e.batch),
+				"decode reason:",
+				reason,
 				"=> tagKs: {",
 				func() string {
 					strs := make([]string, 0, len(tagKs))

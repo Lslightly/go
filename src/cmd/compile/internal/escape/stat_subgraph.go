@@ -73,7 +73,6 @@ const (
 	FPGo                 string = "go"
 	FPToIndex            string = "assign to S[Index]"
 	FPToStar             string = "assign to *X"
-	FPToDotPtr           string = "assign to (*X).Sel"
 	FPToMapIndex         string = "assign to M[Index]"
 	FPRootEscape         string = "root escape"
 )
@@ -151,7 +150,6 @@ var why2reason map[string]escapeReason = map[string]escapeReason{
 	FPGo:                    ERGo,
 	FPToIndex:               ERSliceIdx,
 	FPToStar:                ERStar,
-	FPToDotPtr:              ERStar,
 	FPToMapIndex:            ERMapIdx,
 	"key of map put":        ERMapIdx,
 	"send":                  ERComm,
@@ -665,13 +663,13 @@ func (esg *escapeSubGraph) fastpath(src *location, newh hole) {
 	if flow, ok := esg.edges[srcN.id][dstN.id]; ok {
 		if isEAReasonDebug() {
 			_, file, line, _ := runtime.Caller(1)
-			getLogger().Printf("fastpath: caller: %s:%d, %v -> %v, add hole %s\n", path.Base(file), line, esg.b.explainLocPos(src), esg.b.explainLocPos(dst), strings.Join(newh.notes.whysString(), ", "))
+			getLogger().Printf("fastpath: caller1: %s:%d, exist flow %v -> %v, add hole %s\n", path.Base(file), line, esg.b.explainLocPos(src), esg.b.explainLocPos(dst), strings.Join(newh.notes.whysString(), ", "))
 		}
 		flow.holes = append(flow.holes, newh)
 	} else {
 		if isEAReasonDebug() {
 			_, file, line, _ := runtime.Caller(1)
-			getLogger().Printf("fastpath: caller: %s:%d, new flow %v -> %v, hole %s\n", path.Base(file), line, esg.b.explainLocPos(src), esg.b.explainLocPos(dst), strings.Join(newh.notes.whysString(), ", "))
+			getLogger().Printf("fastpath: caller1: %s:%d, new flow %v -> %v, hole %s\n", path.Base(file), line, esg.b.explainLocPos(src), esg.b.explainLocPos(dst), strings.Join(newh.notes.whysString(), ", "))
 		}
 		esg.edges[srcN.id][dstN.id] = &escFlow{
 			src:   srcN,
@@ -917,13 +915,14 @@ func writeToFile(fpath string, content string) (int, error) {
 	return fmt.Fprint(f, content)
 }
 
-func (esg *escapeSubGraph) encodeLocLeakReason(loc *location, esc *leaks) {
+func (esg *escapeSubGraph) encodeLocLeakReason(loc *location, esc *leaks) (reason escapeReason, found bool) {
 	id, ok := esg.loc2id[loc]
 	if !ok {
-		return
+		return 0, false
 	}
 	node := esg.nodes[id]
 	esc.encodeReason(node.reason)
+	return node.reason, true
 }
 
 func (esg *escapeSubGraph) findNode(label string) *escLocNode {

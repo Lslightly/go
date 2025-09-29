@@ -543,7 +543,14 @@ func (b *batch) paramTag(fn *ir.Func, narg int, f *types.Field) string {
 	}
 
 	if isEAReasonStatEnabled() {
-		getEsg().encodeLocLeakReason(loc, &esc)
+		reason, found := getEsg().encodeLocLeakReason(loc, &esc)
+		if isEAReasonDebug() {
+			if found {
+				getLogger().Printf("encode reason for %s, reason: %d\n", b.explainLocPos(loc), reason)
+			} else {
+				getLogger().Printf("encode reason for %s, not found\n", b.explainLocPos(loc))
+			}
+		}
 	}
 
 	return esc.Encode()

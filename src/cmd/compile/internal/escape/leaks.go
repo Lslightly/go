@@ -141,9 +141,35 @@ func (l leaks) Encode() string {
 // parseLeaks parses a binary string representing a leaks.
 func parseLeaks(s string) leaks {
 	var l leaks
-	if isEAReasonDebug() {
-		if len(s) != 0 && !strings.HasPrefix(s, "esc:") && (byte(s[0]) != 0 || byte(s[1]) != 0) {
-			fmt.Printf("parseLeaks reason [%v, %v], esc %v\n", byte(s[0]), byte(s[1]), []byte(s[2:]))
+	if isEAReasonStatEnabled() && isEAReasonDebug() {
+		str := "parseLeaks: "
+		if !strings.HasPrefix(s, "esc:") {
+			if len(s) == leakHeap {
+				// reason0 reason1
+				str += "heap, reason: "
+				str += fmt.Sprintf("0b%08b%08b", s[1], s[0])
+				getLogger().Println(str)
+			} else if len(s) == 0 {
+				// ""
+				str += "heap, no reason"
+				getLogger().Println(str)
+			} else {
+				// reason0 reason1 esc:...
+				str += "reason: "
+				str += fmt.Sprintf("0b%08b%08b", s[1], s[0])
+				str += " esc:"
+				for i := 4 + leakHeap; i < len(s); i++ {
+					str += fmt.Sprintf(" %d", s[i])
+				}
+				getLogger().Println(str)
+			}
+		} else {
+			// esc:...
+			str += "no reason, esc:"
+			for i := 4; i < len(s); i++ {
+				str += fmt.Sprintf(" %d", s[i])
+			}
+			getLogger().Println(str)
 		}
 	}
 	// don't use s == "" here because the len(s) can be non-zero while s is ""

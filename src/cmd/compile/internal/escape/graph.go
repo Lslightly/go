@@ -10,6 +10,8 @@ import (
 	"cmd/compile/internal/logopt"
 	"cmd/compile/internal/types"
 	"fmt"
+	"path"
+	"runtime"
 	"strings"
 )
 
@@ -253,7 +255,9 @@ func (b *batch) flow(k hole, src *location) {
 	}
 
 	if isEAReasonStatEnabled() && isEAReasonDebug() {
-		getLogger().Println("flow:", b.explainLocPos(src), k.debugString(b))
+		_, file, line, _ := runtime.Caller(1)
+		caller1 := fmt.Sprintf("caller1: %s:%d", path.Base(file), line)
+		getLogger().Println("flow:", caller1, b.explainLocPos(src), k.debugString(b))
 	}
 	if dst.hasAttr(attrEscapes) && k.derefs < 0 { // dst = &src
 		if base.Flag.LowerM >= 2 || logopt.Enabled() {

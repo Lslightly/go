@@ -50,7 +50,7 @@ func (e *escape) addr(n ir.Node) hole {
 	case ir.ODOTPTR: //*x.f
 		n := n.(*ir.SelectorExpr)
 		e.mutate(n.X)
-		k = k.note(n, FPToDotPtr)
+		k = k.note(n, FPToStar)
 	case ir.OINDEXMAP: //map[]
 		n := n.(*ir.IndexExpr)
 		lvalue_is_map = true
