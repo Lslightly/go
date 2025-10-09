@@ -365,6 +365,40 @@ func TestEasyPkg(t *testing.T) {
 	// utils Util removeheap phase
 	scope(t, fixture.graph("demo/fixtures/easyPkg/utils", 0, pRemoveHeap), func(esg *escapeSubGraph) {
 		assert.Len(t, esg.nodes, 2)
-		// TODO return
+		p := esg.findNode("p @ utils.go:4:11")
+		assert.NotNil(t, p)
+
+		ret0 := esg.findNode("~r0 @ utils.go:4:19")
+		assert.NotNil(t, ret0)
+		assert.False(t, ret0.reason.contains(ERRootStack|EROutliveRootStack))
+	})
+
+	// utils Util backPropogate phase
+	scope(t, fixture.graph("demo/fixtures/easyPkg/utils", 0, pBackPropogate), func(esg *escapeSubGraph) {
+		assert.Len(t, esg.nodes, 2)
+		p := esg.findNode("p @ utils.go:4:11")
+		assert.NotNil(t, p)
+		assert.True(t, p.reason.contains(ERReturn|ERParamLeak))
+	})
+
+	// utils ToHeap init phase
+	scope(t, fixture.graph("demo/fixtures/easyPkg/utils", 1, pInit), func(esg *escapeSubGraph) {
+		assert.Len(t, esg.nodes, 2)
+
+		px := esg.findNode("px @ utils.go:9:13")
+		assert.NotNil(t, px)
+		assert.False(t, px.reason.contains(ERStar|ERParamLeak|ERHeap))
+
+		heap := esg.findNode("{heap}")
+		assert.NotNil(t, heap)
+	})
+
+	// utils ToHeap removeheap phase
+	scope(t, fixture.graph("demo/fixtures/easyPkg/utils", 1, pRemoveHeap), func(esg *escapeSubGraph) {
+		assert.Len(t, esg.nodes, 1)
+
+		px := esg.findNode("px @ utils.go:9:13")
+		assert.NotNil(t, px)
+		assert.True(t, px.reason.contains(ERStar|ERParamLeak|ERHeap))
 	})
 }

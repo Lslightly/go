@@ -818,6 +818,14 @@ func (esg *escapeSubGraph) initSetUp() {
 	}
 }
 
+func (esg *escapeSubGraph) mustNotInStack(node *escLocNode) bool {
+	return node.loc == &esg.b.heapLoc ||
+		node.reason.contains(ERHeap) ||
+		node.loc.isName(ir.PPARAMOUT) ||
+		node.loc.isName(ir.PEXTERN) ||
+		node.loc.isName(ir.PAUTOHEAP)
+}
+
 /*
 removeHeap first mark all nodes which does not have out edges
 as ERRootStack. Then it propogate ERHeap to each node outlived
@@ -828,7 +836,7 @@ func (esg *escapeSubGraph) removeHeap() {
 	heapid, ok := esg.loc2id[&esg.b.heapLoc] // return default id 0 if heap does not exist
 	// add ERRootStackOutlive | ERRootStack for nodes which do have out edges, except heap node
 	for id, node := range esg.nodes {
-		if len(esg.edges[id]) == 0 && id != heapid && !node.reason.contains(ERHeap) {
+		if len(esg.edges[id]) == 0 && !esg.mustNotInStack(node) {
 			if statDebug {
 				fmt.Fprintln(os.Stderr, "find root stack node id:", id, "label:", node.Label())
 			}
