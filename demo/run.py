@@ -7,6 +7,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from contextlib import redirect_stdout
 import os
+import shutil
 
 import pandas as pd
 
@@ -178,8 +179,10 @@ def stat(EAResultRoot: Path):
 def run(repoRoot: Path, statRoot: Path, repo: str, repoBuild: Callable[[Path, Path], None]=build):
     repoPath = repoRoot/repo
     EAResultRoot = statRoot/repo
-    EAResultRoot.mkdir(parents=True, exist_ok=True)
     if do_build:
+        if EAResultRoot.exists():
+            shutil.rmtree(EAResultRoot)
+        EAResultRoot.mkdir(parents=True, exist_ok=True)
         repoBuild(repoPath, EAResultRoot)
     has_all_csv = collect(EAResultRoot)
     if has_all_csv:
