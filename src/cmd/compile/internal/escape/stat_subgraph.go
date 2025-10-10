@@ -151,6 +151,8 @@ var why2reason map[string]escapeReason = map[string]escapeReason{
 	FPToIndex:               ERSliceIdx,
 	FPToStar:                ERStar,
 	FPToMapIndex:            ERMapIdx,
+	FPDstEscAddrSrc:         ERHeap,
+	FPRootOutliveAddrSrc:    ERHeap, // root = &l, outlives(root, l)  should also be considered as ERHeap when backPropogate
 	"key of map put":        ERMapIdx,
 	"send":                  ERComm,
 	"return":                ERReturn,

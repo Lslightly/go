@@ -359,6 +359,7 @@ func TestEasyPkg(t *testing.T) {
 		p := esg.findNode("p @ utils.go:4:11")
 		assert.NotNil(t, p)
 		assert.True(t, p.reason.contains(ERReturn|ERParamLeak))
+		assert.False(t, p.reason.contains(ERHeap))
 	})
 
 	// utils ToHeap init phase
@@ -474,11 +475,15 @@ func TestReturn(t *testing.T) {
 		statRoot: demoStatRootDir(t),
 	}
 
-	// return returnAddress init phase
+	// ret returnAddress init phase
 	scope(t, fixture.graph("demo/fixtures/ret", 0, pInit), func(esg *escapeSubGraph) {
 		assert.Len(t, esg.nodes, 3)
 		p1, r0, i := esg.findNode("p1 @ return.go:5:2"), esg.findNode("~r0 @ return.go:3:22"), esg.findNode("i @ return.go:4:2")
 		allNotNil(t, p1, r0, i)
+
+		for _, n := range []*escLocNode{p1, r0, i} {
+			assert.False(t, n.reason.contains(ERHeap))
+		}
 
 		i2p1 := esg.Flow(i, p1)
 		p12r0 := esg.Flow(p1, r0)
@@ -487,7 +492,7 @@ func TestReturn(t *testing.T) {
 		assert.Subset(t, p12r0.whys, []string{"return"})
 	})
 
-	// return returnAddress backPropogate phase
+	// ret returnAddress backPropogate phase
 	scope(t, fixture.graph("demo/fixtures/ret", 0, pBackPropogate), func(esg *escapeSubGraph) {
 		assert.Len(t, esg.nodes, 3)
 		p1, r0, i := esg.findNode("p1 @ return.go:5:2"), esg.findNode("~r0 @ return.go:3:22"), esg.findNode("i @ return.go:4:2")
@@ -495,5 +500,32 @@ func TestReturn(t *testing.T) {
 
 		assert.True(t, p1.reason.contains(ERReturn|ERHeap))
 		assert.True(t, i.reason.contains(ERReturn|ERHeap))
+		assert.True(t, r0.reason.empty())
+	})
+
+	// ret returnParam init phase
+	scope(t, fixture.graph("demo/fixtures/ret", 1, pInit), func(esg *escapeSubGraph) {
+		assert.Len(t, esg.nodes, 4)
+		i, heap, p, r0 := esg.findNode("i @ return.go:11:2"), esg.findNode("{heap}"), esg.findNode("p @ return.go:10:18"), esg.findNode("~r0 @ return.go:10:27")
+		allNotNil(t, i, heap, p, r0)
+
+		i2heap := esg.Flow(i, heap)
+		p2r0 := esg.Flow(p, r0)
+		allNotNil(t, i2heap, p2r0)
+
+		assert.Subset(t, i2heap.whys, []string{FPDstEscAddrSrc, FPToStar, "address-of"})
+		assert.Subset(t, p2r0.whys, []string{FPParamLeak, "return"})
+	})
+
+	// ret returnParam backPropogate phase
+	scope(t, fixture.graph("demo/fixtures/ret", 1, pBackPropogate), func(esg *escapeSubGraph) {
+		assert.Len(t, esg.nodes, 3)
+		i, p, r0 := esg.findNode("i @ return.go:11:2"), esg.findNode("p @ return.go:10:18"), esg.findNode("~r0 @ return.go:10:27")
+		allNotNil(t, i, p, r0)
+
+		assert.True(t, i.reason.contains(ERHeap|ERStar))
+		assert.True(t, p.reason.contains(ERParamLeak|ERReturn))
+		assert.False(t, p.reason.contains(ERHeap))
+		assert.True(t, r0.reason.empty())
 	})
 }
