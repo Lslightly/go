@@ -1,6 +1,7 @@
 package escape
 
 import (
+	"fmt"
 	"internal/testenv"
 	"os"
 	"path/filepath"
@@ -65,6 +66,12 @@ func scope(t *testing.T, graphPath string, test func(esg *escapeSubGraph)) {
 	esg, err := unmarshalEsg(graphPath)
 	assert.Nil(t, err)
 	test(esg)
+}
+
+func allNotNil[T *escLocNode | *escFlow](t *testing.T, nodes ...T) {
+	for i, n := range nodes {
+		assert.NotNil(t, n, fmt.Sprint("arg", i))
+	}
 }
 
 func TestGoInterprocedural(t *testing.T) {
@@ -285,14 +292,12 @@ func TestClosureGo(t *testing.T) {
 
 		heap := esg.findNode("{heap}")
 		assert.Nil(t, heap)
-
 		x := esg.findNode("x @ closure_go.go:55:2")
-		assert.NotNil(t, x)
-		assert.False(t, x.reason.contains(ERHeap|ERGo))
-
 		closure := esg.findNode("{storage for func literal @ closure_go.go:56:2}")
-		assert.NotNil(t, closure)
 
+		allNotNil(t, x, closure)
+
+		assert.False(t, x.reason.contains(ERHeap|ERGo))
 		assert.True(t, closure.reason.contains(ERGo|ERHeap))
 		assert.True(t, x.reason.empty())
 	})
@@ -349,11 +354,10 @@ func TestEasyPkg(t *testing.T) {
 		assert.Len(t, esg.nodes, 2)
 
 		p := esg.findNode("p @ utils.go:4:11")
-		assert.NotNil(t, p)
-		assert.False(t, p.reason.contains(ERReturn|ERParamLeak))
-
 		ret0 := esg.findNode("~r0 @ utils.go:4:19")
-		assert.NotNil(t, ret0)
+		allNotNil(t, p, ret0)
+
+		assert.False(t, p.reason.contains(ERReturn|ERParamLeak))
 		assert.False(t, ret0.reason.contains(ERReturn|ERRootStack))
 
 		p2ret0, ok := esg.Edge(p.ID(), ret0.ID()).(*escFlow)
@@ -366,10 +370,9 @@ func TestEasyPkg(t *testing.T) {
 	scope(t, fixture.graph("demo/fixtures/easyPkg/utils", 0, pRemoveHeap), func(esg *escapeSubGraph) {
 		assert.Len(t, esg.nodes, 2)
 		p := esg.findNode("p @ utils.go:4:11")
-		assert.NotNil(t, p)
-
 		ret0 := esg.findNode("~r0 @ utils.go:4:19")
-		assert.NotNil(t, ret0)
+		allNotNil(t, p, ret0)
+
 		assert.False(t, ret0.reason.contains(ERRootStack|EROutliveRootStack))
 	})
 
@@ -386,11 +389,10 @@ func TestEasyPkg(t *testing.T) {
 		assert.Len(t, esg.nodes, 2)
 
 		px := esg.findNode("px @ utils.go:9:13")
-		assert.NotNil(t, px)
-		assert.False(t, px.reason.contains(ERStar|ERParamLeak|ERHeap))
-
 		heap := esg.findNode("{heap}")
-		assert.NotNil(t, heap)
+		allNotNil(t, px, heap)
+
+		assert.False(t, px.reason.contains(ERStar|ERParamLeak|ERHeap))
 	})
 
 	// utils ToHeap removeheap phase
@@ -438,18 +440,15 @@ func TestIndirect(t *testing.T) {
 		a := esg.findNode("a @ indirect.go:23:2")
 		heap := esg.findNode("{heap}")
 		S := esg.findNode("{storage for &S{...} @ indirect.go:24:7}")
-		for _, n := range []*escLocNode{a, heap, S} {
-			assert.NotNil(t, n)
-		}
+		allNotNil(t, a, heap, S)
 
 		assert.True(t, S.reason.contains(ERHeap)) // 3 -> 2 will set storage of &S(3) attrEscapes. When handling 1->3, if 1 is already marked as attrEscapes and 3 is attrEscapes, then reason ERHeap will be added to 3
 
 		S2heap := esg.Edge(S.id, heap.id).(*escFlow)
-		assert.NotNil(t, S2heap)
+		a2heap := esg.Edge(a.id, heap.id).(*escFlow)
+		allNotNil(t, S2heap, a2heap)
 		assert.Subset(t, S2heap.whys, []string{"key of map put"})
 
-		a2heap := esg.Edge(a.id, heap.id).(*escFlow)
-		assert.NotNil(t, a2heap)
 		assert.Subset(t, a2heap.whys, []string{FPToMapIndex})
 	})
 
@@ -459,14 +458,65 @@ func TestIndirect(t *testing.T) {
 
 		a := esg.findNode("a @ indirect.go:23:2")
 		S := esg.findNode("{storage for &S{...} @ indirect.go:24:7}")
-		for _, n := range []*escLocNode{a, S} {
-			assert.NotNil(t, n)
-		}
+		allNotNil(t, a, S)
 
 		assert.True(t, a.reason.contains(ERHeap|ERMapIdx))
 		assert.True(t, S.reason.contains(ERHeap|ERMapIdx))
 
 		a2S := esg.Edge(a.id, S.id).(*escFlow)
 		assert.Subset(t, a2S.whys, []string{FPRootOutliveAddrSrc})
+	})
+}
+
+func TestParamLeak(t *testing.T) {
+	fixture := fixture{
+		name: "paramleak",
+		pkgs: []string{
+			"demo/fixtures/paramleak",
+		},
+		statRoot: demoStatRootDir(t),
+	}
+
+	// paramleak callee removeheap phase
+	scope(t, fixture.graph("demo/fixtures/paramleak", 0, pRemoveHeap), func(esg *escapeSubGraph) {
+		assert.Len(t, esg.nodes, 1)
+
+		p := esg.findNode("p @ paramleak.go:5:13")
+		assert.NotNil(t, p)
+
+		assert.True(t, p.reason.contains(ERHeap|ERParamLeak))
+	})
+}
+
+func TestReturn(t *testing.T) {
+	fixture := fixture{
+		name: "ret",
+		pkgs: []string{
+			"demo/fixtures/ret",
+		},
+		statRoot: demoStatRootDir(t),
+	}
+
+	// return returnAddress init phase
+	scope(t, fixture.graph("demo/fixtures/ret", 0, pInit), func(esg *escapeSubGraph) {
+		assert.Len(t, esg.nodes, 3)
+		p1, r0, i := esg.findNode("p1 @ return.go:5:2"), esg.findNode("~r0 @ return.go:3:22"), esg.findNode("i @ return.go:4:2")
+		allNotNil(t, p1, r0, i)
+
+		i2p1 := esg.Edge(i.id, p1.id).(*escFlow)
+		p12r0 := esg.Edge(p1.id, r0.id).(*escFlow)
+		allNotNil(t, i2p1, p12r0)
+
+		assert.Subset(t, p12r0.whys, []string{"return"})
+	})
+
+	// return returnAddress backPropogate phase
+	scope(t, fixture.graph("demo/fixtures/ret", 0, pBackPropogate), func(esg *escapeSubGraph) {
+		assert.Len(t, esg.nodes, 3)
+		p1, r0, i := esg.findNode("p1 @ return.go:5:2"), esg.findNode("~r0 @ return.go:3:22"), esg.findNode("i @ return.go:4:2")
+		allNotNil(t, p1, r0, i)
+
+		assert.True(t, p1.reason.contains(ERReturn|ERHeap))
+		assert.True(t, i.reason.contains(ERReturn|ERHeap))
 	})
 }
