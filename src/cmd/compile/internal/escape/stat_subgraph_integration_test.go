@@ -86,27 +86,24 @@ func TestGoInterprocedural(t *testing.T) {
 	// main init phase
 	scope(t, fixture.graph("main", 1, pInit), func(esg *escapeSubGraph) {
 		heap := esg.findNode("{heap}")
-		assert.NotNil(t, heap)
 		a := esg.findNode("a @ main.go:6:2")
-		assert.NotNil(t, a)
+		wg := esg.findNode("wg @ main.go:7:6")
+
+		allNotNil(t, heap, a, wg)
 		outedges := esg.EdgeFrom(a.id)
 		// a -> heap
 		assert.Equal(t, 1, len(outedges))
 
-		toHeapEdge, ok := esg.Edge(a.ID(), heap.ID()).(*escFlow)
+		toHeapEdge := esg.Flow(a, heap)
 		assert.NotNil(t, toHeapEdge)
-		assert.True(t, ok)
 		assert.Subset(t, toHeapEdge.whys, []string{FPGo, FPRootOutliveAddrSrc})
 
-		wg := esg.findNode("wg @ main.go:7:6")
-		assert.NotNil(t, wg)
 		outedges = esg.EdgeFrom(wg.id)
 		// wg -> heap
 		assert.Equal(t, 1, len(outedges))
 
-		toHeapEdge, ok = esg.Edge(wg.ID(), heap.ID()).(*escFlow)
+		toHeapEdge = esg.Flow(wg, heap)
 		assert.NotNil(t, toHeapEdge)
-		assert.True(t, ok)
 		assert.Subset(t, toHeapEdge.whys, []string{FPGo, FPRootOutliveAddrSrc})
 	})
 
@@ -136,25 +133,20 @@ func TestClosureGo(t *testing.T) {
 	// go_capture_by_ref init phase
 	scope(t, fixture.graph("main", 0, pInit), func(esg *escapeSubGraph) {
 		heap := esg.findNode("{heap}")
-		assert.NotNil(t, heap)
-
 		x := esg.findNode("x @ closure_go.go:14:2")
-		assert.NotNil(t, x)
+		closure := esg.findNode("storage for func literal @ closure_go.go:15:5")
+		allNotNil(t, heap, x, closure)
+
 		assert.False(t, x.reason.contains(ERHeap|ERGo|ERClosure))
 
-		closure := esg.findNode("storage for func literal @ closure_go.go:15:5")
-		assert.NotNil(t, closure)
-
 		// x -- reference --> closure
-		x2closureEdge, ok := esg.Edge(x.ID(), closure.ID()).(*escFlow)
+		x2closureEdge := esg.Flow(x, closure)
 		assert.NotNil(t, x2closureEdge)
-		assert.True(t, ok)
 		assert.Subset(t, x2closureEdge.whys, []string{"reference", FPDstEscAddrSrc})
 
 		// closure -- go --> heap
-		closure2heapEdge, ok := esg.Edge(closure.ID(), heap.ID()).(*escFlow)
+		closure2heapEdge := esg.Flow(closure, heap)
 		assert.NotNil(t, closure2heapEdge)
-		assert.True(t, ok)
 		assert.Subset(t, closure2heapEdge.whys, []string{FPGo})
 	})
 
@@ -186,15 +178,12 @@ func TestClosureGo(t *testing.T) {
 	scope(t, fixture.graph("main", 1, pInit), func(esg *escapeSubGraph) {
 		assert.Len(t, esg.nodes, 2)
 		heap := esg.findNode("{heap}")
-		assert.NotNil(t, heap)
-
 		closure := esg.findNode("storage for func literal @ closure_go.go:24:5")
-		assert.NotNil(t, closure)
+		allNotNil(t, heap, closure)
 
 		// closure -- go --> heap
-		closure2heapEdge, ok := esg.Edge(closure.ID(), heap.ID()).(*escFlow)
+		closure2heapEdge := esg.Flow(closure, heap)
 		assert.NotNil(t, closure2heapEdge)
-		assert.True(t, ok)
 		assert.Subset(t, closure2heapEdge.whys, []string{FPGo})
 	})
 
@@ -214,25 +203,20 @@ func TestClosureGo(t *testing.T) {
 	scope(t, fixture.graph("main", 2, pInit), func(esg *escapeSubGraph) {
 		assert.Len(t, esg.nodes, 3)
 		heap := esg.findNode("{heap}")
-		assert.NotNil(t, heap)
-
 		y := esg.findNode("y @ closure_go.go:60:2")
-		assert.NotNil(t, y)
+		closure := esg.findNode("storage for func literal @ closure_go.go:62:9")
+		allNotNil(t, heap, y, closure)
+
 		assert.False(t, y.reason.contains(ERHeap|ERDefer))
 
-		closure := esg.findNode("storage for func literal @ closure_go.go:62:9")
-		assert.NotNil(t, closure)
-
 		// y -- reference --> closure
-		y2closureEdge, ok := esg.Edge(y.ID(), closure.ID()).(*escFlow)
+		y2closureEdge := esg.Flow(y, closure)
 		assert.NotNil(t, y2closureEdge)
-		assert.True(t, ok)
 		assert.Subset(t, y2closureEdge.whys, []string{"reference", FPDstEscAddrSrc})
 
 		// closure -- defer --> heap
-		closure2heapEdge, ok := esg.Edge(closure.ID(), heap.ID()).(*escFlow)
+		closure2heapEdge := esg.Flow(closure, heap)
 		assert.NotNil(t, closure2heapEdge)
-		assert.True(t, ok)
 		assert.Subset(t, closure2heapEdge.whys, []string{FPDefer, FPDstEscAddrSrc})
 	})
 
@@ -264,25 +248,20 @@ func TestClosureGo(t *testing.T) {
 	scope(t, fixture.graph("main", 3, pInit), func(esg *escapeSubGraph) {
 		assert.Len(t, esg.nodes, 3)
 		heap := esg.findNode("{heap}")
-		assert.NotNil(t, heap)
-
 		x := esg.findNode("x @ closure_go.go:55:2")
-		assert.NotNil(t, x)
+		closure := esg.findNode("{storage for func literal @ closure_go.go:56:2}")
+		allNotNil(t, heap, x, closure)
+
 		assert.False(t, x.reason.contains(ERHeap|ERGo))
 
-		closure := esg.findNode("{storage for func literal @ closure_go.go:56:2}")
-		assert.NotNil(t, closure)
-
 		// x -- address-of --> closure
-		x2closureEdge, ok := esg.Edge(x.ID(), closure.ID()).(*escFlow)
+		x2closureEdge := esg.Flow(x, closure)
 		assert.NotNil(t, x2closureEdge)
-		assert.True(t, ok)
 		assert.Subset(t, x2closureEdge.whys, []string{FPRootOutliveAddrSrc, "address-of"}) // TODO closure capture &x by value, but x is not captured by value, but by reference.
 
 		// closure -- go --> heap
-		closure2heapEdge, ok := esg.Edge(closure.ID(), heap.ID()).(*escFlow)
+		closure2heapEdge := esg.Flow(closure, heap)
 		assert.NotNil(t, closure2heapEdge)
-		assert.True(t, ok)
 		assert.Subset(t, closure2heapEdge.whys, []string{FPGo, FPDstEscAddrSrc})
 	})
 
@@ -334,9 +313,8 @@ func TestEasyPkg(t *testing.T) {
 		assert.False(t, y.reason.contains(ERHeap|ERParamLeak))
 
 		// y -- address-of --> heap
-		y2heapEdge, ok := esg.Edge(y.ID(), heap.ID()).(*escFlow)
+		y2heapEdge := esg.Flow(y, heap)
 		assert.NotNil(t, y2heapEdge)
-		assert.True(t, ok)
 		assert.Subset(t, y2heapEdge.whys, []string{FPRootOutliveAddrSrc, "address-of", FPToStar, FPParamLeak})
 	})
 
@@ -360,9 +338,8 @@ func TestEasyPkg(t *testing.T) {
 		assert.False(t, p.reason.contains(ERReturn|ERParamLeak))
 		assert.False(t, ret0.reason.contains(ERReturn|ERRootStack))
 
-		p2ret0, ok := esg.Edge(p.ID(), ret0.ID()).(*escFlow)
+		p2ret0 := esg.Flow(p, ret0)
 		assert.NotNil(t, p2ret0)
-		assert.True(t, ok)
 		assert.Subset(t, p2ret0.whys, []string{"return", FPParamLeak})
 	})
 
@@ -444,8 +421,8 @@ func TestIndirect(t *testing.T) {
 
 		assert.True(t, S.reason.contains(ERHeap)) // 3 -> 2 will set storage of &S(3) attrEscapes. When handling 1->3, if 1 is already marked as attrEscapes and 3 is attrEscapes, then reason ERHeap will be added to 3
 
-		S2heap := esg.Edge(S.id, heap.id).(*escFlow)
-		a2heap := esg.Edge(a.id, heap.id).(*escFlow)
+		S2heap := esg.Flow(S, heap)
+		a2heap := esg.Flow(a, heap)
 		allNotNil(t, S2heap, a2heap)
 		assert.Subset(t, S2heap.whys, []string{"key of map put"})
 
@@ -463,7 +440,7 @@ func TestIndirect(t *testing.T) {
 		assert.True(t, a.reason.contains(ERHeap|ERMapIdx))
 		assert.True(t, S.reason.contains(ERHeap|ERMapIdx))
 
-		a2S := esg.Edge(a.id, S.id).(*escFlow)
+		a2S := esg.Flow(a, S)
 		assert.Subset(t, a2S.whys, []string{FPRootOutliveAddrSrc})
 	})
 }
@@ -503,8 +480,8 @@ func TestReturn(t *testing.T) {
 		p1, r0, i := esg.findNode("p1 @ return.go:5:2"), esg.findNode("~r0 @ return.go:3:22"), esg.findNode("i @ return.go:4:2")
 		allNotNil(t, p1, r0, i)
 
-		i2p1 := esg.Edge(i.id, p1.id).(*escFlow)
-		p12r0 := esg.Edge(p1.id, r0.id).(*escFlow)
+		i2p1 := esg.Flow(i, p1)
+		p12r0 := esg.Flow(p1, r0)
 		allNotNil(t, i2p1, p12r0)
 
 		assert.Subset(t, p12r0.whys, []string{"return"})

@@ -367,6 +367,10 @@ func (esg *escapeSubGraph) Edge(uid, vid int64) gn.Edge {
 	}
 }
 
+func (esg *escapeSubGraph) Flow(u, v *escLocNode) *escFlow {
+	return esg.Edge(u.id, v.id).(*escFlow)
+}
+
 // HasEdgeFromTo returns whether an edge exists
 // in the graph from u to v with IDs uid and vid.
 func (esg *escapeSubGraph) HasEdgeFromTo(uid, vid int64) bool {
