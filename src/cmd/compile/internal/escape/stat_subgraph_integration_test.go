@@ -442,8 +442,6 @@ func TestIndirect(t *testing.T) {
 			assert.NotNil(t, n)
 		}
 
-		t.Log("S reason", S.reasonsStr())
-
 		assert.True(t, S.reason.contains(ERHeap)) // 3 -> 2 will set storage of &S(3) attrEscapes. When handling 1->3, if 1 is already marked as attrEscapes and 3 is attrEscapes, then reason ERHeap will be added to 3
 
 		S2heap := esg.Edge(S.id, heap.id).(*escFlow)
@@ -453,5 +451,22 @@ func TestIndirect(t *testing.T) {
 		a2heap := esg.Edge(a.id, heap.id).(*escFlow)
 		assert.NotNil(t, a2heap)
 		assert.Subset(t, a2heap.whys, []string{FPToMapIndex})
+	})
+
+	// indirect Mapidx removeheap phase
+	scope(t, fixture.graph("demo/fixtures/indirect", 2, pRemoveHeap), func(esg *escapeSubGraph) {
+		assert.Len(t, esg.nodes, 2)
+
+		a := esg.findNode("a @ indirect.go:23:2")
+		S := esg.findNode("{storage for &S{...} @ indirect.go:24:7}")
+		for _, n := range []*escLocNode{a, S} {
+			assert.NotNil(t, n)
+		}
+
+		assert.True(t, a.reason.contains(ERHeap|ERMapIdx))
+		assert.True(t, S.reason.contains(ERHeap|ERMapIdx))
+
+		a2S := esg.Edge(a.id, S.id).(*escFlow)
+		assert.Subset(t, a2S.whys, []string{FPRootOutliveAddrSrc})
 	})
 }
