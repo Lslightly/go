@@ -11,3 +11,4 @@ __pycache__
 *.s
 stat_root/*/logs
 *.png
+build.log
