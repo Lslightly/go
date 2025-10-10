@@ -82,7 +82,7 @@ type escapeReason int64
 
 const (
 	ERHeap             escapeReason = 1 << iota // root is heap
-	ERStar                                      // root is *x
+	ERStar                                      // root is *x, here we don't add (*x).sel because now we don't care about field-sensitivity
 	ERRootStack                                 // root in stack
 	EROutliveRootStack                          // outlived by root in stack
 	ERClosure                                   // root is closure
