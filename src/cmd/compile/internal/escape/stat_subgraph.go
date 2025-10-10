@@ -74,7 +74,6 @@ const (
 	FPToIndex            string = "assign to S[Index]"
 	FPToStar             string = "assign to *X"
 	FPToMapIndex         string = "assign to M[Index]"
-	FPRootEscape         string = "root escape"
 )
 
 // bitstring for escape reason
@@ -85,18 +84,23 @@ const (
 	ERStar                                      // root is *x, here we don't add (*x).sel because now we don't care about field-sensitivity
 	ERRootStack                                 // root in stack
 	EROutliveRootStack                          // outlived by root in stack
-	ERClosure                                   // root is closure
-	ERGo                                        // root is go
-	ERDefer                                     // root is defer
-	ERReturn                                    // l is returned
-	ERParamLeak                                 // param leak. arguments will also be marked as param leak if the param is param leak.
-	ERMapIdx                                    // m[index]
-	ERSliceIdx                                  // s[index]
-	ERComm                                      // communication by send
-	ERAppend                                    // append
-	ERCopy                                      // copied slice
-	ERMust                                      // must be heap allocated
-	ERNumber           = iota
+
+	/*
+		TODO: There are cases that are ERGo but not ERClosure
+	*/
+
+	ERClosure   // root is closure
+	ERGo        // root is go
+	ERDefer     // root is defer
+	ERReturn    // l is returned
+	ERParamLeak // param leak. arguments will also be marked as param leak if the param is param leak. Note ParamLeak does not necessarily mean parameter itself leaks to heap. Derefs of param can escapes to heap, so parameter should not be marked as escape.
+	ERMapIdx    // m[index]
+	ERSliceIdx  // s[index]
+	ERComm      // communication by send
+	ERAppend    // append
+	ERCopy      // copied slice
+	ERMust      // must be heap allocated
+	ERNumber    = iota
 )
 
 var reason2xlabel map[escapeReason]string = map[escapeReason]string{
