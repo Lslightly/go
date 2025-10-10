@@ -479,7 +479,7 @@ func (n *escLocNode) SetAttribute(attr encoding.Attribute) error {
 	case "label":
 		n.label = attr.Value
 	case "xlabel":
-		if strings.Count(attr.Value, ",") == 0 {
+		if len(attr.Value) == 0 {
 			break
 		}
 		for rlabel := range strings.SplitSeq(attr.Value, ",") {

@@ -402,3 +402,56 @@ func TestEasyPkg(t *testing.T) {
 		assert.True(t, px.reason.contains(ERStar|ERParamLeak|ERHeap))
 	})
 }
+
+func TestIndirect(t *testing.T) {
+	fixture := fixture{
+		name: "indirect",
+		pkgs: []string{
+			"demo/fixtures/indirect",
+		},
+		statRoot: demoStatRootDir(t),
+	}
+
+	// indirect Indirect removeheap phase
+	scope(t, fixture.graph("demo/fixtures/indirect", 0, pRemoveHeap), func(esg *escapeSubGraph) {
+		assert.Len(t, esg.nodes, 1)
+
+		i := esg.findNode("i @ indirect.go:5:6")
+		assert.NotNil(t, i)
+
+		assert.True(t, i.reason.contains(ERHeap|ERStar))
+	})
+
+	// indirect Dotptr removeheap phase
+	scope(t, fixture.graph("demo/fixtures/indirect", 1, pRemoveHeap), func(esg *escapeSubGraph) {
+		assert.Len(t, esg.nodes, 1)
+
+		a := esg.findNode("a @ indirect.go:17:2")
+		assert.NotNil(t, a)
+		assert.True(t, a.reason.contains(ERHeap|ERStar))
+	})
+
+	// indirect Mapidx init phase
+	scope(t, fixture.graph("demo/fixtures/indirect", 2, pInit), func(esg *escapeSubGraph) {
+		assert.Len(t, esg.nodes, 3)
+
+		a := esg.findNode("a @ indirect.go:23:2")
+		heap := esg.findNode("{heap}")
+		S := esg.findNode("{storage for &S{...} @ indirect.go:24:7}")
+		for _, n := range []*escLocNode{a, heap, S} {
+			assert.NotNil(t, n)
+		}
+
+		t.Log("S reason", S.reasonsStr())
+
+		assert.True(t, S.reason.contains(ERHeap)) // 3 -> 2 will set storage of &S(3) attrEscapes. When handling 1->3, if 1 is already marked as attrEscapes and 3 is attrEscapes, then reason ERHeap will be added to 3
+
+		S2heap := esg.Edge(S.id, heap.id).(*escFlow)
+		assert.NotNil(t, S2heap)
+		assert.Subset(t, S2heap.whys, []string{"key of map put"})
+
+		a2heap := esg.Edge(a.id, heap.id).(*escFlow)
+		assert.NotNil(t, a2heap)
+		assert.Subset(t, a2heap.whys, []string{FPToMapIndex})
+	})
+}
