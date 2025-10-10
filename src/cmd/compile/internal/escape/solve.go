@@ -120,7 +120,7 @@ func (b *batch) walkOne(root *location, walkgen uint32, enqueue func(*location))
 						logopt.LogOpt(l.n.Pos(), "escape", "escape", ir.FuncName(e_curfn), fmt.Sprintf("%v escapes to heap", l.n), explanation)
 					}
 				}
-				if isEAReasonStatEnabled() {
+				if isEAReasonStatEnabled() && root != l {
 					hole := root.asHole()       // empty note
 					hole.notes = item.prevNotes // add prevNotes
 					if rootEscape && isEAReasonDebug() {
@@ -166,7 +166,7 @@ func (b *batch) walkOne(root *location, walkgen uint32, enqueue func(*location))
 							fmt.Sprintf("parameter %v leaks to %s with derefs=%d", l.n, b.explainLoc(root), derefs), explanation)
 					}
 				}
-				if isEAReasonStatEnabled() {
+				if isEAReasonStatEnabled() && root != l {
 					hole := root.asHole()
 					hole.notes = item.prevNotes
 					if rootEscape && isEAReasonDebug() {
@@ -201,7 +201,7 @@ func (b *batch) walkOne(root *location, walkgen uint32, enqueue func(*location))
 		}
 		for i, edge := range l.edges {
 			if edge.src.hasAttr(attrEscapes) {
-				if isEAReasonStatEnabled() {
+				if isEAReasonStatEnabled() && root != edge.src {
 					// only add fastpath when root outlives edge.src if addressOf or edge.src is PARAM
 					d := max(derefs+edge.derefs, -1)
 					addressOf = d < 0

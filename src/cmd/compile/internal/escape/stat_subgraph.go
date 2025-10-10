@@ -189,6 +189,7 @@ func (er escapeReason) contains(r escapeReason) bool {
 
 func (er escapeReason) towhys() []string {
 	whys := make([]string, 0)
+	// FIXME: there are many whys mapped to the same reason. For example, ERHeap, ERAppend and ERMust
 	for why, reason := range why2reason {
 		if er.contains(reason) {
 			whys = append(whys, why)
@@ -374,7 +375,8 @@ func (esg *escapeSubGraph) Edge(uid, vid int64) gn.Edge {
 }
 
 func (esg *escapeSubGraph) Flow(u, v *escLocNode) *escFlow {
-	return esg.Edge(u.id, v.id).(*escFlow)
+	flow, _ := esg.Edge(u.id, v.id).(*escFlow)
+	return flow
 }
 
 // HasEdgeFromTo returns whether an edge exists
