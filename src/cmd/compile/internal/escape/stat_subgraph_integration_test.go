@@ -466,7 +466,7 @@ func TestParamLeak(t *testing.T) {
 	})
 }
 
-func TestReturn(t *testing.T) {
+func TestRet(t *testing.T) {
 	fixture := fixture{
 		name: "ret",
 		pkgs: []string{
@@ -527,5 +527,38 @@ func TestReturn(t *testing.T) {
 		assert.True(t, p.reason.contains(ERParamLeak|ERReturn))
 		assert.False(t, p.reason.contains(ERHeap))
 		assert.True(t, r0.reason.empty())
+	})
+}
+
+func TestRootstack(t *testing.T) {
+	fixture := fixture{
+		name: "rootstack",
+		pkgs: []string{
+			"demo/fixtures/rootstack",
+		},
+		statRoot: demoStatRootDir(t),
+	}
+
+	// rootstack outerLoopReference init phase
+	scope(t, fixture.graph("demo/fixtures/rootstack", 0, pInit), func(esg *escapeSubGraph) {
+		assert.Len(t, esg.nodes, 2)
+		i_testOuter, outerRef := esg.findNode("i_testOuter @ rootstack.go:7:3"), esg.findNode("outerRef @ rootstack.go:4:6")
+		allNotNil(t, i_testOuter, outerRef)
+		assert.False(t, i_testOuter.reason.contains(ERHeap))
+		assert.False(t, outerRef.reason.contains(ERRootStack))
+
+		i2outer := esg.Flow(i_testOuter, outerRef)
+		assert.NotNil(t, i2outer)
+		assert.Subset(t, i2outer.whys, []string{FPRootOutliveAddrSrc})
+	})
+
+	// rootstack outerLoopReference summarize phase
+	scope(t, fixture.graph("demo/fixtures/rootstack", 0, pSummarize), func(esg *escapeSubGraph) {
+		assert.Len(t, esg.nodes, 2)
+		i_testOuter, outerRef := esg.findNode("i_testOuter @ rootstack.go:7:3"), esg.findNode("outerRef @ rootstack.go:4:6")
+		allNotNil(t, i_testOuter, outerRef)
+		assert.True(t, i_testOuter.reason.contains(ERHeap|EROutliveRootStack))
+		assert.True(t, outerRef.reason.contains(ERRootStack))
+		assert.False(t, outerRef.reason.contains(EROutliveRootStack))
 	})
 }
