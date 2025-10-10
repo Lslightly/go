@@ -117,7 +117,7 @@ func TestGoInterprocedural(t *testing.T) {
 	})
 }
 
-func TestGoClosure(t *testing.T) {
+func TestClosureGo(t *testing.T) {
 	fixture := fixture{
 		name: "closure_go",
 		pkgs: []string{
