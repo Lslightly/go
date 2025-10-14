@@ -649,5 +649,31 @@ func TestEscape(t *testing.T) {
 		assert.Subset(t, x2r0.whys, []string{FPRootOutliveAddrSrc, FPParamLeak, "address-of", "return"})
 	})
 
-	// TODO more
+	// escape select_escapes init phase
+	scope(t, fixt.graph("main", 7, pInit), func(esg *escapeSubGraph) {
+		assert.Len(t, esg.nodes, 4)
+		c := esg.findNode("{storage for func literal @ escape.go:90:2}")
+		heap := esg.findNode("{heap}")
+		req := esg.findNode("req @ escape.go:92:7")
+		ret0 := esg.findNode("~r0 @ escape.go:88:28")
+		allNotNil(t, c, heap, req, ret0)
+
+		c2heap := esg.Flow(c, heap)
+		req2ret0 := esg.Flow(req, ret0)
+		allNotNil(t, c2heap, req2ret0)
+
+		assert.Subset(t, c2heap.whys, []string{FPDstEscAddrSrc, FPGo})
+		assert.Subset(t, req2ret0.whys, []string{FPRootOutliveAddrSrc, "address-of", "return"})
+	})
+
+	// escape select_escapes summarize phase
+	scope(t, fixt.graph("main", 7, pSummarize), func(esg *escapeSubGraph) {
+		assert.Len(t, esg.nodes, 3)
+		c := esg.findNode("{storage for func literal @ escape.go:90:2}")
+		req := esg.findNode("req @ escape.go:92:7")
+		ret0 := esg.findNode("~r0 @ escape.go:88:28")
+		allNotNil(t, c, req, ret0)
+		assert.True(t, c.reason.contains(ERGo|ERHeap))
+		assert.True(t, req.reason.contains(ERReturn|ERHeap))
+	})
 }
