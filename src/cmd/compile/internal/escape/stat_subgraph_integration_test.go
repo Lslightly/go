@@ -779,6 +779,35 @@ func TestEscape(t *testing.T) {
 
 	// escape for_escapes3 init phase
 	scope(t, fixt.graph("main", 12, pInit), func(esg *escapeSubGraph) {
-		// TODO
+		assert.Len(t, esg.nodes, 4)
+		newint := esg.findNode("{storage for new(int) @ escape.go:152:11}")
+		r0 := esg.findNode("~r0 @ escape.go:154:17")
+		closure := esg.findNode("{storage for func literal @ escape.go:154:10}")
+		f := esg.findNode("f @ escape.go:149:6")
+		allNotNil(t, newint, r0, closure, f)
+
+		newint2r0 := esg.Flow(newint, r0)
+		newint2closure := esg.Flow(newint, closure)
+		clo2f := esg.Flow(closure, f)
+		allNotNil(t, newint2r0, newint2closure, clo2f)
+
+		assert.Subset(t, newint2r0.whys, []string{FPRootOutliveAddrSrc, "return"})
+		assert.Subset(t, newint2closure.whys, []string{"by value", "captured by a closure"})
+		assert.NotContains(t, newint2closure.whys, []string{"reference"})
+		assert.Subset(t, clo2f.whys, []string{FPRootOutliveAddrSrc})
+	})
+
+	// escape for_escapes3 summarize phase
+	scope(t, fixt.graph("main", 12, pSummarize), func(esg *escapeSubGraph) {
+		newint := esg.findNode("{storage for new(int) @ escape.go:152:11}")
+		r0 := esg.findNode("~r0 @ escape.go:154:17")
+		closure := esg.findNode("{storage for func literal @ escape.go:154:10}")
+		f := esg.findNode("f @ escape.go:149:6")
+		allNotNil(t, newint, r0, closure, f)
+
+		assert.True(t, newint.reason.contains(EROutliveRootStack|ERHeap|ERReturn))
+		assert.True(t, closure.reason.contains(ERHeap|EROutliveRootStack))
+		assert.True(t, f.reason.contains(ERRootStack))
+		assert.False(t, f.reason.contains(EROutliveRootStack))
 	})
 }
