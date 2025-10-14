@@ -676,4 +676,109 @@ func TestEscape(t *testing.T) {
 		assert.True(t, c.reason.contains(ERGo|ERHeap))
 		assert.True(t, req.reason.contains(ERReturn|ERHeap))
 	})
+
+	// escape select_escapes1 init phase
+	scope(t, fixt.graph("main", 8, pInit), func(esg *escapeSubGraph) {
+		assert.Len(t, esg.nodes, 6)
+		closure := esg.findNode("{storage for func literal @ escape.go:105:3}")
+		heap := esg.findNode("{heap}")
+		req := esg.findNode("req @ escape.go:107:8")
+		p := esg.findNode("p @ escape.go:101:6")
+		ret1 := esg.findNode("~r1 @ escape.go:98:43")
+		ret0 := esg.findNode("~r0 @ escape.go:98:37")
+		allNotNil(t, closure, heap, req, p, ret1, ret0)
+
+		closure2heap := esg.Flow(closure, heap)
+		req2p := esg.Flow(req, p)
+		req2ret1 := esg.Flow(req, ret1)
+		req2ret0 := esg.Flow(req, ret0)
+		allNotNil(t, closure2heap, req2p, req2ret1, req2ret0)
+
+		assert.Subset(t, closure2heap.whys, []string{FPGo, FPDstEscAddrSrc})
+		assert.Subset(t, req2p.whys, []string{FPRootOutliveAddrSrc, "address-of"})
+		assert.Subset(t, req2ret1.whys, []string{FPRootOutliveAddrSrc, "address-of", "return"})
+		assert.Subset(t, req2ret0.whys, []string{FPRootOutliveAddrSrc, "address-of", "return"})
+	})
+
+	// escape select_escapes1 summarize phase
+	scope(t, fixt.graph("main", 8, pSummarize), func(esg *escapeSubGraph) {
+		assert.Len(t, esg.nodes, 5)
+		closure := esg.findNode("{storage for func literal @ escape.go:105:3}")
+		req := esg.findNode("req @ escape.go:107:8")
+		p := esg.findNode("p @ escape.go:101:6")
+		ret1 := esg.findNode("~r1 @ escape.go:98:43")
+		ret0 := esg.findNode("~r0 @ escape.go:98:37")
+		allNotNil(t, closure, req, p, ret1, ret0)
+
+		assert.True(t, closure.reason.contains(ERGo|ERHeap))
+		assert.True(t, req.reason.contains(EROutliveRootStack|ERHeap|ERReturn))
+		assert.True(t, p.reason.contains(ERRootStack))
+	})
+
+	// escape range_escapes init phase
+	scope(t, fixt.graph("main", 9, pInit), func(esg *escapeSubGraph) {
+		assert.Len(t, esg.nodes, 2)
+		v := esg.findNode("v @ escape.go:117:9")
+		ret0 := esg.findNode("~r0 @ escape.go:114:27")
+		allNotNil(t, v, ret0)
+
+		v2ret0 := esg.Flow(v, ret0)
+		assert.Subset(t, v2ret0.whys, []string{FPRootOutliveAddrSrc, "address-of", "return"})
+	})
+
+	// escape range_escapes backPropogate phase
+	scope(t, fixt.graph("main", 9, pBackPropogate), func(esg *escapeSubGraph) {
+		assert.Len(t, esg.nodes, 2)
+		v := esg.findNode("v @ escape.go:117:9")
+		assert.NotNil(t, v)
+		assert.True(t, v.reason.contains(ERHeap|ERReturn))
+	})
+
+	// escape range_escape2 init phase
+	scope(t, fixt.graph("main", 10, pInit), func(esg *escapeSubGraph) {
+		assert.Len(t, esg.nodes, 3)
+		v := esg.findNode("v @ escape.go:129:9")
+		ret1 := esg.findNode("~r1 @ escape.go:124:38")
+		ret0 := esg.findNode("~r0 @ escape.go:124:32")
+		allNotNil(t, v, ret1, ret0)
+
+		v2r1 := esg.Flow(v, ret1)
+		v2r0 := esg.Flow(v, ret0)
+		allNotNil(t, v2r1, v2r0)
+		assert.Subset(t, v2r1.whys, []string{"return", FPRootOutliveAddrSrc, "address-of"})
+		assert.Subset(t, v2r0.whys, []string{"return", FPRootOutliveAddrSrc, "address-of"})
+	})
+
+	// escape range_escape2 summarize phase
+	scope(t, fixt.graph("main", 10, pSummarize), func(esg *escapeSubGraph) {
+		v := esg.findNode("v @ escape.go:129:9")
+		assert.True(t, v.reason.contains(ERReturn|ERHeap))
+	})
+
+	// escape for_escapes2 init phase
+	scope(t, fixt.graph("main", 11, pInit), func(esg *escapeSubGraph) {
+		// TODO: add reason for outlive because of loop depth in edge
+		assert.Len(t, esg.nodes, 3)
+		i := esg.findNode("i @ escape.go:140:2")
+		r1 := esg.findNode("~r1 @ escape.go:137:40")
+		r0 := esg.findNode("~r0 @ escape.go:137:34")
+		allNotNil(t, i, r1, r0)
+
+		v2r1 := esg.Flow(i, r1)
+		v2r0 := esg.Flow(i, r0)
+		allNotNil(t, v2r1, v2r0)
+		assert.Subset(t, v2r1.whys, []string{"return", FPRootOutliveAddrSrc, "address-of"})
+		assert.Subset(t, v2r0.whys, []string{"return", FPRootOutliveAddrSrc, "address-of"})
+	})
+
+	// escape for_escapes2 summarize phase
+	scope(t, fixt.graph("main", 11, pSummarize), func(esg *escapeSubGraph) {
+		i := esg.findNode("i @ escape.go:140:2")
+		assert.True(t, i.reason.contains(ERHeap|ERReturn))
+	})
+
+	// escape for_escapes3 init phase
+	scope(t, fixt.graph("main", 12, pInit), func(esg *escapeSubGraph) {
+		// TODO
+	})
 }
