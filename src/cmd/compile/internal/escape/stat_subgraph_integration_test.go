@@ -810,4 +810,67 @@ func TestEscape(t *testing.T) {
 		assert.True(t, f.reason.contains(ERRootStack))
 		assert.False(t, f.reason.contains(EROutliveRootStack))
 	})
+
+	// escape out_escapes init phase
+	scope(t, fixt.graph("main", 13, pInit), func(esg *escapeSubGraph) {
+		assert.Len(t, esg.nodes, 2)
+		x := esg.findNode("x @ escape.go:160:26")
+		p := esg.findNode("p @ escape.go:160:33")
+		allNotNil(t, x, p)
+
+		x2p := esg.Flow(x, p)
+		assert.Subset(t, x2p.whys, []string{FPRootOutliveAddrSrc, "address-of"})
+		assert.NotContains(t, x2p.whys, "return") // because `p = &x` is not `return &`, so "return" won't be added to the note of hole from x to p
+	})
+
+	// escape out_escapes summarize phase
+	scope(t, fixt.graph("main", 13, pBackPropogate), func(esg *escapeSubGraph) {
+		x := esg.findNode("x @ escape.go:160:26")
+		assert.True(t, x.reason.contains(ERHeap|ERReturn)) // here because p.Name is ir.PARAMOUT, ERReturn will be added to x when backPropogate
+	})
+
+	// escape out_escapes_2 init phase
+	scope(t, fixt.graph("main", 14, pInit), func(esg *escapeSubGraph) {
+		assert.Len(t, esg.nodes, 2)
+		x := esg.findNode("x @ escape.go:166:28")
+		p := esg.findNode("p @ escape.go:166:35")
+		allNotNil(t, x, p)
+
+		x2p := esg.Flow(x, p)
+		assert.Subset(t, x2p.whys, []string{FPRootOutliveAddrSrc, "address-of", "return"}) // because "return &x", "return" is added as why of hole from x to p
+	})
+
+	// escape defer1 init phase
+	scope(t, fixt.graph("main", 15, pInit), func(esg *escapeSubGraph) {
+		assert.Len(t, esg.nodes, 4)
+		clo := esg.findNode("{storage for func literal @ escape.go:173:5}")
+		heap := esg.findNode("{heap}")
+		x := esg.findNode("x @ escape.go:171:21")
+		i := esg.findNode("i @ escape.go:171:13")
+		allNotNil(t, clo, heap, x, i)
+
+		clo2heap := esg.Flow(clo, heap)
+		x2clo := esg.Flow(x, clo)
+		i2clo := esg.Flow(i, clo)
+		assert.Subset(t, clo2heap.whys, []string{FPDstEscAddrSrc, FPGo})
+
+		assert.Subset(t, x2clo.whys, []string{FPDstEscAddrSrc, "captured by a closure", "reference"})
+		assert.NotContains(t, x2clo.whys, "by value")
+
+		assert.Subset(t, i2clo.whys, []string{FPParamLeak, "captured by a closure", "by value"})
+		assert.NotContains(t, i2clo.whys, []string{"reference"})
+	})
+
+	// escape defer1 summarize phase
+	scope(t, fixt.graph("main", 15, pSummarize), func(esg *escapeSubGraph) {
+		assert.Len(t, esg.nodes, 3)
+		clo := esg.findNode("{storage for func literal @ escape.go:173:5}")
+		x := esg.findNode("x @ escape.go:171:21")
+		i := esg.findNode("i @ escape.go:171:13")
+		allNotNil(t, clo, x, i)
+
+		assert.True(t, clo.reason.contains(ERHeap|ERGo))
+		assert.True(t, x.reason.contains(ERClosure|ERGo|ERHeap))
+		assert.True(t, i.reason.contains(ERParamLeak|ERGo|ERHeap))
+	})
 }
