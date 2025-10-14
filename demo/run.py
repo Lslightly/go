@@ -197,6 +197,7 @@ def demo():
         "ret",
         "rootstack",
         "easyPkg",
+        "escape",
     ]:
         run(Path.cwd()/"fixtures", Path.cwd()/"stat_root", repo)
 
