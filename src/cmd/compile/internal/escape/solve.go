@@ -131,7 +131,6 @@ func (b *batch) walkOne(root *location, walkgen uint32, enqueue func(*location))
 						getLogger().Println("walkOne: root outlives l:", b.explainLocPos(l), "whys:", whysStr)
 					}
 					getEsg().fastpath(l, hole.note(l.n, FPRootOutliveAddrSrc).shift(-1))
-
 				}
 				newAttrs |= attrEscapes | attrPersists | attrMutates | attrCalls
 			} else
