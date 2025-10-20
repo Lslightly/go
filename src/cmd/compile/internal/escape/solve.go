@@ -201,6 +201,7 @@ func (b *batch) walkOne(root *location, walkgen uint32, enqueue func(*location))
 		for i, edge := range l.edges {
 			if edge.src.hasAttr(attrEscapes) {
 				if isEAReasonStatEnabled() && root != edge.src {
+					added := false
 					// only add fastpath when root outlives edge.src if addressOf or edge.src is PARAM
 					d := max(derefs+edge.derefs, -1)
 					addressOf = d < 0
@@ -210,6 +211,7 @@ func (b *batch) walkOne(root *location, walkgen uint32, enqueue func(*location))
 							hole := root.asHole().shift(-1)
 							hole.notes = cloneAndAppendNotes(edge.notes, item.prevNotes)
 							getEsg().fastpath(edge.src, hole.note(edge.src.n, FPRootOutliveAddrSrc))
+							added = true
 						}
 						if rootEscape {
 							getEsg().markLocReason(root, ERHeap)
@@ -220,10 +222,13 @@ func (b *batch) walkOne(root *location, walkgen uint32, enqueue func(*location))
 							hole := root.asHole()
 							hole.notes = cloneAndAppendNotes(edge.notes, item.prevNotes)
 							getEsg().fastpath(edge.src, hole.note(edge.src.n, FPParamLeak).shift(d))
+							added = true
 						}
 					}
 					if isEAReasonDebug() {
-						getLogger().Printf("walkOne: edge.src escapes, skip: %v to %v\n", b.explainLocPos(edge.src), b.explainLocPos(root))
+						if !added {
+							getLogger().Printf("walkOne: edge.src escapes, skip: %v to %v\nnot added reason: d: %d, root.loopDepth: %d, edge.src.loopDepth: %d\n", b.explainLocPos(edge.src), b.explainLocPos(root), d, root.loopDepth, edge.src.loopDepth)
+						}
 					}
 				}
 				continue

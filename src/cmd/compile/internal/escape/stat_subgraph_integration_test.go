@@ -873,4 +873,14 @@ func TestEscape(t *testing.T) {
 		assert.True(t, x.reason.contains(ERClosure|ERGo|ERHeap))
 		assert.True(t, i.reason.contains(ERParamLeak|ERGo|ERHeap))
 	})
+
+	// escape main init phase
+	scope(t, fixt.graph("main", 16, pInit), func(esg *escapeSubGraph) {
+		v2 := esg.findNode("v @ escape.go:197:41") // 15 out nodes
+		v1 := esg.findNode("v @ escape.go:197:22") // 15 out nodes
+		assert.Len(t, esg.EdgeFrom(v2.id), 15)
+		assert.Len(t, esg.EdgeFrom(v1.id), 15)
+		heap := esg.findNode("{heap}")
+		assert.Len(t, esg.EdgeTo(heap.id), 17)
+	})
 }
