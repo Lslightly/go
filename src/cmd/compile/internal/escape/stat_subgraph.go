@@ -185,7 +185,7 @@ var why2reason map[string]escapeReason = map[string]escapeReason{
 	"too large for stack":   ERMust,
 	"too aligned for stack": ERMust,
 	"non-constant size":     ERMust,
-	"reference":             ERClosure,
+	"captured by a closure": ERClosure,
 }
 
 func createEscapeReason(low, high uint8) escapeReason {

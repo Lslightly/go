@@ -7,13 +7,13 @@ ERParamLeak             22 (25.88%)
 ERSliceIdx              20 (23.53%)
 EROutliveRootStack       5 (5.88%)
 ERRootStack             30 (35.29%)
-ERClosure                1 (1.18%)
+ERClosure                3 (3.53%)
 
 [2] Distribution of number of reasons per node:
 0 reasons: 15 nodes
 1 reasons: 32 nodes
 2 reasons: 13 nodes
-3 reasons: 23 nodes
-4 reasons: 2 nodes
+3 reasons: 21 nodes
+4 reasons: 4 nodes
 
 [3] Reason DAG (subset relationships):

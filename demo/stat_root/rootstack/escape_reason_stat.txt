@@ -1,8 +1,8 @@
 Number of nodes: 2
 [1] Frequency and percentage of each reason:
-ERRootStack              1 (50.00%)
 ERHeap                   1 (50.00%)
 EROutliveRootStack       1 (50.00%)
+ERRootStack              1 (50.00%)
 
 [2] Distribution of number of reasons per node:
 1 reasons: 1 nodes

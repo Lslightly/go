@@ -1,6 +1,7 @@
 import argparse
 import subprocess
 from pathlib import Path
+import tempfile
 from typing import Callable, List
 from define import EscapeReason
 import networkx as nx
@@ -27,7 +28,7 @@ def execute(cmd: str, cwd: str | None = None, stdout=None, stderr=None, env=None
     return proc.returncode, proc.stdout, proc.stderr
 
 
-def build(repo: Path, EAResultRoot: Path):
+def build(repo: Path, EAResultRoot: Path, cmd: str='go build -a .'):
     """ Use 'go build -a .' command
         to generate graphs and csv under EAResultRoot, i.e.
             EAResultRoot/
@@ -48,7 +49,6 @@ def build(repo: Path, EAResultRoot: Path):
         EAResultRoot (str): root of escape analysis result
     """
     print(f"Building {repo}...")
-    cmd = 'go build -a .'
     tmpEnv = os.environ
     tmpEnv["EAReasonStat"] = "1"
     tmpEnv["EAResultRoot"] = str(EAResultRoot)
@@ -188,6 +188,33 @@ def run(repoRoot: Path, statRoot: Path, repo: str, repoBuild: Callable[[Path, Pa
     if has_all_csv:
         stat(EAResultRoot)
 
+class GenStdLibException(Exception):
+    
+    def __init__(self):
+        super().__init__("Generate stdlib importcfg failed")
+    
+    def __str__(self):
+        return "Generate stdlib importcfg failed"
+
+def genStdlibImportcfg() -> str:
+    tmpEnv = os.environ
+    tmpEnv['GOENV'] = 'off'
+    tmpEnv['GOFLAGS'] = ''
+    ret, out, _ = execute(
+        cmd="go list -export -f '{{if .Export}}packagefile {{.ImportPath}}={{.Export}}{{end}}' std",
+        env=tmpEnv,
+        stdout=subprocess.PIPE,
+    )
+    if ret != 0:
+        raise GenStdLibException
+    return out
+
+def escape2_build(repoPath: Path, EAResultRoot: Path):
+    import_cfg_path = Path(tempfile.gettempdir())/"importcfg"
+    with open(import_cfg_path, 'w') as import_cfg:
+        import_cfg.write(genStdlibImportcfg())
+    build(repoPath, EAResultRoot, cmd=f"go tool compile -d=panic -p=p -C -e -importcfg={import_cfg_path} -o a.o -l -d=ssa/check/on escape2.go")
+
 def demo():
     for repo in [
         "closure_go",
@@ -200,6 +227,10 @@ def demo():
         "escape",
     ]:
         run(Path.cwd()/"fixtures", Path.cwd()/"stat_root", repo)
+    for repo, repobuild in [
+        ("escape2", escape2_build)
+    ]:
+        run(Path.cwd()/"fixtures", Path.cwd()/"stat_root", repo, repobuild)
 
 def cli_build(repoPath: Path, EAResultRoot: Path):
     execute("make clean", cwd=str(repoPath))

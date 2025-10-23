@@ -932,3 +932,25 @@ func TestEscape(t *testing.T) {
 		assert.True(t, v2.reason.contains(ERParamLeak|ERSliceIdx|ERHeap|EROutliveRootStack))
 	})
 }
+
+func TestEscape2(t *testing.T) {
+	fixt := fixture{
+		name: "escape2",
+		pkgs: []string{
+			"p",
+		},
+		statRoot: demoStatRootDir(t),
+	}
+
+	// escape2 foo132 summarize phase
+	scope(t, fixt.graph("p", 124, pSummarize), func(esg *escapeSubGraph) {
+		i := esg.findNode("i @ escape2.go:1257")
+		assert.True(t, i.reason.contains(ERGo|ERClosure|ERHeap))
+	})
+
+	// escape2 foo137 summaries phase
+	scope(t, fixt.graph("p", 128, pSummarize), func(esg *escapeSubGraph) {
+		i := esg.findNode("i @ escape2.go:1307")
+		assert.True(t, i.reason.contains(ERGo|ERClosure|ERHeap))
+	})
+}
