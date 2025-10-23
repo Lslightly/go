@@ -299,11 +299,6 @@ func (b *batch) flowClosure(k hole, clo *ir.ClosureExpr) {
 		// Capture by value for variables <= 128 bytes that are never reassigned.
 		n.SetByval(!loc.addrtaken && !loc.reassigned && n.Type().Size() <= 128)
 		if !n.Byval() {
-			if base.Flag.LowerM >= 2 || isEAReasonDebug() {
-				if clo.IsGoWrap {
-					fmt.Println("go wrap closure capture by reference", clo, n, "in", ir.FuncName(n.Curfn))
-				}
-			}
 			if logopt.Enabled() {
 				if clo.IsGoWrap {
 					logopt.LogOpt(k.dst.n.Pos(), "escapes", "escape", ir.FuncName(clo.Func), fmt.Sprintf("go wrap closure capture by reference %v %v", clo, n))
@@ -314,11 +309,6 @@ func (b *batch) flowClosure(k hole, clo *ir.ClosureExpr) {
 				base.FatalfAt(n.Pos(), "dictionary variable not captured by value")
 			}
 		} else {
-			if base.Flag.LowerM >= 2 || isEAReasonDebug() {
-				if clo.IsGoWrap {
-					fmt.Println("go wrap closure capture by value", clo, n, "in", ir.FuncName(n.Curfn))
-				}
-			}
 			if logopt.Enabled() {
 				if clo.IsGoWrap {
 					logopt.LogOpt(k.dst.n.Pos(), "escapes", "escape", ir.FuncName(clo.Func), fmt.Sprintf("go wrap closure capture by value %v %v", clo, n))

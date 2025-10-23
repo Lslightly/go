@@ -8,6 +8,7 @@ import (
 	"cmd/compile/internal/ir"
 	"fmt"
 	"log"
+	"math/bits"
 	"os"
 	"os/exec"
 	"path"
@@ -103,6 +104,24 @@ const (
 	ERNumber    = iota
 )
 
+var reason2str map[escapeReason]string = map[escapeReason]string{
+	ERHeap:             "ERHeap",
+	ERStar:             "ERStar",
+	ERRootStack:        "ERRootStack",
+	EROutliveRootStack: "EROutliveRootStack",
+	ERClosure:          "ERClosure",
+	ERGo:               "ERGo",
+	ERDefer:            "ERDefer",
+	ERReturn:           "ERReturn",
+	ERParamLeak:        "ERParamLeak",
+	ERMapIdx:           "ERMapIdx",
+	ERSliceIdx:         "ERSliceIdx",
+	ERComm:             "ERComm",
+	ERAppend:           "ERAppend",
+	ERCopy:             "ERCopy",
+	ERMust:             "ERMust",
+}
+
 var reason2xlabel map[escapeReason]string = map[escapeReason]string{
 	ERHeap:             "h",
 	ERStar:             "*X",
@@ -169,6 +188,10 @@ var why2reason map[string]escapeReason = map[string]escapeReason{
 	"reference":             ERClosure,
 }
 
+func createEscapeReason(low, high uint8) escapeReason {
+	return escapeReason(uint16(low) | uint16(high)<<8)
+}
+
 func (er escapeReason) add(r escapeReason) escapeReason {
 	er |= r
 	return er
@@ -187,6 +210,10 @@ func (er escapeReason) contains(r escapeReason) bool {
 	}
 }
 
+func (er escapeReason) count() int {
+	return bits.OnesCount64(uint64(er))
+}
+
 func (er escapeReason) towhys() []string {
 	whys := make([]string, 0)
 	// FIXME: there are many whys mapped to the same reason. For example, ERHeap, ERAppend and ERMust
@@ -200,6 +227,17 @@ func (er escapeReason) towhys() []string {
 
 func (er escapeReason) empty() bool {
 	return er == 0
+}
+
+func (er escapeReason) String() string {
+	strs := make([]string, 0, ERNumber)
+	for i := range ERNumber {
+		singleReason := escapeReason(1 << i)
+		if er.contains(singleReason) {
+			strs = append(strs, reason2str[singleReason])
+		}
+	}
+	return strings.Join(strs, ", ")
 }
 
 var esgCnt int = 0
@@ -428,6 +466,14 @@ func (n *escLocNode) Label() string {
 		n.label = getEsg().b.explainLocPos(n.loc)
 	}
 	return n.label
+}
+
+func (n *escLocNode) IsTmp() bool {
+	return n.loc == nil || n.loc.n == nil
+}
+
+func (n *escLocNode) IsParsedTmp() bool {
+	return strings.Contains(n.label, "{temp ")
 }
 
 func (n *escLocNode) String() string {

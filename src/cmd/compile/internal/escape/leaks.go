@@ -94,7 +94,7 @@ func (l *leaks) encodeReason(er escapeReason) {
 func (l *leaks) decodeReason() escapeReason {
 	// Decode the escape reason from the first two bytes.
 	// The escape reason is encoded as a 2-byte uint16.
-	return escapeReason(uint16(l[0]) | uint16(l[1])<<8)
+	return createEscapeReason(l[0], l[1])
 }
 
 // Optimize removes result flow paths that are equal in length or
@@ -147,7 +147,8 @@ func parseLeaks(s string) leaks {
 			if len(s) == leakHeap {
 				// reason0 reason1
 				str += "heap, reason: "
-				str += fmt.Sprintf("0b%08b%08b", s[1], s[0])
+				r := createEscapeReason(s[0], s[1])
+				str += r.String()
 				getLogger().Println(str)
 			} else if len(s) == 0 {
 				// ""
@@ -156,7 +157,8 @@ func parseLeaks(s string) leaks {
 			} else {
 				// reason0 reason1 esc:...
 				str += "reason: "
-				str += fmt.Sprintf("0b%08b%08b", s[1], s[0])
+				r := createEscapeReason(s[0], s[1])
+				str += r.String()
 				str += " esc:"
 				for i := 4 + leakHeap; i < len(s); i++ {
 					str += fmt.Sprintf(" %d", s[i])

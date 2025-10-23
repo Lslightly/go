@@ -883,4 +883,52 @@ func TestEscape(t *testing.T) {
 		heap := esg.findNode("{heap}")
 		assert.Len(t, esg.EdgeTo(heap.id), 17)
 	})
+
+	// escape main summarize phase
+	scope(t, fixt.graph("main", 16, pSummarize), func(esg *escapeSubGraph) {
+		strNode := esg.findNode("{storage for \"BUG: no escape\" @ escape.go:224:9}")
+		assert.True(t, strNode.reason.contains(ERHeap))
+		nodesIter := esg.Nodes()
+		tmpNodeSet := make(map[*escLocNode]bool)
+		for nodesIter.Next() {
+			n := nodesIter.Node().(*escLocNode)
+			if n.IsParsedTmp() {
+				// these tmp nodes are all temporary nodes created in teeHole, they are allocated in stack, but their values may escape to heap.
+				assert.True(t, n.reason.contains(ERRootStack), n.label)
+				assert.Equal(t, 1, n.reason.count(), n.label)
+				tmpNodeSet[n] = true
+			}
+		}
+		assert.Len(t, tmpNodeSet, 20) // 14*2 - 4*2, p, q, ~r0, p should be removed
+		nodesIter.Reset()
+		func() {
+			// inline 1
+			type nodecase struct {
+				name        string
+				hasSliceIdx bool
+			}
+			cases := []nodecase{
+				{"x @ escape.go:214:22", true}, // because of chk
+				{"x @ escape.go:210:20", true}, // because of chk
+				{"i @ escape.go:203:21", true}, // because of p, q are passed to chk
+				{"v @ escape.go:200:23", true}, // because of p, q are passed to chk
+				{"x @ escape.go:188:34", true}, // because of chk
+				{"k @ escape.go:185:32", true}, // because of chk
+				{"j @ escape.go:182:32", true}, // because of chk
+				{"i @ escape.go:179:33", true}, // because of chk
+			}
+			for _, nc := range cases {
+				node := esg.findNode(nc.name)
+				if nc.hasSliceIdx {
+					assert.True(t, node.reason.contains(ERSliceIdx), node.label)
+				} else {
+					assert.False(t, node.reason.contains(ERSliceIdx), node.label)
+				}
+			}
+		}()
+		v2 := esg.findNode("v @ escape.go:197:41")
+		v1 := esg.findNode("v @ escape.go:197:22")
+		assert.True(t, v1.reason.contains(ERParamLeak|ERSliceIdx|ERHeap|EROutliveRootStack))
+		assert.True(t, v2.reason.contains(ERParamLeak|ERSliceIdx|ERHeap|EROutliveRootStack))
+	})
 }

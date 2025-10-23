@@ -1,7 +1,7 @@
 nodeid,reason,loc,pkg
-4,0,/home/lqw/mygit/go1.24.2/demo/fixtures/ret/return.go:10:27,demo/fixtures/ret
 1,3,/home/lqw/mygit/go1.24.2/demo/fixtures/ret/return.go:11:2,demo/fixtures/ret
 3,384,/home/lqw/mygit/go1.24.2/demo/fixtures/ret/return.go:10:18,demo/fixtures/ret
+4,0,/home/lqw/mygit/go1.24.2/demo/fixtures/ret/return.go:10:27,demo/fixtures/ret
+3,129,/home/lqw/mygit/go1.24.2/demo/fixtures/ret/return.go:4:2,demo/fixtures/ret
 1,129,/home/lqw/mygit/go1.24.2/demo/fixtures/ret/return.go:5:2,demo/fixtures/ret
 2,0,/home/lqw/mygit/go1.24.2/demo/fixtures/ret/return.go:3:22,demo/fixtures/ret
-3,129,/home/lqw/mygit/go1.24.2/demo/fixtures/ret/return.go:4:2,demo/fixtures/ret

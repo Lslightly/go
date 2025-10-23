@@ -87,7 +87,7 @@ func (b *batch) walkOne(root *location, walkgen uint32, enqueue func(*location))
 	} // LIFO queue
 	rootEscape := root.hasAttr(attrEscapes)
 	if isEAReasonStatEnabled() && isEAReasonDebug() {
-		getLogger().Println("walkOne root", b.explainLocPos(root), root.attrs)
+		getLogger().Println("walkOne root node", b.explainLocPos(root), root.attrs)
 	}
 	for len(todo) > 0 {
 		item := todo[len(todo)-1]
@@ -128,7 +128,7 @@ func (b *batch) walkOne(root *location, walkgen uint32, enqueue func(*location))
 						if hole.notes != nil {
 							whysStr = strings.Join(hole.notes.whysString(), ", ")
 						}
-						getLogger().Println("walkOne: root outlives l:", b.explainLocPos(l), "whys:", whysStr)
+						getLogger().Println("walkOne: root", b.explainLocPos(root), "outlives l:", b.explainLocPos(l), "whys:", whysStr)
 					}
 					getEsg().fastpath(l, hole.note(l.n, FPRootOutliveAddrSrc).shift(-1))
 				}
@@ -228,6 +228,8 @@ func (b *batch) walkOne(root *location, walkgen uint32, enqueue func(*location))
 					if isEAReasonDebug() {
 						if !added {
 							getLogger().Printf("walkOne: edge.src escapes, skip: %v to %v\nnot added reason: d: %d, root.loopDepth: %d, edge.src.loopDepth: %d\n", b.explainLocPos(edge.src), b.explainLocPos(root), d, root.loopDepth, edge.src.loopDepth)
+						} else {
+							getLogger().Printf("walkOne: edge.src escapes, added fastpath, d: %d, root.loopDepth: %d, edge.src.loopDepth: %d\n", d, root.loopDepth, edge.src.loopDepth)
 						}
 					}
 				}
@@ -398,8 +400,12 @@ func (b *batch) explainLocPos(l *location) string {
 	if l.n == nil {
 		return fmt.Sprintf("{temp %p}", l)
 	}
+	return b.explainNode(l.n)
+}
+
+func (b *batch) explainNode(n ir.Node) string {
 	printPkg := false
-	posString := base.FmtPos(l.n.Pos())
+	posString := base.FmtPos(n.Pos())
 	elems := strings.Split(posString, ":")
 	if len(elems) == 3 { // pkg_base/file:line:col
 		file, line, col := elems[0], elems[1], elems[2]
@@ -416,10 +422,10 @@ func (b *batch) explainLocPos(l *location) string {
 		}
 		posString = file + ":" + line
 	}
-	if l.n.Op() == ir.ONAME {
-		return fmt.Sprintf("%v @ %s", l.n, posString)
+	if n.Op() == ir.ONAME {
+		return fmt.Sprintf("%v @ %s", n, posString)
 	}
-	return fmt.Sprintf("{storage for %v @ %s}", l.n, posString)
+	return fmt.Sprintf("{storage for %v @ %s}", n, posString)
 }
 
 // outlives reports whether values stored in l may survive beyond

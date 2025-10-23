@@ -21,7 +21,7 @@ func (e *escape) call(ks []hole, call ir.Node) {
 	argument := func(k hole, arg ir.Node) {
 		// TODO(mdempsky): Should be "call argument".
 		if isEAReasonStatEnabled() && isEAReasonDebug() {
-			fmt.Println("argument:", arg, k.debugString(e.batch))
+			fmt.Println("argument:", e.batch.explainNode(arg), k.debugString(e.batch))
 		}
 		e.expr(k.note(call, "call parameter"), arg)
 	}
@@ -84,6 +84,9 @@ func (e *escape) call(ks []hole, call ir.Node) {
 		// argument to its corresponding parameter.
 		argumentParam := func(param *types.Field, arg ir.Node) {
 			e.rewriteArgument(arg, call, fn)
+			if isEAReasonStatEnabled() && isEAReasonDebug() {
+				getLogger().Println("argumentParam for call", call)
+			}
 			argument(e.tagHole(ks, fn, param), arg)
 		}
 
