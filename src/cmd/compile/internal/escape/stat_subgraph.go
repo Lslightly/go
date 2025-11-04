@@ -6,6 +6,7 @@ package escape
 import (
 	"cmd/compile/internal/base"
 	"cmd/compile/internal/ir"
+	"context"
 	"fmt"
 	"log"
 	"math/bits"
@@ -15,6 +16,8 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+	"sync"
+	"time"
 
 	gn "gonum.org/v1/gonum/graph"
 	encoding "gonum.org/v1/gonum/graph/encoding"
@@ -39,6 +42,22 @@ func isEAReasonStatEnabled() (res bool) {
 	v, ok := os.LookupEnv("EAReasonStat")
 	res = res || (ok && v != "0")
 	res = res || (base.Flag.EAReasonStat)
+	return
+}
+
+/*
+enabled:
+ESGDumpEnabled=1 go build
+
+disabled:
+go build
+*/
+func isESGDumpEnabled() (res bool) {
+	if base.Flag.Std {
+		return false
+	}
+	v, ok := os.LookupEnv("ESGDumpEnabled")
+	res = res || (ok && v != "0")
 	return
 }
 
@@ -252,9 +271,14 @@ type escapeSubGraph struct {
 
 var _defaultesg = escapeSubGraph{}
 var _esg *escapeSubGraph = &_defaultesg
+var _esgDumpWaitGrp sync.WaitGroup
 
 func getEsg() *escapeSubGraph {
 	return _esg
+}
+
+func waitDump() {
+	_esgDumpWaitGrp.Wait()
 }
 
 func createEsg(b *batch) {
@@ -839,18 +863,40 @@ func (esg *escapeSubGraph) dump(dumpRoot, phase string) {
 		fmt.Fprintf(os.Stderr, "marshal of %s failed\n", phase)
 		return
 	}
-	n, err := writeToFile(dotfile, string(bs))
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "write error %v\n", err)
-	}
-	if statDebug {
-		fmt.Fprintln(os.Stderr, dotfile, "write bytes:", n)
-	}
 
-	// create svg
-	if err := exec.Command("dot", "-Tsvg", dotfile, fmt.Sprintf("-o%s", svg)).Run(); err != nil {
-		fmt.Fprintln(os.Stderr, err)
-	}
+	// create svg asynchronously
+	_esgDumpWaitGrp.Add(1)
+	go func() {
+		defer _esgDumpWaitGrp.Done()
+
+		// write dot file
+		n, err := writeToFile(dotfile, string(bs))
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "write error %v\n", err)
+		}
+		if statDebug {
+			fmt.Fprintln(os.Stderr, dotfile, "write bytes:", n)
+		}
+
+		if isESGDumpEnabled() {
+			// set 30s context
+			ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+			defer cancel()
+
+			// dot with 30s context
+			cmd := exec.CommandContext(ctx, "dot", "-Tsvg", dotfile, fmt.Sprintf("-o%s", svg))
+
+			// run command
+			if err := cmd.Run(); err != nil {
+				// whether the command exceeds its ddl
+				if ctx.Err() == context.DeadlineExceeded {
+					fmt.Fprintf(os.Stderr, "Command timed out after 30 seconds: %s\n", cmd.String())
+				} else {
+					fmt.Fprintf(os.Stderr, "Command execution failed: %v\n", err)
+				}
+			}
+		}
+	}()
 
 	if statDebug {
 		// print node info

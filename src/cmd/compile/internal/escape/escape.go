@@ -125,6 +125,7 @@ func Funcs(all []*ir.Func) {
 		initEAReason()
 	}
 	ir.VisitFuncsBottomUp(all, Batch)
+	waitDump()
 	// 然后输出所有的统计信息
 	// if base.Flag.LowerM >= 2 {
 	// 	output_one_package_countAll()
