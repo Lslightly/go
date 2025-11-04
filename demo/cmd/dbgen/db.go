@@ -6,6 +6,8 @@ import (
 
 	"github.com/ClickHouse/clickhouse-go/v2"
 	"github.com/ClickHouse/clickhouse-go/v2/lib/driver"
+
+	"github.com/schollz/progressbar/v3"
 )
 
 // DBClient 封装了与 ClickHouse 的连接
@@ -54,45 +56,56 @@ func (db *DBClient) Close() error {
 
 // InsertNodeInfoAndRootCauses 将结点信息和其所有根因插入到 ClickHouse
 func (db *DBClient) InsertNodeInfoAndRootCauses(ctx context.Context, nodeInfo NodeInfo, rootCauses []NodeRootCause) error {
+	return db.InsertNodeInfoAndRootCausesBatch(ctx, []NodeInfo{nodeInfo}, rootCauses, "")
+}
+
+// InsertNodeInfoAndRootCausesBatch 批量插入多个结点信息及其根因
+func (db *DBClient) InsertNodeInfoAndRootCausesBatch(ctx context.Context, nodeInfos []NodeInfo, allRootCauses []NodeRootCause, dbname string) error {
 	// 在 ClickHouse 的 Go 驱动中，连接本身可以作为事务使用。
 	tx := db.conn
-	defer func() {
-		// 连接不由此函数关闭，所以这里不执行操作
-	}()
 
-	// 插入 node_info 表
-	batch, err := tx.PrepareBatch(ctx, "INSERT INTO node_info")
-	if err != nil {
-		return fmt.Errorf("failed to prepare batch for node_info: %w", err)
-	}
-	if err := batch.Append(
-		nodeInfo.PackagePath,
-		nodeInfo.BatchNumber,
-		nodeInfo.NodeID,
-		nodeInfo.NodeLocation,
-		nodeInfo.RootCauseCount,
-		nodeInfo.Uid,
-	); err != nil {
-		return fmt.Errorf("failed to append to node_info batch: %w", err)
-	}
-	if err := batch.Send(); err != nil {
-		return fmt.Errorf("failed to send node_info batch: %w", err)
+	bar := progressbar.Default(int64(len(nodeInfos)), fmt.Sprintf("insert node_info for %s", dbname))
+
+	// 批量插入 node_info 表
+	if len(nodeInfos) > 0 {
+		batch, err := tx.PrepareBatch(ctx, "INSERT INTO node_info")
+		if err != nil {
+			return fmt.Errorf("failed to prepare batch for node_info: %w", err)
+		}
+		for _, nodeInfo := range nodeInfos {
+			if err := batch.Append(
+				nodeInfo.PackagePath,
+				nodeInfo.BatchNumber,
+				nodeInfo.NodeID,
+				nodeInfo.NodeLocation,
+				nodeInfo.RootCauseCount,
+				nodeInfo.Uid,
+			); err != nil {
+				return fmt.Errorf("failed to append to node_info batch: %w", err)
+			}
+			bar.Add(1)
+		}
+		if err := batch.Send(); err != nil {
+			return fmt.Errorf("failed to send node_info batch: %w", err)
+		}
 	}
 
+	bar = progressbar.Default(int64(len(allRootCauses)), fmt.Sprintf("insert node_root_causes for %s", dbname))
 	// 批量插入 node_root_causes 表
-	if len(rootCauses) > 0 {
-		batch, err = tx.PrepareBatch(ctx, "INSERT INTO node_root_causes")
+	if len(allRootCauses) > 0 {
+		batch, err := tx.PrepareBatch(ctx, "INSERT INTO node_root_causes")
 		if err != nil {
 			return fmt.Errorf("failed to prepare batch for node_root_causes: %w", err)
 		}
-		for _, cause := range rootCauses {
+		for _, cause := range allRootCauses {
 			if err := batch.Append(
-				nodeInfo.Uid,
+				cause.Uid,
 				int64(cause.RootCauseID),
 				cause.RootCauseDescription,
 			); err != nil {
 				return fmt.Errorf("failed to append to node_root_causes batch: %w", err)
 			}
+			bar.Add(1)
 		}
 		if err := batch.Send(); err != nil {
 			return fmt.Errorf("failed to send node_root_causes batch: %w", err)
