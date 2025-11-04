@@ -1,4 +1,5 @@
 import argparse
+import functools
 import subprocess
 from pathlib import Path
 import tempfile
@@ -13,7 +14,9 @@ import shutil
 import pandas as pd
 
 dry_run = False
-do_build = False
+do_build = False   # build repo
+do_collect = False # collect csv
+do_stat = False    # stat csv
 demo_only = False
 
 def execute(cmd: str, cwd: str | None = None, stdout=None, stderr=None, env=None):
@@ -28,7 +31,7 @@ def execute(cmd: str, cwd: str | None = None, stdout=None, stderr=None, env=None
     return proc.returncode, proc.stdout, proc.stderr
 
 
-def build(repo: Path, EAResultRoot: Path, cmd: str='go build -a .'):
+def build(repo: Path, EAResultRoot: Path, cmd: str='go build -a .', ESGDumpEnabled: bool=False):
     """ Use 'go build -a .' command
         to generate graphs and csv under EAResultRoot, i.e.
             EAResultRoot/
@@ -52,6 +55,8 @@ def build(repo: Path, EAResultRoot: Path, cmd: str='go build -a .'):
     tmpEnv = os.environ
     tmpEnv["EAReasonStat"] = "1"
     tmpEnv["EAResultRoot"] = str(EAResultRoot)
+    if ESGDumpEnabled:
+        tmpEnv["ESGDumpEnabled"] = "1"
     print(f"Cmd: {cmd}")
     execute(
         cmd,
@@ -60,6 +65,8 @@ def build(repo: Path, EAResultRoot: Path, cmd: str='go build -a .'):
     )
     del tmpEnv["EAReasonStat"]
     del tmpEnv["EAResultRoot"]
+    if ESGDumpEnabled:
+        del tmpEnv["ESGDumpEnabled"]
 
 def collect(EAResultRoot: Path) -> bool:
     """ Collect all all.csv from EAResultRoot/csv.
@@ -184,8 +191,10 @@ def run(repoRoot: Path, statRoot: Path, repo: str, repoBuild: Callable[[Path, Pa
             shutil.rmtree(EAResultRoot)
         EAResultRoot.mkdir(parents=True, exist_ok=True)
         repoBuild(repoPath, EAResultRoot)
-    has_all_csv = collect(EAResultRoot)
-    if has_all_csv:
+    has_all_csv = False
+    if do_collect:
+        has_all_csv = collect(EAResultRoot)
+    if do_stat and has_all_csv:
         stat(EAResultRoot)
 
 class GenStdLibException(Exception):
@@ -213,7 +222,7 @@ def escape2_build(repoPath: Path, EAResultRoot: Path):
     import_cfg_path = Path(tempfile.gettempdir())/"importcfg"
     with open(import_cfg_path, 'w') as import_cfg:
         import_cfg.write(genStdlibImportcfg())
-    build(repoPath, EAResultRoot, cmd=f"go tool compile -d=panic -p=p -C -e -importcfg={import_cfg_path} -o a.o -l -d=ssa/check/on escape2.go")
+    build(repoPath, EAResultRoot, cmd=f"go tool compile -d=panic -p=p -C -e -importcfg={import_cfg_path} -o a.o -l -d=ssa/check/on escape2.go", ESGDumpEnabled=True)
 
 def demo():
     for repo in [
@@ -225,8 +234,12 @@ def demo():
         "rootstack",
         "easyPkg",
         "escape",
+        "boc",
+        "printf",
+        "closure_return",
     ]:
-        run(Path.cwd()/"fixtures", Path.cwd()/"stat_root", repo)
+        build_with_esg_dumping = functools.partial(build, ESGDumpEnabled=True)
+        run(Path.cwd()/"fixtures", Path.cwd()/"stat_root", repo, build_with_esg_dumping)
     for repo, repobuild in [
         ("escape2", escape2_build)
     ]:
@@ -250,12 +263,12 @@ def rclone_build(repoPath: Path, EAResultRoot: Path):
 def escapeReasonRepos():
     for repo, repobuild in [
         ("fzf", build),
-        # ("cli", cli_build),
-        # ("tidb", tidb_build),
-        # ("hugo", build),
-        # ("gogs", build),
-        # ("grpc-go", grpc_go_build),
-        # ("rclone", rclone_build),
+        ("cli", cli_build),
+        ("tidb", tidb_build),
+        ("hugo", build),
+        ("gogs", build),
+        ("grpc-go", grpc_go_build),
+        ("rclone", rclone_build),
 
         # # build method unknown
         # ("sonic", build),
@@ -282,10 +295,14 @@ def main():
         escapeReasonRepos()
 
 parser = argparse.ArgumentParser(prog="run")
-parser.add_argument("--build", action="store_true", help="Whether to build the project")
 parser.add_argument("--demo", action="store_true", help="Whether to run demo only")
+parser.add_argument("--build", action="store_true", help="Whether to build the project")
+parser.add_argument("--collect", action="store_true", help="Whether to collect all.csv")
+parser.add_argument("--stat", action="store_true", help="Whether to stat based on all.csv")
 args = parser.parse_args()
-do_build = args.build
 demo_only = args.demo
+do_build = args.build
+do_collect = args.collect
+do_stat = args.stat
 if __name__ == "__main__":
     main()

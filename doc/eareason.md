@@ -33,3 +33,33 @@
 - EAResultRoot / "all.csv"
 - EAResultRoot / "escape_reason_dag.png"
 三个文件是总计结果
+
+## 根因产生位置
+
+ERHeap:
+- FPDstEscAddrSrc
+- FPRootOutliveAddrSrc
+- 流向heap结点的源节点都会标记ERHeap
+- 如果outlive(root, edge.src)，且root有attrEscapes，则标记为ERHeap
+- 
+
+## 数据库schema
+
+数据维度：
+
+- package path
+- batch number, 一个batch内可能分析多个函数
+- 结点id
+- 结点逃逸根因
+  - 一个结点的逃逸根因可能有多个
+- 结点逃逸根因数量
+  - 根据结点逃逸根因统计的结果，方便加速查询
+- 结点位置
+  - 一个结点只有一个位置。
+
+package path+batch number+结点id可以唯一确定一个结点
+
+设计两张表 schema，一张表用于存储结点根因，一张表存储其他信息。
+
+数据库可能采用列式数据库。用python还是用Go api好一点？逃逸根因常量我可以在生成这些根因的Go程序中拷贝常量。
+

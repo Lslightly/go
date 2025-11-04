@@ -1,0 +1,14 @@
+statRoot: ../../stat_root
+dbPrefix: demo_
+cases:
+  - boc
+  - closure_go
+  - easyPkg
+  - escape
+  - escape2
+  - go_interprocedural
+  - indirect
+  - paramleak
+  - printf
+  - ret
+  - rootstack
