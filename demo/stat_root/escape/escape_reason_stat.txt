@@ -1,8 +1,8 @@
 Number of nodes: 85
 [1] Frequency and percentage of each reason:
 ERHeap                  40 (47.06%)
-ERGo                     5 (5.88%)
 ERReturn                12 (14.12%)
+ERGo                     5 (5.88%)
 ERParamLeak             22 (25.88%)
 ERSliceIdx              20 (23.53%)
 EROutliveRootStack       5 (5.88%)

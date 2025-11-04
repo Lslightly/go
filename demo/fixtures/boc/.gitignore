@@ -1,0 +1,3 @@
+.vscode/*
+boc.test
+!docs/figures/*

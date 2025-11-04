@@ -1,0 +1,4 @@
+nodeid,reason,loc,pkg
+1,129,/home/lqw/mygit/go1.24.2/demo/fixtures/closure_return/closure_.go:9:8,main
+2,0,/home/lqw/mygit/go1.24.2/demo/fixtures/closure_return/closure_.go:7:12,main
+3,145,/home/lqw/mygit/go1.24.2/demo/fixtures/closure_return/closure_.go:8:2,main

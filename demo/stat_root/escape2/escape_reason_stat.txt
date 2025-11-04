@@ -1,8 +1,8 @@
 Number of nodes: 326
 [1] Frequency and percentage of each reason:
 ERHeap                 213 (65.34%)
-ERParamLeak            123 (37.73%)
 ERReturn               100 (30.67%)
+ERParamLeak            123 (37.73%)
 ERClosure               33 (10.12%)
 EROutliveRootStack      10 (3.07%)
 ERRootStack              8 (2.45%)
