@@ -237,6 +237,7 @@ def demo():
         "boc",
         "printf",
         "closure_return",
+        "global",
     ]:
         build_with_esg_dumping = functools.partial(build, ESGDumpEnabled=True)
         run(Path.cwd()/"fixtures", Path.cwd()/"stat_root", repo, build_with_esg_dumping)

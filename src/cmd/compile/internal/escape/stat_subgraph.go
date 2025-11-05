@@ -94,6 +94,7 @@ const (
 	FPToIndex            string = "assign to S[Index]"
 	FPToStar             string = "assign to *X"
 	FPToMapIndex         string = "assign to M[Index]"
+	FPGlobal             string = "global"
 )
 
 // bitstring for escape reason
@@ -120,6 +121,7 @@ const (
 	ERAppend    // append
 	ERCopy      // copied slice
 	ERMust      // must be heap allocated
+	ERGlobal    // flows to global variable
 	ERNumber    = iota
 )
 
@@ -139,6 +141,7 @@ var reason2str map[escapeReason]string = map[escapeReason]string{
 	ERAppend:           "ERAppend",
 	ERCopy:             "ERCopy",
 	ERMust:             "ERMust",
+	ERGlobal:           "ERGlobal",
 }
 
 var reason2xlabel map[escapeReason]string = map[escapeReason]string{
@@ -157,6 +160,7 @@ var reason2xlabel map[escapeReason]string = map[escapeReason]string{
 	ERAppend:           "append",
 	ERCopy:             "copy",
 	ERMust:             "must",
+	ERGlobal:           "global",
 }
 
 func xlabel2reason(xlabel string) (escapeReason, bool) {
@@ -184,6 +188,7 @@ var reason2fillcolor map[escapeReason]string = map[escapeReason]string{
 	ERAppend:           "red",
 	ERCopy:             "red",
 	ERMust:             "red",
+	ERGlobal:           "red",
 }
 
 var why2reason map[string]escapeReason = map[string]escapeReason{
@@ -195,6 +200,7 @@ var why2reason map[string]escapeReason = map[string]escapeReason{
 	FPToMapIndex:            ERMapIdx,
 	FPDstEscAddrSrc:         ERHeap,
 	FPRootOutliveAddrSrc:    ERHeap, // root = &l, outlives(root, l)  should also be considered as ERHeap when backPropogate
+	FPGlobal:                ERGlobal,
 	"key of map put":        ERMapIdx,
 	"send":                  ERComm,
 	"return":                ERReturn,

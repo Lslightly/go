@@ -19,6 +19,7 @@
 	ERAppend                                    // append
 	ERCopy                                      // copied slice
 	ERMust                                      // must be heap allocated
+	ERGlobal									// flows to global variable
 ```
 
 `ERRootStack`表示由于违反不变式2(指针栈对象的指针生命期不能超过该栈对象)导致的逃逸

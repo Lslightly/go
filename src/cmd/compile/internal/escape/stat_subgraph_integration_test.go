@@ -948,9 +948,65 @@ func TestEscape2(t *testing.T) {
 		assert.True(t, i.reason.contains(ERGo|ERClosure|ERHeap))
 	})
 
-	// escape2 foo137 summaries phase
+	// escape2 foo137 summarize phase
 	scope(t, fixt.graph("p", 128, pSummarize), func(esg *escapeSubGraph) {
 		i := esg.findNode("i @ escape2.go:1307")
 		assert.True(t, i.reason.contains(ERGo|ERClosure|ERHeap))
+	})
+}
+
+func TestGlobal(t *testing.T) {
+	fixt := fixture{
+		name: "global",
+		pkgs: []string{
+			"main",
+		},
+		statRoot: demoStatRootDir(t),
+	}
+
+	assertContainGlobalParamCause := func(node *escLocNode) {
+		assert.True(t, node.reason.contains(ERGlobal|ERParamLeak))
+	}
+
+	// main foo summarize phase
+	scope(t, fixt.graph("main", 0, pSummarize), func(esg *escapeSubGraph) {
+		fooi := esg.findNode("fooi @ main.go:24:6")
+		assert.NotNil(t, fooi)
+		assert.True(t, fooi.reason.contains(ERGlobal|ERHeap))
+	})
+
+	// main callee summarize phase
+	scope(t, fixt.graph("main", 1, pSummarize), func(esg *escapeSubGraph) {
+		p := esg.findNode("p @ main.go:29:13")
+		assert.NotNil(t, p)
+		assertContainGlobalParamCause(p)
+	})
+
+	// main caller1 summarize phase
+	scope(t, fixt.graph("main", 2, pSummarize), func(esg *escapeSubGraph) {
+		x := esg.findNode("x @ main.go:35:2")
+		assert.NotNil(t, x)
+		assertContainGlobalParamCause(x)
+	})
+
+	// main caller2 summarize phase
+	scope(t, fixt.graph("main", 3, pSummarize), func(esg *escapeSubGraph) {
+		x := esg.findNode("x @ main.go:42:2")
+		assert.NotNil(t, x)
+		assertContainGlobalParamCause(x)
+	})
+
+	// main f summarize phase
+	scope(t, fixt.graph("main", 4, pSummarize), func(esg *escapeSubGraph) {
+		for _, name := range []string{
+			"p2 @ main.go:18:2",
+			"p1 @ main.go:17:2",
+			"p0 @ main.go:16:2",
+			"i @ main.go:15:2",
+		} {
+			n := esg.findNode(name)
+			assert.NotNil(t, n)
+			assert.True(t, n.reason.contains(ERGlobal|ERHeap))
+		}
 	})
 }

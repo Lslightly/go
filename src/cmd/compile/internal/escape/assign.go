@@ -25,6 +25,7 @@ func (e *escape) addr(n ir.Node) hole {
 	case ir.ONAME:
 		n := n.(*ir.Name)
 		if n.Class == ir.PEXTERN {
+			k = k.note(n, FPGlobal)
 			break
 		}
 		k = e.oldLoc(n).asHole()

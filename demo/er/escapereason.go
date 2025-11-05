@@ -1,3 +1,4 @@
+// Must sync with src/cmd/compile/internal/escape/stat_subgraph.go
 package er
 
 import (
@@ -28,6 +29,7 @@ const (
 	ERAppend    // append
 	ERCopy      // copied slice
 	ERMust      // must be heap allocated
+	ERGlobal    // flows to global variable
 	ERNumber    = iota
 )
 
@@ -47,6 +49,7 @@ var escapeReasonToEnumString = map[EscapeReason]string{
 	ERAppend:           "ERAppend",
 	ERCopy:             "ERCopy",
 	ERMust:             "ERMust",
+	ERGlobal:           "ERGlobal",
 }
 
 func (e EscapeReason) ToEnumString() string {
