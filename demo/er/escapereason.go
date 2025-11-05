@@ -31,27 +31,26 @@ const (
 	ERNumber    = iota
 )
 
-var escapeReasonToString = map[EscapeReason]string{
-	ERHeap:             "heap",
-	ERStar:             "*x",
-	ERRootStack:        "stack",
-	EROutliveRootStack: "outlive_stack",
-	ERClosure:          "closure",
-	ERGo:               "go",
-	ERDefer:            "defer",
-	ERReturn:           "return",
-	ERParamLeak:        "param_leak",
-	ERMapIdx:           "map_index",
-	ERSliceIdx:         "slice_index",
-	ERComm:             "communication",
-	ERAppend:           "append",
-	ERCopy:             "copy",
-	ERMust:             "must_heap",
+var escapeReasonToEnumString = map[EscapeReason]string{
+	ERHeap:             "ERHeap",
+	ERStar:             "ERStar",
+	ERRootStack:        "ERRootStack",
+	EROutliveRootStack: "EROutliveRootStack",
+	ERClosure:          "ERClosure",
+	ERGo:               "ERGo",
+	ERDefer:            "ERDefer",
+	ERReturn:           "ERReturn",
+	ERParamLeak:        "ERParamLeak",
+	ERMapIdx:           "ERMapIdx",
+	ERSliceIdx:         "ERSliceIdx",
+	ERComm:             "ERComm",
+	ERAppend:           "ERAppend",
+	ERCopy:             "ERCopy",
+	ERMust:             "ERMust",
 }
 
-// String 方法用于将枚举值转换为字符串描述
-func (e EscapeReason) String() string {
-	if str, exists := escapeReasonToString[e]; exists {
+func (e EscapeReason) ToEnumString() string {
+	if str, exists := escapeReasonToEnumString[e]; exists {
 		return str
 	}
 	return fmt.Sprintf("unknown_%d", e)

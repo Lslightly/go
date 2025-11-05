@@ -6,3 +6,33 @@
 go run . <yaml config file, bench.yaml for example>
 ```
 
+## schema
+
+数据维度：
+
+- package path
+- batch number, 一个batch内可能分析多个函数
+- 结点id
+- 结点逃逸根因
+  - 一个结点的逃逸根因可能有多个
+- 结点逃逸根因数量
+  - 根据结点逃逸根因统计的结果，方便加速查询
+- 结点位置
+  - 一个结点只有一个位置。
+
+package path+batch number+结点id可以唯一确定一个结点
+
+数据库schema设计：
+
+两个table:
+1. node_info
+   1. package_path
+   2. batch_number
+   3. node_id
+   4. node_location
+   5. root_cause_count
+   6. uid (unique id，作为主键)
+2. node_root_causes (uid和root_cause_id一起作为主键)
+   1. uid
+   2. root_cause_id (Enum类型，支持使用`'ERHeap'`字符串匹配查询)
+

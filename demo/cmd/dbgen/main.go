@@ -163,9 +163,8 @@ func importStatRootData(statRoot string, fixname string, dbPrefix string) {
 					r := er.EscapeReason(1 << i)
 					if er.EscapeReason(reason)&r != 0 {
 						allRootCauses = append(allRootCauses, NodeRootCause{
-							Uid:                  uidCounter,
-							RootCauseID:          r,
-							RootCauseDescription: r.String(),
+							Uid:         uidCounter,
+							RootCauseID: r.ToEnumString(),
 						})
 					}
 				}

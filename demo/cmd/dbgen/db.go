@@ -100,8 +100,7 @@ func (db *DBClient) InsertNodeInfoAndRootCausesBatch(ctx context.Context, nodeIn
 		for _, cause := range allRootCauses {
 			if err := batch.Append(
 				cause.Uid,
-				int64(cause.RootCauseID),
-				cause.RootCauseDescription,
+				cause.RootCauseID,
 			); err != nil {
 				return fmt.Errorf("failed to append to node_root_causes batch: %w", err)
 			}

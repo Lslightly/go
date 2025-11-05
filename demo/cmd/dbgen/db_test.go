@@ -30,14 +30,12 @@ func ExampleDBClient_InsertNodeInfoAndRootCauses() {
 
 	rootCauses := []NodeRootCause{
 		{
-			Uid:                  0,
-			RootCauseID:          er.ERHeap,
-			RootCauseDescription: er.ERHeap.String(),
+			Uid:         0,
+			RootCauseID: er.ERHeap.ToEnumString(),
 		},
 		{
-			Uid:                  0,
-			RootCauseID:          er.ERGo,
-			RootCauseDescription: er.ERGo.String(),
+			Uid:         0,
+			RootCauseID: er.ERGo.ToEnumString(),
 		},
 	}
 

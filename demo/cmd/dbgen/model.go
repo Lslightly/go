@@ -2,6 +2,8 @@ package main
 
 import (
 	"demo/er"
+	"fmt"
+	"strings"
 )
 
 // NodeInfo 表示结点信息
@@ -16,7 +18,15 @@ type NodeInfo struct {
 
 // NodeRootCause 表示结点的逃逸根因
 type NodeRootCause struct {
-	Uid                  uint64          `ch:"uid"`
-	RootCauseID          er.EscapeReason `ch:"root_cause_id"`
-	RootCauseDescription string          `ch:"root_cause_description"`
+	Uid         uint64 `ch:"uid"`
+	RootCauseID string `ch:"root_cause_id"`
+}
+
+func RootCauseEnumTypeString() string {
+	strs := make([]string, 0, er.ERNumber)
+	for i := range er.ERNumber {
+		reason := er.EscapeReason(1 << i)
+		strs = append(strs, fmt.Sprintf("'%s'", reason.ToEnumString()))
+	}
+	return fmt.Sprintf("Enum(%s = 0, %s)", strs[0], strings.Join(strs[1:], ", "))
 }

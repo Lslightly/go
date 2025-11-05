@@ -41,12 +41,11 @@ func OverwriteDB(ctx context.Context, hostPort, dbName string) (*DBClient, error
 		nodeRootCausesDDL := fmt.Sprintf(`
     CREATE TABLE %s.node_root_causes (
         uid UInt64,
-        root_cause_id Int32,
-        root_cause_description String
+        root_cause_id %s,
     ) ENGINE = MergeTree()
     ORDER BY (uid, root_cause_id)
     SETTINGS index_granularity = 8192;
-    `, dbName)
+    `, dbName, RootCauseEnumTypeString())
 		if err := admin.conn.Exec(ctx, nodeRootCausesDDL); err != nil {
 			return fmt.Errorf("创建 node_root_causes 表失败: %w", err)
 		}
