@@ -1,2 +1,2 @@
 nodeid,reason,loc,pkg
-1,257,/home/lqw/mygit/go1.24.2/demo/fixtures/paramleak/paramleak.go:5:13,demo/fixtures/paramleak
+1,33025,/home/lqw/mygit/go1.24.2/demo/fixtures/paramleak/paramleak.go:5:13,demo/fixtures/paramleak

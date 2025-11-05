@@ -2,8 +2,8 @@ Number of nodes: 7
 [1] Frequency and percentage of each reason:
 ERHeap                   7 (100.00%)
 ERGo                     5 (71.43%)
-ERClosure                3 (42.86%)
 ERDefer                  2 (28.57%)
+ERClosure                3 (42.86%)
 
 [2] Distribution of number of reasons per node:
 2 reasons: 4 nodes
