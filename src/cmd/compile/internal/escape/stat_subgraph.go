@@ -7,6 +7,7 @@ import (
 	"cmd/compile/internal/base"
 	"cmd/compile/internal/ir"
 	"context"
+	"flag"
 	"fmt"
 	"log"
 	"math/bits"
@@ -832,6 +833,12 @@ func initEAReason() {
 	graphRoot = path.Join(eaResultRoot(), "graphs", base.Ctxt.Pkgpath)
 	csvRoot = path.Join(eaResultRoot(), "csv", base.Ctxt.Pkgpath)
 	esgLogsRoot := path.Join(eaResultRoot(), "logs", base.Ctxt.Pkgpath)
+	if base.Ctxt.Pkgpath == "main" {
+		relativePath := path.Dir(flag.Arg(0))
+		graphRoot = path.Join(graphRoot, relativePath)
+		csvRoot = path.Join(csvRoot, relativePath)
+		esgLogsRoot = path.Join(esgLogsRoot, relativePath)
+	}
 	for _, root := range []string{graphRoot, csvRoot, esgLogsRoot} {
 		os.MkdirAll(root, 0o755)
 	}
