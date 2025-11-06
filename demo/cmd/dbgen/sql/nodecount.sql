@@ -1,0 +1,5 @@
+
+USE bench_hugo;
+
+SELECT COUNT(DISTINCT uid)
+FROM node_info
