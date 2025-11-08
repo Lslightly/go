@@ -1,6 +1,5 @@
 -- 将带有ERParamLeak的原因计数做进一步占比细分
 -- 首先选择带ERParamLeak的结点，然后统计这些结点根因中除了ERParamLeak之外的原因数量
-USE bench_fzf;
 
 SELECT 
     nrc.root_cause_id,

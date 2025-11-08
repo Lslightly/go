@@ -1,7 +1,5 @@
 -- 统计不带ERHeap的结点数量
 
-USE bench_hugo;
-
 SELECT COUNT(DISTINCT ni.uid)
 FROM node_info ni
 WHERE
