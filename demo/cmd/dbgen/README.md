@@ -44,6 +44,10 @@ package path+batch number+结点id可以唯一确定一个结点
 
 注意在数据表名前需要添加数据库名
 
+下图为改造后的 [paramleak](./sql/paramleak.sql) 查询：
+
+![](figures/modified_paramleak_sql.png)
+
 查询结果可以直接复制HTML到excel中。
 
 
