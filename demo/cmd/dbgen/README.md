@@ -36,3 +36,14 @@ package path+batch number+结点id可以唯一确定一个结点
    1. uid
    2. root_cause_id (Enum类型，支持使用`'ERHeap'`字符串匹配查询)
 
+## 端口转发
+
+可以通过转发8123端口在本地使用web sql查询
+
+## 查询
+
+注意在数据表名前需要添加数据库名
+
+查询结果可以直接复制HTML到excel中。
+
+
