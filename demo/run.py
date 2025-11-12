@@ -326,7 +326,6 @@ def run(repoRoot: Path, buildLogRoot: Path, statRoot: Path, repo: str, repoBuild
 
 def demo():
     for repo in [
-        "receiver2heap",
         "closure_go",
         "go_interprocedural",
         "indirect",
@@ -339,6 +338,9 @@ def demo():
         "printf",
         "closure_return",
         "global",
+        "receiver2heap",
+        "param_moved_to_heap",
+        "param_cases",
     ]:
         build_with_esg_dumping = functools.partial(build, ESGDumpEnabled=True)
         run(Path.cwd()/"fixtures", Path.cwd()/"build_log", Path.cwd()/"stat_root", repo, build_with_esg_dumping)

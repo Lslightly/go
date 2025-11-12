@@ -228,12 +228,18 @@ func (er escapeReason) del(r escapeReason) escapeReason {
 	return er
 }
 
-func (er escapeReason) contains(r escapeReason) bool {
+// containAll returns true if er contains all reasons in r
+func (er escapeReason) containAll(r escapeReason) bool {
 	if er&r == r {
 		return true
 	} else {
 		return false
 	}
+}
+
+// containAnyOf returns true if er contains any one reason in r
+func (er escapeReason) containAnyOf(r escapeReason) bool {
+	return er&r != 0
 }
 
 func (er escapeReason) count() int {
@@ -244,7 +250,7 @@ func (er escapeReason) towhys() []string {
 	whys := make([]string, 0)
 	// FIXME: there are many whys mapped to the same reason. For example, ERHeap, ERAppend and ERMust
 	for why, reason := range why2reason {
-		if er.contains(reason) {
+		if er.containAll(reason) {
 			whys = append(whys, why)
 		}
 	}
@@ -259,7 +265,7 @@ func (er escapeReason) String() string {
 	strs := make([]string, 0, ERNumber)
 	for i := range ERNumber {
 		singleReason := escapeReason(1 << i)
-		if er.contains(singleReason) {
+		if er.containAll(singleReason) {
 			strs = append(strs, reason2str[singleReason])
 		}
 	}
@@ -523,7 +529,7 @@ func (n *escLocNode) addReason(r escapeReason) (changed bool) {
 func (n *escLocNode) reasonsStr() string {
 	rlabels := make([]string, 0, ERNumber)
 	for reason, label := range reason2xlabel {
-		if n.reason.contains(reason) {
+		if n.reason.containAll(reason) {
 			rlabels = append(rlabels, label)
 		}
 	}
@@ -545,7 +551,7 @@ func (n *escLocNode) Attributes() []encoding.Attribute {
 	})
 	colors := make([]string, 0, ERNumber)
 	for reason, color := range reason2fillcolor {
-		if n.reason.contains(reason) {
+		if n.reason.containAll(reason) {
 			colors = append(colors, color)
 		}
 	}
@@ -563,6 +569,7 @@ func (n *escLocNode) Attributes() []encoding.Attribute {
 	return resAttrs
 }
 
+// Used by test
 func (n *escLocNode) SetAttribute(attr encoding.Attribute) error {
 	switch attr.Key {
 	case "label":
@@ -576,7 +583,7 @@ func (n *escLocNode) SetAttribute(attr encoding.Attribute) error {
 			if !ok {
 				return fmt.Errorf("%s is not reason", rlabel)
 			}
-			n.reason |= r
+			n.reason |= r // always OR here because addReason will delete some reasons
 		}
 	}
 	return nil
@@ -678,11 +685,27 @@ func (f *escFlow) backPropogate() escapeReason {
 			r = r.add(ERGo)
 		}
 	}
-	if f.src.loc.isName(ir.PPARAM) {
-		r = r.add(ERParamLeak)
-	}
-	if dst.loc.isName(ir.PPARAMOUT) {
-		r = r.add(ERReturn)
+	/*
+		dst <- f - src
+		src is Param
+		dst Heap, f does not contain FPDstEscAddrSrc or FPRootOutliveAddrSrc. ERHeap should not appear in src.
+	*/
+	if dst.reason.containAnyOf(ERHeap) {
+		if f.src.loc != nil && f.src.loc.isName(ir.PPARAM) {
+			movedToHeapSet := map[string]bool{
+				FPDstEscAddrSrc:      true,
+				FPRootOutliveAddrSrc: true,
+			}
+			exist := false
+			for _, why := range f.whys {
+				if movedToHeapSet[why] {
+					exist = true
+				}
+			}
+			if !exist { // no movedToHeap why
+				r = r.del(ERHeap)
+			}
+		}
 	}
 	return r
 }
@@ -937,7 +960,7 @@ func (esg *escapeSubGraph) initSetUp() {
 
 func (esg *escapeSubGraph) mustNotInStack(node *escLocNode) bool {
 	return node.loc == &esg.b.heapLoc ||
-		node.reason.contains(ERHeap) ||
+		node.reason.containAll(ERHeap) ||
 		node.loc.isName(ir.PPARAMOUT) ||
 		node.loc.isName(ir.PEXTERN) ||
 		node.loc.isName(ir.PAUTOHEAP)
@@ -973,7 +996,6 @@ func (esg *escapeSubGraph) removeHeap() {
 	for _, f := range flows {
 		r := f.backPropogate()
 		f.src.addReason(r)
-		f.src.addReason(ERHeap)
 	}
 	nr.RemoveNode(heapid)
 }
@@ -1010,7 +1032,7 @@ func (esg *escapeSubGraph) backPropogate() {
 
 func (esg *escapeSubGraph) summarize(csvBatchRoot string) {
 	for _, node := range esg.nodes {
-		if node.reason.contains(ERRootStack | EROutliveRootStack) {
+		if node.reason.containAll(ERRootStack | EROutliveRootStack) {
 			node.reason = node.reason.del(EROutliveRootStack)
 		}
 	}

@@ -8,9 +8,10 @@ var sink interface{}
 
 //go:noinline
 func (s *S) String() {
-	sink = s
-	pa := new(int)
+	pb := new(int)
+	pa := &s.a
 	sink = pa
+	sink = pb
 }
 
 func main() {

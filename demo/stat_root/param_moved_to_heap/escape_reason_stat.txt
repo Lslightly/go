@@ -1,0 +1,12 @@
+Number of nodes: 5
+[1] Frequency and percentage of each reason:
+ERHeap                   4 (80.00%)
+ERGo                     5 (100.00%)
+ERClosure                3 (60.00%)
+ERParamLeak              1 (20.00%)
+
+[2] Distribution of number of reasons per node:
+2 reasons: 2 nodes
+3 reasons: 3 nodes
+
+[3] Reason DAG (subset relationships):

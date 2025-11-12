@@ -123,6 +123,9 @@ func (b *batch) walkOne(root *location, walkgen uint32, enqueue func(*location))
 				if isEAReasonStatEnabled() && root != l {
 					hole := root.asHole()       // empty note
 					hole.notes = item.prevNotes // add prevNotes
+					if root.isName(ir.PPARAMOUT) {
+						hole = hole.note(l.n, "return")
+					}
 					if rootEscape && isEAReasonDebug() {
 						whysStr := "<nil>"
 						if hole.notes != nil {
@@ -168,6 +171,9 @@ func (b *batch) walkOne(root *location, walkgen uint32, enqueue func(*location))
 				if isEAReasonStatEnabled() && root != l {
 					hole := root.asHole()
 					hole.notes = item.prevNotes
+					if root.isName(ir.PPARAMOUT) {
+						hole = hole.note(l.n, "return")
+					}
 					if rootEscape && isEAReasonDebug() {
 						whysStr := "<nil>"
 						if hole.notes != nil {
@@ -210,6 +216,9 @@ func (b *batch) walkOne(root *location, walkgen uint32, enqueue func(*location))
 						if b.outlives(root, edge.src) {
 							hole := root.asHole().shift(-1)
 							hole.notes = cloneAndAppendNotes(edge.notes, item.prevNotes)
+							if root.isName(ir.PPARAMOUT) {
+								hole = hole.note(edge.src.n, "return")
+							}
 							getEsg().fastpath(edge.src, hole.note(edge.src.n, FPRootOutliveAddrSrc))
 							added = true
 						}
@@ -221,8 +230,14 @@ func (b *batch) walkOne(root *location, walkgen uint32, enqueue func(*location))
 						if b.outlives(root, edge.src) {
 							hole := root.asHole()
 							hole.notes = cloneAndAppendNotes(edge.notes, item.prevNotes)
+							if root.isName(ir.PPARAMOUT) {
+								hole = hole.note(edge.src.n, "return")
+							}
 							getEsg().fastpath(edge.src, hole.note(edge.src.n, FPParamLeak).shift(d))
 							added = true
+						}
+						if rootEscape {
+							getEsg().markLocReason(root, ERHeap)
 						}
 					}
 					if isEAReasonDebug() {

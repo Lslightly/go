@@ -1,9 +1,9 @@
 nodeid,reason,loc,pkg
 1,33024,/home/lqw/mygit/go1.24.2/demo/fixtures/global/main.go:29:13,main/home/lqw/mygit/go1.24.2/demo/fixtures/global
+3,32769,/home/lqw/mygit/go1.24.2/demo/fixtures/global/main.go:17:2,main/home/lqw/mygit/go1.24.2/demo/fixtures/global
 4,32769,/home/lqw/mygit/go1.24.2/demo/fixtures/global/main.go:16:2,main/home/lqw/mygit/go1.24.2/demo/fixtures/global
 5,32769,/home/lqw/mygit/go1.24.2/demo/fixtures/global/main.go:15:2,main/home/lqw/mygit/go1.24.2/demo/fixtures/global
 1,32769,/home/lqw/mygit/go1.24.2/demo/fixtures/global/main.go:18:2,main/home/lqw/mygit/go1.24.2/demo/fixtures/global
-3,32769,/home/lqw/mygit/go1.24.2/demo/fixtures/global/main.go:17:2,main/home/lqw/mygit/go1.24.2/demo/fixtures/global
 1,33025,/home/lqw/mygit/go1.24.2/demo/fixtures/global/main.go:35:2,main/home/lqw/mygit/go1.24.2/demo/fixtures/global
 1,32769,/home/lqw/mygit/go1.24.2/demo/fixtures/global/main.go:24:6,main/home/lqw/mygit/go1.24.2/demo/fixtures/global
 1,33025,/home/lqw/mygit/go1.24.2/demo/fixtures/global/main.go:42:2,main/home/lqw/mygit/go1.24.2/demo/fixtures/global

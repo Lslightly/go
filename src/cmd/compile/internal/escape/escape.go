@@ -200,9 +200,6 @@ func Batch(fns []*ir.Func, recursive bool) {
 			if len(getEsg().nodes) == 0 {
 				return
 			}
-			if isEAReasonDebug() {
-				fmt.Fprintln(os.Stderr, "finishBatch", esgCnt, "for pkg", base.Ctxt.Pkgpath)
-			}
 			fnNames := make([]string, 0, len(fns))
 			for _, fn := range fns {
 				if fn != nil && fn.Sym() != nil {
@@ -210,7 +207,7 @@ func Batch(fns []*ir.Func, recursive bool) {
 				}
 			}
 			if isEAReasonDebug() {
-				fmt.Fprintln(os.Stderr, "funcs:", strings.Join(fnNames, ","))
+				fmt.Fprintln(os.Stderr, "finishBatch", esgCnt, "for pkg", base.Ctxt.Pkgpath, "funcs:", strings.Join(fnNames, ","))
 			}
 		}()
 		getEsg().finishBatch()
