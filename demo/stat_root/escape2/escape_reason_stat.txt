@@ -1,8 +1,8 @@
 Number of nodes: 326
 [1] Frequency and percentage of each reason:
-ERHeap                 213 (65.34%)
-ERParamLeak            123 (37.73%)
+ERHeap                 143 (43.87%)
 ERReturn               100 (30.67%)
+ERParamLeak            123 (37.73%)
 ERClosure               33 (10.12%)
 EROutliveRootStack      10 (3.07%)
 ERRootStack              8 (2.45%)
@@ -17,10 +17,10 @@ ERAppend                 1 (0.31%)
 
 [2] Distribution of number of reasons per node:
 0 reasons: 71 nodes
-1 reasons: 42 nodes
-2 reasons: 140 nodes
-3 reasons: 58 nodes
-4 reasons: 13 nodes
+1 reasons: 75 nodes
+2 reasons: 136 nodes
+3 reasons: 37 nodes
+4 reasons: 5 nodes
 5 reasons: 2 nodes
 
 [3] Reason DAG (subset relationships):

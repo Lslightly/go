@@ -326,6 +326,7 @@ def run(repoRoot: Path, buildLogRoot: Path, statRoot: Path, repo: str, repoBuild
 
 def demo():
     for repo in [
+        "receiver2heap",
         "closure_go",
         "go_interprocedural",
         "indirect",
