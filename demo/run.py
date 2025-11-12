@@ -301,7 +301,7 @@ def grpc_go_build(repoPath: Path, repoBuildLogRoot: Path, EAResultRoot: Path):
 
 def rclone_build(repoPath: Path, repoBuildLogRoot: Path, EAResultRoot: Path):
     with open(repoBuildLogRoot/"stdout", 'w') as stdout, open(repoBuildLogRoot/"stderr", 'w') as stderr:
-        execute('make', cwd=str(repoPath), extra_env=gen_extra_env(EAResultRoot), stdout=stdout, stderr=stderr)
+        execute('go build -a .', cwd=str(repoPath), extra_env=gen_extra_env(EAResultRoot), stdout=stdout, stderr=stderr) # make is for beta release
 
 def run(repoRoot: Path, buildLogRoot: Path, statRoot: Path, repo: str, repoBuild: Callable[[Path, Path, Path], None]=build):
     repoPath = repoRoot/repo
@@ -348,13 +348,13 @@ def demo():
     
 def escapeReasonRepos():
     for repo, repobuild in tqdm([
-        ("fzf", build),
-        ("cli", cli_build),
+        # ("fzf", build),
+        # ("cli", cli_build),
         # ("tidb", tidb_build),
-        ("hugo", build),
-        ("gogs", build),
-        ("grpc-go", grpc_go_build),
-        # ("rclone", rclone_build),
+        # ("hugo", build),
+        # ("gogs", build),
+        # ("grpc-go", grpc_go_build),
+        ("rclone", rclone_build),
 
         # # build method unknown
         # ("sonic", build),
