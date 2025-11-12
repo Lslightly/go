@@ -5,6 +5,7 @@ import (
 	"encoding/csv"
 	"flag"
 	"fmt"
+	"io/fs"
 	"log"
 	"math/bits"
 	"os"
@@ -19,6 +20,7 @@ import (
 	"demo/er"
 
 	"github.com/goccy/go-yaml"
+	"github.com/schollz/progressbar/v3"
 )
 
 var (
@@ -82,14 +84,29 @@ func importStatRootData(statRoot string, fixname string, dbPrefix string) {
 	var nodeInfos []NodeInfo
 	var allRootCauses []NodeRootCause
 
+	var csvProgressCnt int
+	filepath.WalkDir(fixcsvdir, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if !d.IsDir() && d.Name() == "all.csv" {
+			csvProgressCnt += 1
+		}
+		return nil
+	})
+
+	bar := progressbar.Default(int64(csvProgressCnt), fmt.Sprintf("collect csv for %s", fixname))
+
 	// 使用 WalkDir 遍历目录
-	err = filepath.WalkDir(fixcsvdir, func(path string, d os.DirEntry, err error) error {
+	err = filepath.WalkDir(fixcsvdir, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
 
 		// 只处理 all.csv 文件
 		if !d.IsDir() && d.Name() == "all.csv" {
+			defer bar.Add(1)
 			// 解析路径获取 pkgpath 和 batch number
 			relPath, err := filepath.Rel(fixcsvdir, path)
 			if err != nil {
