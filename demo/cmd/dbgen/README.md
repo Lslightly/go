@@ -50,4 +50,6 @@ package path+batch number+结点id可以唯一确定一个结点
 
 查询结果可以直接复制HTML到excel中。
 
+## 批量查询
 
+[batch_paramleak.sh](./sql/batch_paramleak.sh) 可以批量对数据库做查询并输出markdown形式的表格。
