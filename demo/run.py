@@ -303,15 +303,21 @@ def rclone_build(repoPath: Path, repoBuildLogRoot: Path, EAResultRoot: Path):
     with open(repoBuildLogRoot/"stdout", 'w') as stdout, open(repoBuildLogRoot/"stderr", 'w') as stderr:
         execute('go build -a .', cwd=str(repoPath), extra_env=gen_extra_env(EAResultRoot), stdout=stdout, stderr=stderr) # make is for beta release
 
+def sweet_build(repoPath: Path, repoBuildLogRoot: Path, EAResultRoot: Path):
+    execute("go build ./cmd/sweet", cwd=str(repoPath))
+    execute("./reason.sh", cwd=str(repoPath))
+
 def run(repoRoot: Path, buildLogRoot: Path, statRoot: Path, repo: str, repoBuild: Callable[[Path, Path, Path], None]=build):
     repoPath = repoRoot/repo
     EAResultRoot = statRoot/repo
     repoBuildLogRoot = buildLogRoot/repo
     if do_build:
         if EAResultRoot.exists():
+            print(f'removing {EAResultRoot}')
             shutil.rmtree(EAResultRoot)
         EAResultRoot.mkdir(parents=True, exist_ok=True)
         if repoBuildLogRoot.exists():
+            print(f'removing {repoBuildLogRoot}')
             shutil.rmtree(repoBuildLogRoot)
         repoBuildLogRoot.mkdir(parents=True, exist_ok=True)
         repoBuild(repoPath, repoBuildLogRoot, EAResultRoot)
@@ -357,7 +363,7 @@ def escapeReasonRepos():
         # ("hugo", build),
         # ("gogs", build),
         # ("grpc-go", grpc_go_build),
-        ("rclone", rclone_build),
+        # ("rclone", rclone_build),
 
         # # build method unknown
         # ("sonic", build),
@@ -377,6 +383,13 @@ def escapeReasonRepos():
             repo,
             repobuild
         )
+    run(
+        Path("/home/lqw/mygit/research/vm/go-bench/benchmarks"),
+        Path("/data/github_go/escapeReasonBuildLog"),
+        Path("/data/github_go/escapeReasonStatRoot"),
+        "sweet",
+        sweet_build,
+    )
 
 def main():
     if demo_only:
