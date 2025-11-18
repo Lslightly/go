@@ -1158,3 +1158,18 @@ func TestParamcases(t *testing.T) {
 		assert.True(t, newint.reason.containAll(ERGlobal|ERHeap|ERParamLeak))
 	})
 }
+
+func TestDistinguishParam(t *testing.T) {
+	fixt := fixture{
+		name: "distinguish_param",
+		pkgs: []string{
+			"demo/fixtures/distinguish_param",
+		},
+		t: t,
+	}
+
+	scope(t, fixt.graph("demo/fixtures/distinguish_param", 1, pSummarize), func(esg *escapeSubGraph) {
+		a := esg.findNode("a @ main.go:4:2")
+		assert.True(t, a.reason.containAll(ERParamLeak|ERHeap|ERClosure|ERGo|ERReturn)) // TODO ERClosure|ERGo should be marked with param leak attribute
+	})
+}

@@ -1,0 +1,5 @@
+nodeid,reason,loc,pkg
+1,433,/home/lqw/mygit/go1.24.2/demo/fixtures/distinguish_param/main.go:4:2,demo/fixtures/distinguish_param
+3,0,/home/lqw/mygit/go1.24.2/demo/fixtures/distinguish_param/main.go:3:12,demo/fixtures/distinguish_param
+3,304,/home/lqw/mygit/go1.24.2/demo/fixtures/distinguish_param/main.go:10:10,demo/fixtures/distinguish_param
+1,33,/home/lqw/mygit/go1.24.2/demo/fixtures/distinguish_param/main.go:11:5,demo/fixtures/distinguish_param

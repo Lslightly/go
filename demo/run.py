@@ -347,6 +347,7 @@ def demo():
         "receiver2heap",
         "param_moved_to_heap",
         "param_cases",
+        "distinguish_param",
     ]:
         build_with_esg_dumping = functools.partial(build, ESGDumpEnabled=True)
         run(Path.cwd()/"fixtures", Path.cwd()/"build_log", Path.cwd()/"stat_root", repo, build_with_esg_dumping)
