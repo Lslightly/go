@@ -228,6 +228,22 @@
 | ERGlobal             | 124   | 0.06% |
 | ERDefer              | 70    | 0.03% |
 
+### bench_sweet_biogo_krishna
+
+|       Root Cause     | Count | Percentage |
+|----------------------|-------|------------|
+| ERReturn             | 403   | 48.21% |
+| ERStar               | 238   | 28.47% |
+| ERAppend             | 66    | 7.89% |
+| ERClosure            | 39    | 4.67% |
+| ERMapIdx             | 33    | 3.95% |
+| ERGo                 | 20    | 2.39% |
+| ERCopy               | 12    | 1.44% |
+| ERSliceIdx           | 11    | 1.32% |
+| ERComm               | 9     | 1.08% |
+| EROutliveRootStack   | 3     | 0.36% |
+| ERMust               | 2     | 0.24% |
+
 ### bench_sweet_bleve_index
 
 |       Root Cause     | Count | Percentage |
@@ -263,23 +279,57 @@
 | ERDefer              | 424   | 0.15% |
 | ERGlobal             | 217   | 0.08% |
 
+### bench_sweet_esbuild
+
+|       Root Cause     | Count | Percentage |
+|----------------------|-------|------------|
+| ERReturn             | 1472  | 38.85% |
+| ERStar               | 709   | 18.71% |
+| ERClosure            | 333   | 8.79% |
+| ERAppend             | 327   | 8.63% |
+| EROutliveRootStack   | 265   | 6.99% |
+| ERSliceIdx           | 220   | 5.81% |
+| ERMapIdx             | 185   | 4.88% |
+| ERGo                 | 111   | 2.93% |
+| ERDefer              | 78    | 2.06% |
+| ERCopy               | 50    | 1.32% |
+| ERMust               | 37    | 0.98% |
+| ERComm               | 2     | 0.05% |
+
 ### bench_sweet_etcd
 
 |       Root Cause     | Count | Percentage |
 |----------------------|-------|------------|
-| ERReturn             | 8976  | 46.60% |
-| ERStar               | 3685  | 19.13% |
-| ERClosure            | 2178  | 11.31% |
-| ERMapIdx             | 1592  | 8.27% |
-| ERSliceIdx           | 851   | 4.42% |
-| ERGo                 | 772   | 4.01% |
-| ERAppend             | 652   | 3.39% |
-| ERComm               | 244   | 1.27% |
-| ERCopy               | 96    | 0.50% |
-| ERGlobal             | 80    | 0.42% |
-| ERMust               | 77    | 0.40% |
-| EROutliveRootStack   | 57    | 0.30% |
-| ERDefer              | 1     | 0.01% |
+| ERReturn             | 9565  | 46.99% |
+| ERStar               | 3836  | 18.84% |
+| ERClosure            | 2309  | 11.34% |
+| ERMapIdx             | 1676  | 8.23% |
+| ERSliceIdx           | 863   | 4.24% |
+| ERGo                 | 806   | 3.96% |
+| ERAppend             | 683   | 3.36% |
+| ERComm               | 246   | 1.21% |
+| ERCopy               | 117   | 0.57% |
+| ERGlobal             | 92    | 0.45% |
+| EROutliveRootStack   | 81    | 0.40% |
+| ERMust               | 81    | 0.40% |
+| ERDefer              | 1     | 0.00% |
+
+### bench_sweet_go_build
+
+|       Root Cause     | Count | Percentage |
+|----------------------|-------|------------|
+| ERReturn             | 239   | 42.30% |
+| ERStar               | 113   | 20.00% |
+| ERAppend             | 63    | 11.15% |
+| ERMapIdx             | 49    | 8.67% |
+| ERComm               | 32    | 5.66% |
+| ERClosure            | 25    | 4.42% |
+| ERCopy               | 21    | 3.72% |
+| ERSliceIdx           | 13    | 2.30% |
+| EROutliveRootStack   | 5     | 0.88% |
+| ERMust               | 3     | 0.53% |
+| ERGo                 | 1     | 0.18% |
+| ERGlobal             | 1     | 0.18% |
 
 ### bench_sweet_gopher_lua
 
