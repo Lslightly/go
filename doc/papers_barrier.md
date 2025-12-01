@@ -8,6 +8,7 @@
 - Cycles to Recycle: Garbage Collection on the IA-64 ISMM00
 
 - ASPLOS23 [AtoMig: Automatically Migrating Millions Lines of Code from TSO to WMM](https://dl.acm.org/doi/pdf/10.1145/3575693.3579849)
+- ASPLOS23 [Risotto: A Dynamic Binary Translator for Weak MemoryModelArchitectures](https://dl.acm.org/doi/10.1145/3567955.3567962)
 - Software Language Engineering24 [Reducing Write Barrier Overheads for Orthogonal Persistence](https://dl.acm.org/doi/10.1145/3687997.3695646)
 	- 通过逃逸分析发现不被其他线程引用的对象，在这些对象写入时，移除 barrier，减少同步操作，降低屏障开销。
 - PPoPP22 [Asymmetry-aware Scalable Locking](https://dl.acm.org/doi/10.1145/3503221.3508420)
