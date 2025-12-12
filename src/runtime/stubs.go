@@ -307,6 +307,8 @@ func goexit(neverCallThisFunction)
 // data dependency ordering.
 func publicationBarrier()
 
+func nops()
+
 //go:noescape
 func asmcgocall(fn, arg unsafe.Pointer) int32
 

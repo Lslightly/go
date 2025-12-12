@@ -1253,15 +1253,6 @@ func mallocgcTiny(size uintptr, typ *_type, needzero bool) (unsafe.Pointer, uint
 	return x, span.elemsize
 }
 
-//go:noinline
-func calc(times int) int {
-	sum := 0
-	for i := 0; i < times; i++ {
-		sum += i
-	}
-	return sum
-}
-
 func mallocgcSmallNoscan(size uintptr, typ *_type, needzero bool) (unsafe.Pointer, uintptr) {
 	// Set mp.mallocing to keep from being preempted by GC.
 	mp := acquirem()
@@ -1298,7 +1289,7 @@ func mallocgcSmallNoscan(size uintptr, typ *_type, needzero bool) (unsafe.Pointe
 		memclrNoHeapPointers(x, size)
 	}
 
-	calc(40)
+	nops()
 
 	// Ensure that the stores above that initialize x to
 	// type-safe memory and set the heap bits occur before
@@ -1391,7 +1382,7 @@ func mallocgcSmallScanNoHeader(size uintptr, typ *_type, needzero bool) (unsafe.
 	}
 	size = uintptr(class_to_size[sizeclass])
 
-	calc(40)
+	nops()
 
 	// Ensure that the stores above that initialize x to
 	// type-safe memory and set the heap bits occur before
