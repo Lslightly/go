@@ -98,6 +98,8 @@
 // attempts to keep arenas contiguous so that large spans (and hence
 // large objects) can cross arenas.
 
+//go:build !nodmb
+
 package runtime
 
 import (
