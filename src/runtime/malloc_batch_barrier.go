@@ -1298,7 +1298,7 @@ func mallocgcSmallNoscan(size uintptr, typ *_type, needzero bool) (unsafe.Pointe
 		memclrNoHeapPointers(x, size)
 	}
 
-	calc(10000)
+	calc(40)
 
 	// Ensure that the stores above that initialize x to
 	// type-safe memory and set the heap bits occur before
@@ -1390,6 +1390,8 @@ func mallocgcSmallScanNoHeader(size uintptr, typ *_type, needzero bool) (unsafe.
 		c.scanAlloc += heapSetTypeNoHeader(uintptr(x), size, typ, span)
 	}
 	size = uintptr(class_to_size[sizeclass])
+
+	calc(40)
 
 	// Ensure that the stores above that initialize x to
 	// type-safe memory and set the heap bits occur before
