@@ -8,22 +8,3 @@ TEXT ·publicationBarrier(SB),NOSPLIT|NOFRAME,$0-0
 	DMB	$0xe	// DMB ST
 	RET
 
-TEXT ·calc(SB),NOSPLIT|NOFRAME,$0-0
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	RET

@@ -1289,7 +1289,7 @@ func mallocgcSmallNoscan(size uintptr, typ *_type, needzero bool) (unsafe.Pointe
 		memclrNoHeapPointers(x, size)
 	}
 
-	nops()
+	noploop(120)
 
 	// Ensure that the stores above that initialize x to
 	// type-safe memory and set the heap bits occur before
@@ -1298,6 +1298,8 @@ func mallocgcSmallNoscan(size uintptr, typ *_type, needzero bool) (unsafe.Pointe
 	// the garbage collector could follow a pointer to x,
 	// but see uninitialized memory or stale heap bits.
 	publicationBarrier()
+
+	nop()
 	// As x and the heap bits are initialized, update
 	// freeIndexForScan now so x is seen by the GC
 	// (including conservative scan) as an allocated object.
@@ -1382,7 +1384,7 @@ func mallocgcSmallScanNoHeader(size uintptr, typ *_type, needzero bool) (unsafe.
 	}
 	size = uintptr(class_to_size[sizeclass])
 
-	nops()
+	noploop(140)
 
 	// Ensure that the stores above that initialize x to
 	// type-safe memory and set the heap bits occur before
@@ -1391,6 +1393,7 @@ func mallocgcSmallScanNoHeader(size uintptr, typ *_type, needzero bool) (unsafe.
 	// the garbage collector could follow a pointer to x,
 	// but see uninitialized memory or stale heap bits.
 	publicationBarrier()
+	nop()
 	// As x and the heap bits are initialized, update
 	// freeIndexForScan now so x is seen by the GC
 	// (including conservative scan) as an allocated object.

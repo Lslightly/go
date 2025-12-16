@@ -1597,3 +1597,17 @@ TEXT runtime·panicSliceConvert<ABIInternal>(SB),NOSPLIT,$0-16
 TEXT ·getfp<ABIInternal>(SB),NOSPLIT|NOFRAME,$0
 	MOVD R29, R0
 	RET
+
+TEXT ·noploop(SB),NOSPLIT,$0-8
+Loop:
+	CMP $0, R0
+	BLE End
+	NOP
+	SUB $1, R0
+	B Loop
+End:
+	RET
+
+TEXT ·nop(SB),NOSPLIT|NOFRAME,$0-0
+	RET
+
