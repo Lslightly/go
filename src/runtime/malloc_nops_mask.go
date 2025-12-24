@@ -98,7 +98,7 @@
 // attempts to keep arenas contiguous so that large spans (and hence
 // large objects) can cross arenas.
 
-//go:build linux && batch_share_barrier
+//go:build linux && nops_mask
 
 package runtime
 

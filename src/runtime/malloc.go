@@ -98,7 +98,7 @@
 // attempts to keep arenas contiguous so that large spans (and hence
 // large objects) can cross arenas.
 
-//go:build !(nodmb || batch_share_barrier)
+//go:build !(nodmb || nops_mask || eager_calc)
 
 package runtime
 
