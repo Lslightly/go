@@ -1300,9 +1300,7 @@ func mallocgcSmallNoscan(size uintptr, typ *_type, needzero bool) (unsafe.Pointe
 	// internal fragmentation and matches the GC's accounting by
 	// using the whole allocation slot.
 	c.nextSample -= int64(size)
-	if c.nextSample < 0 || MemProfileRate != c.memProfRate {
-		profilealloc(mp, x, size)
-	}
+	doSample := c.nextSample < 0 || MemProfileRate != c.memProfRate
 
 	// Ensure that the stores above that initialize x to
 	// type-safe memory and set the heap bits occur before
@@ -1328,6 +1326,10 @@ func mallocgcSmallNoscan(size uintptr, typ *_type, needzero bool) (unsafe.Pointe
 	// a race marking the bit.
 	if wbEnabled {
 		gcmarknewobject(span, uintptr(x))
+	}
+
+	if doSample {
+		profilealloc(mp, x, size)
 	}
 
 	mp.mallocing = 0
@@ -1393,9 +1395,7 @@ func mallocgcSmallScanNoHeader(size uintptr, typ *_type, needzero bool) (unsafe.
 	// internal fragmentation and matches the GC's accounting by
 	// using the whole allocation slot.
 	c.nextSample -= int64(size)
-	if c.nextSample < 0 || MemProfileRate != c.memProfRate {
-		profilealloc(mp, x, size)
-	}
+	doSample := c.nextSample < 0 || MemProfileRate != c.memProfRate
 
 	// Ensure that the stores above that initialize x to
 	// type-safe memory and set the heap bits occur before
@@ -1421,6 +1421,9 @@ func mallocgcSmallScanNoHeader(size uintptr, typ *_type, needzero bool) (unsafe.
 	// a race marking the bit.
 	if wbEnabled {
 		gcmarknewobject(span, uintptr(x))
+	}
+	if doSample {
+		profilealloc(mp, x, size)
 	}
 
 	mp.mallocing = 0
