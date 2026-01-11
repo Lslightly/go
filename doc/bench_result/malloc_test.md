@@ -6,6 +6,31 @@ publicationBarrier的开销分析见 [issue comment](https://github.com/golang/g
 - [nodmb.out](../../src/runtime/profile_result/malloc_test/nodmb.out)
 - [cpu.out](../../src/runtime/profile_result/malloc_test/cpu.out)
 
+nops_mask的代码如下:
+
+```go
+noploop(120)
+publicationBarrier()
+// Account for barrier latency at
+// this nop, not the next one.
+nop()
+span.freeIndexForScan = span.freeindex
+if writeBarrier.enabled {
+    gcmarknewobject(span, uintptr(x))
+}
+c.nextSample -= int64(size)
+if c.nextSample < 0 || MemProfileRate != c.memProfRate {
+    profilealloc(mp, x, size)
+}
+```
+
+default
+
+```go
+publicationBarrier()
+span.freeIndexForScan = span.freeindex
+```
+
 | abbreviation | config                                                                              | expectation for the config                                                                                                                         | statements following `publicationBarrier`           | profile file            | 
 | ------------ | ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- | ----------------------- |
 | nops_mask    | `noploop` + `publicationBarrier` + `nop` + `span.freeIndexForScan = span.freeindex` | The latency for `publicationBarrier` should be masked by `noploop` and the time for `nop`+`span.freeIndexForScan = span.freeindex` should be less. | `nop`+`span.freeIndexForScan = span.freeindex`      | nops_mask.out | 
