@@ -1,5 +1,7 @@
 # rclone benchmark for malloc
 
+命令为`GOGC=? go test -a -bench=$BenchName -run=none -cpuprofile $cpufile -memprofile $memfile`
+
 以下均为x64上的测试的结果
 
 | name                        | mallocgc(%)(GOGC=on) | significant                                          | mallocgc(%)(GOGC=off) | significant                                                                                |
