@@ -366,4 +366,13 @@ GC 4个阶段：
 > sysmon seizes and retakes P0, handoff happening, P0 is bound to M2.
 > Then syscall completes, M0 is bound to another P, P1. ^bk3mb7e
 
+[`sighandler`](../../src/runtime/signal_unix.go#L640) 用于M在接受到SIGURG信号之后执行抢占操作。
+
+[`runtime·sigtramp`](../../src/runtime/sys_linux_amd64.s#L335)汇编会调用 [`sigtrampgo`](../../src/runtime/signal_unix.go#L431)，然后调用[`sighandler`](../../src/runtime/signal_unix.go#L640)，调用[`doSigPreempt`](../../src/runtime/signal_unix.go#L341)
+
+[`isAsyncSafePoint`](../../src/runtime/preempt.go#L363) 表示是否为异步抢占的安全点。内部涉及funcdata, pcdata等。
+
+如果是异步抢占安全点，将`asyncPreempt`和`newpc`传递给`sigctxt`，在`uc_mcontext`中设置rip参数，`sigtramp`返回的时候，内核会根据`ucontext`恢复物理寄存器。
+
+如果 `sighandler` 发现不可抢占，会返回到原来的函数执行，比如`mallocgc`中。
 

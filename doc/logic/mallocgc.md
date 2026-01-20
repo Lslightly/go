@@ -36,3 +36,38 @@ SmallScanNoHeader
 Large
 
 ![](../figures/mallocgcLarge.png)
+
+## mp.mallocing
+
+`mp.mallocing`的设置总是和`acquirem`, `releasem`成对出现。
+
+除了`malloc.go`修改`mp.mallocing`外，mutator还包括：
+1. `mheap.go` `scavengeAll`, 会执行`gp.m.mallocing++`
+2. `panic.go` `startpanic_m` 在一个unrecoverable panic中不允许malloc，会执行`gp.m.mallocing++`，不会再减。
+3. `proc.go` `sigprof` 处理SIGPROF信号时，会调用 `getg().m.mallocing++`，由于profiling和GC并发执行，因此profiling不能分配，所以添加`mallocing`来设置一个陷阱。结束之后就`mallocing--`。
+4. `arena.go` `userArenaNextFree`(从`userArenaChunkFree`获取指针前后)和`newUserArenaChunk`(从`mheap_.allocUserArenaChunk`获取指针前后)函数，设置`mp.mallocing`为1和0。
+
+`mp.mallocing`作为条件判断分为5类：
+1. malloc deadlock
+   1. 主要是在分配函数中，`userArenaNextFree`, `newUserArenaChunk`, malloc函数族，
+   2. `iface.go` `itabAdd`。常见的例子是在panicking的时候调用`itabAdd`
+2. cgo check, `cgocheck.go` `cgoCheckPtrWrite`，如果正在分配内存，那么会写很多mfixalloc结构体，这些结构体看起来像是非Go内存，提早退出
+3. m is not locked
+   1. `mgcsweep.go` `ensureSwept`，如果`gp.m.locks == 0`没有加锁，`gp.m.mallocing == 0`, `gp != gp.m.g0`，那么表示当前既没有加锁禁止抢占，也没有正在malloc，而且还不是g0
+   2. `mgcsweep.go` `sweep`，和1类似，需要有锁或者正在分配或者get()是g0
+4. panic检查
+   1. `panic.go` `panicCheck1`, `panicCheck2`如果panic的时候`gp.m.mallocing != 0`，则 `throw(msg)`
+   2. `panic.go` `gopanic` panic during malloc
+   3. `panic.go` `canpanic`，如果正在malloc，则不能panic，需要throw
+5. `canPreemptM`判断mp是否可抢占
+   1. 可抢占的条件是 `mp.locks == 0 && mp.mallocing == 0 && mp.preemptoff == "" && mp.p.ptr().status == _Prunning`
+
+所以`mp.mallocing`开启之后会有如下影响：
+1. m不可抢占，因此也不会响应STW请求，也不会被抢占。只有在分配结束时，协程才可以被重新抢占。
+2. 同一个m不可再次进入分配状态，否则throw
+
+如果要将`mp.mallocing`的范围扩大，那可能会导致处在循环中，如果再涉及到其他并发原语，就可能导致死锁，这时候由于`mp.mallocing`始终为0，导致无法被抢占调度。
+
+所以这又对循环内的语句做了进一步要求。
+
+
