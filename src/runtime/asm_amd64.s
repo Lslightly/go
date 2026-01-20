@@ -2141,3 +2141,22 @@ TEXT runtime·retpolineR15(SB),NOSPLIT|NOFRAME,$0; RETPOLINE(15)
 TEXT ·getfp<ABIInternal>(SB),NOSPLIT|NOFRAME,$0
 	MOVQ BP, AX
 	RET
+
+// func noploop(count int)
+// The $0-8 indicates 0 bytes of local stack frame and 8 bytes of arguments.
+TEXT ·noploop(SB), NOSPLIT, $0-8
+    MOVQ count+0(FP), AX  // Load the 'count' argument from the Frame Pointer into AX
+Loop:
+    CMPQ AX, $0           // Compare AX with 0
+    JLE End               // If AX <= 0, jump to End (equivalent to ARM's BLE)
+    NOP                   // No operation
+    SUBQ $1, AX           // Decrement AX by 1
+    JMP Loop              // Unconditional jump back to Loop
+End:
+    RET                   // Return to caller
+
+// func nop()
+// NOFRAME indicates no stack frame setup is required for this leaf function.
+TEXT ·nop(SB), NOSPLIT|NOFRAME, $0-0
+    RET                   // Return immediately
+
