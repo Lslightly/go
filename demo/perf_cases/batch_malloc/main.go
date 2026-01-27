@@ -28,11 +28,12 @@ func GetRuntimeTypePtr(t reflect.Type) unsafe.Pointer {
 	return eface.word
 }
 
-func foo() {
-	s := make([]*Obj, 10)
+//go:noinline
+func foo(l int) {
+	s := make([]*Obj, 0, l)
 	runtime.BatchEnter()
-	for range 10 {
-		obj := (*Obj)(runtime.BatchNewobject(GetRuntimeTypePtr(reflect.TypeFor[Obj]())))
+	for range 20 {
+		obj := new(Obj)
 		s = append(s, obj)
 	}
 	runtime.BatchExit()
@@ -40,7 +41,7 @@ func foo() {
 
 func main() {
 	for i := range 1000 {
-		foo()
+		foo(10)
 		println(i)
 	}
 }

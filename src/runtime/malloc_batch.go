@@ -989,7 +989,7 @@ func (c *mcache) nextFree(spc spanClass) (v gclinkptr, s *mspan, checkGCTrigger 
 // We might consider turning these on by default; many of them previously were.
 // They account for a few % of mallocgc's cost though, which does matter somewhat
 // at scale.
-const doubleCheckMalloc = false
+const doubleCheckMalloc = true
 
 // Allocate an object of size bytes.
 // Small objects are allocated from the per-P cache's free lists.
@@ -1049,21 +1049,54 @@ func mallocgc(size uintptr, typ *_type, needzero bool) unsafe.Pointer {
 	// Actually do the allocation.
 	var x unsafe.Pointer
 	var elemsize uintptr
-	if size <= maxSmallSize-mallocHeaderSize {
-		if typ == nil || !typ.Pointers() {
-			if size < maxTinySize {
-				x, elemsize = mallocgcTiny(size, typ, needzero)
+	mp := acquirem()
+	if !mp.postMallocTodo.batching {
+		if size <= maxSmallSize-mallocHeaderSize {
+			if typ == nil || !typ.Pointers() {
+				if size < maxTinySize {
+					x, elemsize = mallocgcTiny(size, typ, needzero)
+				} else {
+					x, elemsize = mallocgcSmallNoscan(size, typ, needzero)
+				}
+			} else if heapBitsInSpan(size) {
+				x, elemsize = mallocgcSmallScanNoHeader(size, typ, needzero)
 			} else {
-				x, elemsize = mallocgcSmallNoscan(size, typ, needzero)
+				x, elemsize = mallocgcSmallScanHeader(size, typ, needzero)
 			}
-		} else if heapBitsInSpan(size) {
-			x, elemsize = mallocgcSmallScanNoHeader(size, typ, needzero)
 		} else {
-			x, elemsize = mallocgcSmallScanHeader(size, typ, needzero)
+			x, elemsize = mallocgcLarge(size, typ, needzero)
 		}
 	} else {
-		x, elemsize = mallocgcLarge(size, typ, needzero)
+		var span *mspan
+		var checkGCTigger bool
+		if size <= maxSmallSize-mallocHeaderSize {
+			if typ == nil || !typ.Pointers() {
+				if size < maxTinySize {
+					x, elemsize, span, checkGCTigger = mallocgcTinyCore(size, typ, needzero)
+				} else {
+					x, elemsize, span, checkGCTigger = mallocgcSmallNoscanCore(size, typ, needzero)
+				}
+			} else if heapBitsInSpan(size) {
+				x, elemsize, span, checkGCTigger = mallocgcSmallScanNoHeaderCore(size, typ, needzero)
+			} else {
+				x, elemsize, span, checkGCTigger = mallocgcSmallScanHeaderCore(size, typ, needzero)
+			}
+		} else {
+			x, elemsize, span, checkGCTigger = mallocgcLargeCore(size, typ, needzero)
+		}
+		todo := &mp.postMallocTodo
+		todo.checkGCTrigger = todo.checkGCTrigger || checkGCTigger
+		if span != nil {
+			todo.push(mallocPairsTy{
+				span: span,
+				x:    x,
+			})
+			if todo.full() {
+				flushPostMallocTodos(todo)
+			}
+		}
 	}
+	releasem(mp)
 
 	// Notify sanitizers, if enabled.
 	if raceenabled {

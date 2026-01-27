@@ -18,6 +18,7 @@ type batchTransTy struct {
 	todos          [ringCap]mallocPairsTy
 	front, end     int8 // waste one slot, end is the next slot to fill
 	checkGCTrigger bool
+	batching       bool
 }
 
 func (ring *batchTransTy) full() bool {
@@ -47,24 +48,7 @@ func BatchEnter() {
 		}
 	}
 	mp.mallocing = 1
-}
-
-func BatchNewobject(typPointer unsafe.Pointer) unsafe.Pointer {
-	mp := getg().m
-	typ := (*_type)(typPointer)
-	x, span, checkGCTigger := batchmallocgc(typ.Size_, typ, true)
-	todo := &mp.postMallocTodo
-	todo.checkGCTrigger = todo.checkGCTrigger || checkGCTigger
-	if span != nil {
-		todo.push(mallocPairsTy{
-			span: span,
-			x:    x,
-		})
-		if todo.full() {
-			flushPostMallocTodos(&mp.postMallocTodo)
-		}
-	}
-	return x
+	mp.postMallocTodo.batching = true
 }
 
 func flushPostMallocTodos(ring *batchTransTy) {
@@ -78,6 +62,8 @@ func flushPostMallocTodos(ring *batchTransTy) {
 	ring.statusPrint()
 	for idx := ring.front; idx != ring.end; idx = (idx + 1) % ringCap {
 		todo := ring.todos[idx]
+		// println("todo idx", idx, "span addr", todo.span)
+
 		// As x and the heap bits are initialized, update
 		// freeIndexForScan now so x is seen by the GC
 		// (including conservative scan) as an allocated object.
@@ -87,7 +73,6 @@ func flushPostMallocTodos(ring *batchTransTy) {
 		// object. Delaying this update until now ensures that
 		// conservative scanning considers this pointer dead until
 		// this point.
-		println("todo idx", idx, "span addr", todo.span)
 		todo.span.freeIndexForScan = todo.span.freeindex
 	}
 	// Allocate black during GC.
@@ -112,95 +97,9 @@ func BatchExit() {
 			gcStart(t)
 		}
 	}
+	mp.postMallocTodo.batching = false
 	mp.mallocing = 0
 	releasem(mp)
-}
-
-func batchmallocgc(size uintptr, typ *_type, needzero bool) (x unsafe.Pointer, span *mspan, checkGCTigger bool) {
-	if doubleCheckMalloc {
-		if gcphase == _GCmarktermination {
-			throw("mallocgc called with gcphase == _GCmarktermination")
-		}
-	}
-
-	// Short-circuit zero-sized allocation requests.
-	if size == 0 {
-		return unsafe.Pointer(&zerobase), nil, false
-	}
-
-	// It's possible for any malloc to trigger sweeping, which may in
-	// turn queue finalizers. Record this dynamic lock edge.
-	// N.B. Compiled away if lockrank experiment is not enabled.
-	lockRankMayQueueFinalizer()
-
-	// Pre-malloc debug hooks.
-	if debug.malloc {
-		if x := preMallocgcDebug(size, typ); x != nil {
-			return x, nil, false
-		}
-	}
-
-	// For ASAN, we allocate extra memory around each allocation called the "redzone."
-	// These "redzones" are marked as unaddressable.
-	var asanRZ uintptr
-	if asanenabled {
-		asanRZ = redZoneSize(size)
-		size += asanRZ
-	}
-
-	// Assist the GC if needed.
-	if gcBlackenEnabled != 0 {
-		deductAssistCredit(size)
-	}
-
-	// Actually do the allocation.
-	var elemsize uintptr
-	if size <= maxSmallSize-mallocHeaderSize {
-		if typ == nil || !typ.Pointers() {
-			if size < maxTinySize {
-				x, elemsize, span, checkGCTigger = mallocgcTinyCore(size, typ, needzero)
-			} else {
-				x, elemsize, span, checkGCTigger = mallocgcSmallNoscanCore(size, typ, needzero)
-			}
-		} else if heapBitsInSpan(size) {
-			x, elemsize, span, checkGCTigger = mallocgcSmallScanNoHeaderCore(size, typ, needzero)
-		} else {
-			x, elemsize, span, checkGCTigger = mallocgcSmallScanHeaderCore(size, typ, needzero)
-		}
-	} else {
-		x, elemsize, span, checkGCTigger = mallocgcLargeCore(size, typ, needzero)
-	}
-
-	// Notify sanitizers, if enabled.
-	if raceenabled {
-		racemalloc(x, size-asanRZ)
-	}
-	if msanenabled {
-		msanmalloc(x, size-asanRZ)
-	}
-	if asanenabled {
-		// Poison the space between the end of the requested size of x
-		// and the end of the slot. Unpoison the requested allocation.
-		frag := elemsize - size
-		if typ != nil && typ.Pointers() && !heapBitsInSpan(elemsize) && size <= maxSmallSize-mallocHeaderSize {
-			frag -= mallocHeaderSize
-		}
-		asanpoison(unsafe.Add(x, size-asanRZ), asanRZ)
-		asanunpoison(x, size-asanRZ)
-	}
-
-	// Adjust our GC assist debt to account for internal fragmentation.
-	if gcBlackenEnabled != 0 && elemsize != 0 {
-		if assistG := getg().m.curg; assistG != nil {
-			assistG.gcAssistBytes -= int64(elemsize - size)
-		}
-	}
-
-	// Post-malloc debug hooks.
-	if debug.malloc {
-		postMallocgcDebug(x, elemsize, typ)
-	}
-	return
 }
 
 func mallocgcTinyCore(size uintptr, typ *_type, needzero bool) (x unsafe.Pointer, elemsize uintptr, span *mspan, checkGCTrigger bool) {
