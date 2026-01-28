@@ -548,6 +548,7 @@ type m struct {
 	id              int64
 	mallocing       int32
 	throwing        throwType
+	postMallocTodo  batchTransTy
 	preemptoff      string // if != "", keep curg running on this m
 	locks           int32
 	dying           int32
@@ -629,8 +630,6 @@ type m struct {
 	// bits of muintptr values available for flags, as required for
 	// GOEXPERIMENT=spinbitmutex.
 	_ [goexperiment.SpinbitMutexInt * 700 * (2 - goarch.PtrSize/4)]byte
-
-	postMallocTodo batchTransTy
 }
 
 type p struct {

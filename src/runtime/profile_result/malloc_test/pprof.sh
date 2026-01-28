@@ -1,5 +1,5 @@
 #!/bin/bash
-cfgs=(nops_mask nodmb eager_calc cpu)
+cfgs=(nops_mask nodmb eager_calc default batch)
 port=18121
 ids=()
 for cfg in "${cfgs[@]}"

@@ -1,0 +1,55 @@
+goos: linux
+goarch: arm64
+pkg: runtime
+BenchmarkMalloc8-64                     305714239               19.31 ns/op
+BenchmarkMalloc8-64                     315520580               19.08 ns/op
+BenchmarkMalloc8-64                     313688355               19.21 ns/op
+BenchmarkMalloc8-64                     314630559               19.08 ns/op
+BenchmarkMalloc8-64                     315089726               19.06 ns/op
+BenchmarkMalloc8-64                     314033746               19.07 ns/op
+BenchmarkMalloc8-64                     314518081               19.10 ns/op
+BenchmarkMalloc8-64                     314383684               19.04 ns/op
+BenchmarkMalloc8-64                     314875936               19.02 ns/op
+BenchmarkMalloc8-64                     314887874               19.04 ns/op
+BenchmarkMalloc16-64                    195589842               29.07 ns/op
+BenchmarkMalloc16-64                    200913792               30.63 ns/op
+BenchmarkMalloc16-64                    201256308               29.89 ns/op
+BenchmarkMalloc16-64                    200420353               29.89 ns/op
+BenchmarkMalloc16-64                    201480798               30.78 ns/op
+BenchmarkMalloc16-64                    200380833               29.91 ns/op
+BenchmarkMalloc16-64                    201020157               29.87 ns/op
+BenchmarkMalloc16-64                    200819938               29.93 ns/op
+BenchmarkMalloc16-64                    200627636               29.88 ns/op
+BenchmarkMalloc16-64                    201646056               29.97 ns/op
+BenchmarkMallocTypeInfo8-64             212550219               28.00 ns/op
+BenchmarkMallocTypeInfo8-64             215174005               27.96 ns/op
+BenchmarkMallocTypeInfo8-64             213353082               28.26 ns/op
+BenchmarkMallocTypeInfo8-64             214814929               27.92 ns/op
+BenchmarkMallocTypeInfo8-64             214596532               28.00 ns/op
+BenchmarkMallocTypeInfo8-64             214990428               28.10 ns/op
+BenchmarkMallocTypeInfo8-64             213837286               27.92 ns/op
+BenchmarkMallocTypeInfo8-64             213436824               28.42 ns/op
+BenchmarkMallocTypeInfo8-64             212528762               28.12 ns/op
+BenchmarkMallocTypeInfo8-64             214498918               28.17 ns/op
+BenchmarkMallocTypeInfo16-64            167057347               35.35 ns/op
+BenchmarkMallocTypeInfo16-64            167608926               35.73 ns/op
+BenchmarkMallocTypeInfo16-64            169419967               35.61 ns/op
+BenchmarkMallocTypeInfo16-64            169010796               36.22 ns/op
+BenchmarkMallocTypeInfo16-64            169560495               35.39 ns/op
+BenchmarkMallocTypeInfo16-64            168652674               35.63 ns/op
+BenchmarkMallocTypeInfo16-64            169702059               35.92 ns/op
+BenchmarkMallocTypeInfo16-64            168643075               35.54 ns/op
+BenchmarkMallocTypeInfo16-64            169316806               35.46 ns/op
+BenchmarkMallocTypeInfo16-64            168336546               35.67 ns/op
+BenchmarkMallocLargeStruct-64           21557028               538.7 ns/op
+BenchmarkMallocLargeStruct-64           30158511               429.8 ns/op
+BenchmarkMallocLargeStruct-64           29055470               352.2 ns/op
+BenchmarkMallocLargeStruct-64           28559220               362.4 ns/op
+BenchmarkMallocLargeStruct-64           29235348               363.9 ns/op
+BenchmarkMallocLargeStruct-64           29980464               295.7 ns/op
+BenchmarkMallocLargeStruct-64           28661175               368.3 ns/op
+BenchmarkMallocLargeStruct-64           28240492               369.1 ns/op
+BenchmarkMallocLargeStruct-64           29375570               371.1 ns/op
+BenchmarkMallocLargeStruct-64           28311181               363.1 ns/op
+PASS
+ok      runtime 538.590s

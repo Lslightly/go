@@ -18,7 +18,7 @@ func TestPushPop(t *testing.T) {
 	}
 }
 
-func BenchmarkMalloc8Batch(b *testing.B) {
+func BenchmarkMalloc8(b *testing.B) {
 	BatchEnter()
 	for i := 0; i < b.N; i++ {
 		p := new(int64)
@@ -27,7 +27,7 @@ func BenchmarkMalloc8Batch(b *testing.B) {
 	BatchExit()
 }
 
-func BenchmarkMalloc16Batch(b *testing.B) {
+func BenchmarkMalloc16(b *testing.B) {
 	BatchEnter()
 	for i := 0; i < b.N; i++ {
 		p := new([2]int64)
@@ -36,7 +36,7 @@ func BenchmarkMalloc16Batch(b *testing.B) {
 	BatchExit()
 }
 
-func BenchmarkMallocTypeInfo8Batch(b *testing.B) {
+func BenchmarkMallocTypeInfo8(b *testing.B) {
 	BatchEnter()
 	for i := 0; i < b.N; i++ {
 		p := new(struct {
@@ -47,7 +47,7 @@ func BenchmarkMallocTypeInfo8Batch(b *testing.B) {
 	BatchExit()
 }
 
-func BenchmarkMallocTypeInfo16Batch(b *testing.B) {
+func BenchmarkMallocTypeInfo16(b *testing.B) {
 	BatchEnter()
 	for i := 0; i < b.N; i++ {
 		p := new(struct {
@@ -58,7 +58,11 @@ func BenchmarkMallocTypeInfo16Batch(b *testing.B) {
 	BatchExit()
 }
 
-func BenchmarkMallocLargeStructBatch(b *testing.B) {
+type LargeStruct struct {
+	x [16][]byte
+}
+
+func BenchmarkMallocLargeStruct(b *testing.B) {
 	BatchEnter()
 	for i := 0; i < b.N; i++ {
 		p := make([]LargeStruct, 2)

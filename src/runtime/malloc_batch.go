@@ -989,7 +989,7 @@ func (c *mcache) nextFree(spc spanClass) (v gclinkptr, s *mspan, checkGCTrigger 
 // We might consider turning these on by default; many of them previously were.
 // They account for a few % of mallocgc's cost though, which does matter somewhat
 // at scale.
-const doubleCheckMalloc = true
+const doubleCheckMalloc = false
 
 // Allocate an object of size bytes.
 // Small objects are allocated from the per-P cache's free lists.
@@ -1049,7 +1049,7 @@ func mallocgc(size uintptr, typ *_type, needzero bool) unsafe.Pointer {
 	// Actually do the allocation.
 	var x unsafe.Pointer
 	var elemsize uintptr
-	mp := acquirem()
+	mp := getg().m
 	if !mp.postMallocTodo.batching {
 		if size <= maxSmallSize-mallocHeaderSize {
 			if typ == nil || !typ.Pointers() {
@@ -1096,7 +1096,6 @@ func mallocgc(size uintptr, typ *_type, needzero bool) unsafe.Pointer {
 			}
 		}
 	}
-	releasem(mp)
 
 	// Notify sanitizers, if enabled.
 	if raceenabled {

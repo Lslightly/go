@@ -12,7 +12,7 @@ type mallocPairsTy struct {
 	x    unsafe.Pointer
 }
 
-const ringCap int8 = 14
+const ringCap int8 = 8
 
 type batchTransTy struct {
 	todos          [ringCap]mallocPairsTy
@@ -21,13 +21,14 @@ type batchTransTy struct {
 	batching       bool
 }
 
+func nextRingIdx(idx int8) int8 { return (idx + 1) & 0b111 }
 func (ring *batchTransTy) full() bool {
-	return (ring.end+1)%ringCap == ring.front
+	return nextRingIdx(ring.end) == ring.front
 }
 func (ring *batchTransTy) push(todo mallocPairsTy) {
 	ring.todos[ring.end] = todo
-	println("push at", ring.end, "span addr", todo.span)
-	ring.end = (ring.end + 1) % ringCap
+	// println("push at", ring.end, "span addr", todo.span)
+	ring.end = nextRingIdx(ring.end)
 }
 func (ring *batchTransTy) clear() {
 	ring.front = ring.end
@@ -59,8 +60,8 @@ func flushPostMallocTodos(ring *batchTransTy) {
 	// the garbage collector could follow a pointer to x,
 	// but see uninitialized memory or stale heap bits.
 	publicationBarrier()
-	ring.statusPrint()
-	for idx := ring.front; idx != ring.end; idx = (idx + 1) % ringCap {
+	// ring.statusPrint()
+	for idx := ring.front; idx != ring.end; idx = nextRingIdx(idx) {
 		todo := ring.todos[idx]
 		// println("todo idx", idx, "span addr", todo.span)
 
@@ -80,7 +81,7 @@ func flushPostMallocTodos(ring *batchTransTy) {
 	// This may be racing with GC so do it atomically if there can be
 	// a race marking the bit.
 	if writeBarrier.enabled {
-		for idx := ring.front; idx != ring.end; idx = (idx + 1) % ringCap {
+		for idx := ring.front; idx != ring.end; idx = nextRingIdx(idx) {
 			todo := ring.todos[idx]
 			gcmarknewobject(todo.span, uintptr(todo.x))
 		}
@@ -97,7 +98,7 @@ func BatchExit() {
 			gcStart(t)
 		}
 	}
-	mp.postMallocTodo.batching = false
+	ring.batching = false
 	mp.mallocing = 0
 	releasem(mp)
 }
