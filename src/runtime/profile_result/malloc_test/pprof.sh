@@ -9,11 +9,11 @@ do
     ((port+=1))
 done
 sleep 1
-echo "Enter q to kill server ${ids[*]}.
+echo "Enter q to kill server ${ids[@]}.
 Please wait before return code is echoed."
 
 cleanup() {
-    kill "${ids[*]}"
+    kill "${ids[@]}"
     echo "kill return code: $?"
 }
 
