@@ -1,7 +1,7 @@
 goos: linux
 goarch: arm64
 pkg: runtime
-                     │   old.txt   │               new.txt                │
+                     │ default.txt │              batch.txt               │
                      │   sec/op    │    sec/op     vs base                │
 Malloc8-64             22.02n ± 0%   19.07n ±  1%  -13.37% (p=0.000 n=10)
 Malloc16-64            38.49n ± 0%   29.90n ±  2%  -22.33% (p=0.000 n=10)
