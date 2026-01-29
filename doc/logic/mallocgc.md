@@ -70,4 +70,20 @@ Large
 
 所以这又对循环内的语句做了进一步要求。
 
+## deductAssistCredit
+
+```
+// deductAssistCredit reduces the current G's assist credit
+// by size bytes, and assists the GC if necessary.
+//
+// Caller must be preemptible.
+//
+// Returns the G for which the assist credit was accounted.
+```
+
+通过帮助GC抵分配的债。平衡分配和回收的速度。如果分配过快，那么该协程就应该辅助GC做一点事情。如果是不可抢占的情况，实际上不会去减债。所以这个留在`batchmallocgc`中也是可以的，同时还会更新credit。
+
+`gcBlackenEnabled`只有在`_gcphase`变为 `_GCmark`时才会设置为1.
+
+
 
