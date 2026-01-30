@@ -29,10 +29,10 @@ func GetRuntimeTypePtr(t reflect.Type) unsafe.Pointer {
 }
 
 //go:noinline
-func foo(l int) {
-	s := make([]*Obj, 0, l)
+func foo(initCap int, inputLen int) {
+	s := make([]*Obj, 0, initCap)
 	runtime.BatchEnter()
-	for range 20 {
+	for range inputLen {
 		obj := new(Obj)
 		s = append(s, obj)
 	}
@@ -41,7 +41,7 @@ func foo(l int) {
 
 func main() {
 	for i := range 1000 {
-		foo(10)
+		foo(10, 20)
 		println(i)
 	}
 }
