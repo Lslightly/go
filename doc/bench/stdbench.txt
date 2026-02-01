@@ -1,0 +1,1932 @@
+Benchmark
+ok  	archive/tar	0.005s
+BenchmarkCompressedZipGarbage
+BenchmarkZip64Test
+BenchmarkZip64TestSizes
+ok  	archive/zip	0.004s
+BenchmarkReaderCopyOptimal
+BenchmarkReaderCopyUnoptimal
+BenchmarkReaderCopyNoWriteTo
+BenchmarkReaderWriteToOptimal
+BenchmarkReaderReadString
+BenchmarkWriterCopyOptimal
+BenchmarkWriterCopyUnoptimal
+BenchmarkWriterCopyNoReadFrom
+BenchmarkReaderEmpty
+BenchmarkWriterEmpty
+BenchmarkWriterFlush
+ok  	bufio	0.003s
+BenchmarkReadString
+BenchmarkWriteByte
+BenchmarkWriteRune
+BenchmarkBufferNotEmptyWriteRead
+BenchmarkBufferFullSmallReads
+BenchmarkBufferWriteBlock
+BenchmarkBufferAppendNoCopy
+BenchmarkIndexByte
+BenchmarkIndexBytePortable
+BenchmarkIndexRune
+BenchmarkIndexRuneASCII
+BenchmarkIndexRuneUnicode
+BenchmarkEqual
+BenchmarkEqualBothUnaligned
+BenchmarkIndex
+BenchmarkIndexEasy
+BenchmarkCount
+BenchmarkCountEasy
+BenchmarkCountSingle
+BenchmarkToUpper
+BenchmarkToLower
+BenchmarkFields
+BenchmarkFieldsFunc
+BenchmarkTrimSpace
+BenchmarkToValidUTF8
+BenchmarkIndexHard1
+BenchmarkIndexHard2
+BenchmarkIndexHard3
+BenchmarkIndexHard4
+BenchmarkLastIndexHard1
+BenchmarkLastIndexHard2
+BenchmarkLastIndexHard3
+BenchmarkCountHard1
+BenchmarkCountHard2
+BenchmarkCountHard3
+BenchmarkSplitEmptySeparator
+BenchmarkSplitSingleByteSeparator
+BenchmarkSplitMultiByteSeparator
+BenchmarkSplitNSingleByteSeparator
+BenchmarkSplitNMultiByteSeparator
+BenchmarkRepeat
+BenchmarkRepeatLarge
+BenchmarkBytesCompare
+BenchmarkIndexAnyASCII
+BenchmarkIndexAnyUTF8
+BenchmarkLastIndexAnyASCII
+BenchmarkLastIndexAnyUTF8
+BenchmarkTrimASCII
+BenchmarkTrimByte
+BenchmarkIndexPeriodic
+BenchmarkCompareBytesEqual
+BenchmarkCompareBytesToNil
+BenchmarkCompareBytesEmpty
+BenchmarkCompareBytesIdentical
+BenchmarkCompareBytesSameLength
+BenchmarkCompareBytesDifferentLength
+BenchmarkCompareBytesBigUnaligned
+BenchmarkCompareBytesBigBothUnaligned
+BenchmarkCompareBytesBig
+BenchmarkCompareBytesBigIdentical
+ok  	bytes	0.074s
+ok  	cmp	0.003s
+BenchmarkDecodeDigits
+BenchmarkDecodeNewton
+BenchmarkDecodeRand
+ok  	compress/bzip2	0.003s
+BenchmarkDecode
+BenchmarkEncode
+ok  	compress/flate	0.004s
+ok  	compress/gzip	0.005s
+BenchmarkDecoder
+BenchmarkEncoder
+ok  	compress/lzw	0.002s
+ok  	compress/zlib	0.003s
+BenchmarkDup
+ok  	container/heap	0.002s
+ok  	container/list	0.002s
+ok  	container/ring	0.002s
+BenchmarkCommonParentCancel
+BenchmarkWithTimeout
+BenchmarkCancelTree
+BenchmarkCheckCanceled
+BenchmarkContextCancelDone
+BenchmarkDeepValueNewGoRoutine
+BenchmarkDeepValueSameGoRoutine
+ok  	context	0.004s
+ok  	crypto	0.003s
+BenchmarkEncrypt
+BenchmarkDecrypt
+BenchmarkCreateCipher
+ok  	crypto/aes	0.002s
+BenchmarkAESGCM
+BenchmarkAESCTR
+BenchmarkAESCBCEncrypt1K
+BenchmarkAESCBCDecrypt1K
+ok  	crypto/cipher	0.003s
+BenchmarkEncrypt
+BenchmarkDecrypt
+BenchmarkTDESEncrypt
+BenchmarkTDESDecrypt
+ok  	crypto/des	0.003s
+ok  	crypto/dsa	0.003s
+BenchmarkECDH
+ok  	crypto/ecdh	0.003s
+BenchmarkSign
+BenchmarkVerify
+BenchmarkGenerateKey
+ok  	crypto/ecdsa	0.005s
+BenchmarkKeyGeneration
+BenchmarkNewKeyFromSeed
+BenchmarkSigning
+BenchmarkVerification
+ok  	crypto/ed25519	0.003s
+BenchmarkScalarBaseMult
+BenchmarkScalarMult
+BenchmarkMarshalUnmarshal
+ok  	crypto/elliptic	0.003s
+?   	crypto/fips140	[no test files]
+Benchmark16ByteMD5Single
+Benchmark20ByteSHA1Single
+Benchmark32ByteSHA256Single
+Benchmark64ByteSHA512Single
+ok  	crypto/hkdf	0.003s
+BenchmarkHMACSHA256_1K
+BenchmarkHMACSHA256_32
+BenchmarkNewWriteSum
+ok  	crypto/hmac	0.003s
+ok  	crypto/internal/boring	0.003s
+?   	crypto/internal/boring/bbig	[no test files]
+ok  	crypto/internal/boring/bcache	0.003s
+?   	crypto/internal/boring/sig	[no test files]
+?   	crypto/internal/cryptotest	[no test files]
+?   	crypto/internal/entropy	[no test files]
+?   	crypto/internal/fips140	[no test files]
+ok  	crypto/internal/fips140/aes	0.003s
+ok  	crypto/internal/fips140/aes/gcm	0.004s
+?   	crypto/internal/fips140/alias	[no test files]
+BenchmarkModAdd
+BenchmarkModSub
+BenchmarkMontgomeryRepr
+BenchmarkMontgomeryMul
+BenchmarkModMul
+BenchmarkExpBig
+BenchmarkExp
+ok  	crypto/internal/fips140/bigmod	0.004s
+?   	crypto/internal/fips140/check	[no test files]
+?   	crypto/internal/fips140/check/checktest	[no test files]
+BenchmarkDBRG
+ok  	crypto/internal/fips140/drbg	0.004s
+ok  	crypto/internal/fips140/ecdh	0.004s
+ok  	crypto/internal/fips140/ecdsa	0.003s
+?   	crypto/internal/fips140/ed25519	[no test files]
+BenchmarkEncodingDecoding
+BenchmarkScalarBaseMult
+BenchmarkScalarMult
+BenchmarkVarTimeDoubleScalarBaseMult
+ok  	crypto/internal/fips140/edwards25519	0.004s
+BenchmarkAdd
+BenchmarkMultiply
+BenchmarkSquare
+BenchmarkInvert
+BenchmarkMult32
+ok  	crypto/internal/fips140/edwards25519/field	0.004s
+?   	crypto/internal/fips140/hkdf	[no test files]
+?   	crypto/internal/fips140/hmac	[no test files]
+ok  	crypto/internal/fips140/mlkem	0.007s
+BenchmarkScalarMult
+BenchmarkScalarBaseMult
+ok  	crypto/internal/fips140/nistec	0.003s
+BenchmarkMul
+BenchmarkSquare
+ok  	crypto/internal/fips140/nistec/fiat	0.003s
+?   	crypto/internal/fips140/pbkdf2	[no test files]
+ok  	crypto/internal/fips140/rsa	0.002s
+?   	crypto/internal/fips140/sha256	[no test files]
+?   	crypto/internal/fips140/sha3	[no test files]
+?   	crypto/internal/fips140/sha512	[no test files]
+?   	crypto/internal/fips140/ssh	[no test files]
+?   	crypto/internal/fips140/subtle	[no test files]
+?   	crypto/internal/fips140/tls12	[no test files]
+?   	crypto/internal/fips140/tls13	[no test files]
+ok  	crypto/internal/fips140deps	0.003s
+?   	crypto/internal/fips140deps/byteorder	[no test files]
+?   	crypto/internal/fips140deps/cpu	[no test files]
+?   	crypto/internal/fips140deps/godebug	[no test files]
+?   	crypto/internal/fips140hash	[no test files]
+?   	crypto/internal/fips140only	[no test files]
+ok  	crypto/internal/fips140test	0.006s
+ok  	crypto/internal/hpke	0.004s
+?   	crypto/internal/impl	[no test files]
+?   	crypto/internal/randutil	[no test files]
+ok  	crypto/internal/sysrand	0.005s
+?   	crypto/internal/sysrand/internal/seccomp	[no test files]
+BenchmarkHash8Bytes
+BenchmarkHash64
+BenchmarkHash128
+BenchmarkHash256
+BenchmarkHash512
+BenchmarkHash1K
+BenchmarkHash8K
+BenchmarkHash1M
+BenchmarkHash8M
+BenchmarkHash8BytesUnaligned
+BenchmarkHash1KUnaligned
+BenchmarkHash8KUnaligned
+ok  	crypto/md5	0.007s
+BenchmarkKeyGen
+BenchmarkEncaps
+BenchmarkDecaps
+BenchmarkRoundTrip
+ok  	crypto/mlkem	0.004s
+BenchmarkHMACSHA1
+BenchmarkHMACSHA256
+ok  	crypto/pbkdf2	0.004s
+BenchmarkRead
+BenchmarkPrime
+ok  	crypto/rand	0.004s
+BenchmarkRC4_128
+BenchmarkRC4_1K
+BenchmarkRC4_8K
+ok  	crypto/rc4	0.003s
+BenchmarkDecryptPKCS1v15
+BenchmarkEncryptPKCS1v15
+BenchmarkDecryptOAEP
+BenchmarkEncryptOAEP
+BenchmarkSignPKCS1v15
+BenchmarkVerifyPKCS1v15
+BenchmarkSignPSS
+BenchmarkVerifyPSS
+BenchmarkGenerateKey
+BenchmarkParsePKCS8PrivateKey
+ok  	crypto/rsa	0.008s
+BenchmarkHash8Bytes
+BenchmarkHash320Bytes
+BenchmarkHash1K
+BenchmarkHash8K
+ok  	crypto/sha1	0.004s
+BenchmarkHash8Bytes
+BenchmarkHash1K
+BenchmarkHash8K
+ok  	crypto/sha256	0.005s
+BenchmarkSha3_512_MTU
+BenchmarkSha3_384_MTU
+BenchmarkSha3_256_MTU
+BenchmarkSha3_224_MTU
+BenchmarkShake128_MTU
+BenchmarkShake256_MTU
+BenchmarkShake256_16x
+BenchmarkShake256_1MiB
+BenchmarkSha3_512_1MiB
+ok  	crypto/sha3	0.003s
+BenchmarkHash8Bytes
+BenchmarkHash1K
+BenchmarkHash8K
+ok  	crypto/sha512	0.003s
+BenchmarkConstantTimeByteEq
+BenchmarkConstantTimeEq
+BenchmarkConstantTimeLessOrEq
+BenchmarkXORBytes
+ok  	crypto/subtle	0.004s
+BenchmarkCertCache
+BenchmarkHandshakeServer
+BenchmarkThroughput
+BenchmarkLatency
+ok  	crypto/tls	0.029s
+?   	crypto/tls/internal/fips140tls	[no test files]
+BenchmarkOIDMarshalUnmarshalText
+BenchmarkCreateCertificate
+BenchmarkParseCertificate
+ok  	crypto/x509	0.022s
+?   	crypto/x509/pkix	[no test files]
+BenchmarkConcurrentDBExec
+BenchmarkConcurrentStmtQuery
+BenchmarkConcurrentStmtExec
+BenchmarkConcurrentTxQuery
+BenchmarkConcurrentTxExec
+BenchmarkConcurrentTxStmtQuery
+BenchmarkConcurrentTxStmtExec
+BenchmarkConcurrentRandom
+BenchmarkManyConcurrentQueries
+BenchmarkGrabConn
+BenchmarkConnRequestSet
+ok  	database/sql	0.013s
+ok  	database/sql/driver	0.019s
+ok  	debug/buildinfo	0.004s
+ok  	debug/dwarf	0.004s
+BenchmarkSymbols64
+BenchmarkSymbols32
+ok  	debug/elf	0.006s
+Benchmark115
+ok  	debug/gosym	0.005s
+ok  	debug/macho	0.016s
+ok  	debug/pe	0.030s
+ok  	debug/plan9obj	0.029s
+ok  	embed	0.034s
+ok  	embed/internal/embedtest	0.029s
+?   	encoding	[no test files]
+ok  	encoding/ascii85	0.004s
+BenchmarkObjectIdentifierString
+BenchmarkMarshal
+BenchmarkUnmarshal
+ok  	encoding/asn1	0.006s
+BenchmarkEncode
+BenchmarkEncodeToString
+BenchmarkDecode
+BenchmarkDecodeString
+ok  	encoding/base32	0.004s
+BenchmarkEncodeToString
+BenchmarkDecodeString
+BenchmarkNewEncoding
+ok  	encoding/base64	0.010s
+BenchmarkReadSlice1000Int32s
+BenchmarkReadStruct
+BenchmarkWriteStruct
+BenchmarkAppendStruct
+BenchmarkWriteSlice1000Structs
+BenchmarkAppendSlice1000Structs
+BenchmarkReadSlice1000Structs
+BenchmarkReadInts
+BenchmarkWriteInts
+BenchmarkAppendInts
+BenchmarkWriteSlice1000Int32s
+BenchmarkAppendSlice1000Int32s
+BenchmarkPutUint16
+BenchmarkAppendUint16
+BenchmarkPutUint32
+BenchmarkAppendUint32
+BenchmarkPutUint64
+BenchmarkAppendUint64
+BenchmarkLittleEndianPutUint16
+BenchmarkLittleEndianAppendUint16
+BenchmarkLittleEndianPutUint32
+BenchmarkLittleEndianAppendUint32
+BenchmarkLittleEndianPutUint64
+BenchmarkLittleEndianAppendUint64
+BenchmarkReadFloats
+BenchmarkWriteFloats
+BenchmarkReadSlice1000Float32s
+BenchmarkWriteSlice1000Float32s
+BenchmarkReadSlice1000Uint8s
+BenchmarkWriteSlice1000Uint8s
+BenchmarkSize
+BenchmarkPutUvarint32
+BenchmarkPutUvarint64
+ok  	encoding/binary	0.016s
+BenchmarkRead
+BenchmarkReadWithFieldsPerRecord
+BenchmarkReadWithoutFieldsPerRecord
+BenchmarkReadLargeFields
+BenchmarkReadReuseRecord
+BenchmarkReadReuseRecordWithFieldsPerRecord
+BenchmarkReadReuseRecordWithoutFieldsPerRecord
+BenchmarkReadReuseRecordLargeFields
+BenchmarkWrite
+ok  	encoding/csv	0.009s
+BenchmarkEndToEndPipe
+BenchmarkEndToEndByteBuffer
+BenchmarkEndToEndSliceByteBuffer
+BenchmarkEncodeComplex128Slice
+BenchmarkEncodeFloat64Slice
+BenchmarkEncodeInt32Slice
+BenchmarkEncodeStringSlice
+BenchmarkEncodeInterfaceSlice
+BenchmarkDecodeComplex128Slice
+BenchmarkDecodeFloat64Slice
+BenchmarkDecodeInt32Slice
+BenchmarkDecodeStringSlice
+BenchmarkDecodeStringsSlice
+BenchmarkDecodeBytesSlice
+BenchmarkDecodeInterfaceSlice
+BenchmarkDecodeMap
+ok  	encoding/gob	0.009s
+BenchmarkEncode
+BenchmarkDecode
+BenchmarkDecodeString
+BenchmarkDump
+ok  	encoding/hex	0.005s
+BenchmarkCodeEncoder
+BenchmarkCodeEncoderError
+BenchmarkCodeMarshal
+BenchmarkCodeMarshalError
+BenchmarkMarshalBytes
+BenchmarkMarshalBytesError
+BenchmarkMarshalMap
+BenchmarkCodeDecoder
+BenchmarkUnicodeDecoder
+BenchmarkDecoderStream
+BenchmarkCodeUnmarshal
+BenchmarkCodeUnmarshalReuse
+BenchmarkUnmarshalString
+BenchmarkUnmarshalFloat64
+BenchmarkUnmarshalInt64
+BenchmarkUnmarshalMap
+BenchmarkIssue10335
+BenchmarkIssue34127
+BenchmarkUnmapped
+BenchmarkTypeFieldsCache
+BenchmarkEncodeMarshaler
+BenchmarkEncoderEncode
+BenchmarkNumberIsValid
+BenchmarkNumberIsValidRegexp
+BenchmarkUnmarshalNumber
+ok  	encoding/json	0.006s
+BenchmarkEncode
+BenchmarkDecode
+ok  	encoding/pem	0.004s
+BenchmarkMarshal
+BenchmarkUnmarshal
+BenchmarkHTMLAutoClose
+ok  	encoding/xml	0.003s
+BenchmarkIs
+BenchmarkAs
+ok  	errors	0.003s
+BenchmarkIntAdd
+BenchmarkIntSet
+BenchmarkFloatAdd
+BenchmarkFloatSet
+BenchmarkStringSet
+BenchmarkMapSet
+BenchmarkMapSetDifferent
+BenchmarkMapSetDifferentRandom
+BenchmarkMapSetString
+BenchmarkMapAddSame
+BenchmarkMapAddDifferent
+BenchmarkMapAddDifferentRandom
+BenchmarkMapAddSameSteadyState
+BenchmarkMapAddDifferentSteadyState
+BenchmarkMapString
+BenchmarkRealworldExpvarUsage
+ok  	expvar	0.006s
+ok  	flag	0.005s
+BenchmarkSprintfPadding
+BenchmarkSprintfEmpty
+BenchmarkSprintfString
+BenchmarkSprintfTruncateString
+BenchmarkSprintfTruncateBytes
+BenchmarkSprintfSlowParsingPath
+BenchmarkSprintfQuoteString
+BenchmarkSprintfInt
+BenchmarkSprintfIntInt
+BenchmarkSprintfPrefixedInt
+BenchmarkSprintfFloat
+BenchmarkSprintfComplex
+BenchmarkSprintfBoolean
+BenchmarkSprintfHexString
+BenchmarkSprintfHexBytes
+BenchmarkSprintfBytes
+BenchmarkSprintfStringer
+BenchmarkSprintfStructure
+BenchmarkManyArgs
+BenchmarkFprintInt
+BenchmarkFprintfBytes
+BenchmarkFprintIntNoAlloc
+BenchmarkScanInts
+BenchmarkScanRecursiveInt
+BenchmarkScanRecursiveIntReaderWrapper
+ok  	fmt	0.004s
+ok  	go/ast	0.004s
+ok  	go/ast/internal/tests	0.003s
+BenchmarkImportVendor
+ok  	go/build	0.006s
+ok  	go/build/constraint	0.003s
+BenchmarkStringAdd
+ok  	go/constant	0.004s
+ok  	go/doc	0.005s
+ok  	go/doc/comment	0.004s
+BenchmarkFormat
+ok  	go/format	0.004s
+ok  	go/importer	0.004s
+ok  	go/internal/gccgoimporter	0.005s
+ok  	go/internal/gcimporter	0.005s
+ok  	go/internal/srcimporter	0.004s
+BenchmarkParse
+BenchmarkParseOnly
+BenchmarkResolve
+ok  	go/parser	0.004s
+BenchmarkPrintFile
+BenchmarkPrintDecl
+ok  	go/printer	0.004s
+BenchmarkScan
+BenchmarkScanFiles
+ok  	go/scanner	0.004s
+BenchmarkSearchInts
+ok  	go/token	0.003s
+BenchmarkLookupFieldOrMethod
+BenchmarkNamed
+BenchmarkCheck
+ok  	go/types	0.004s
+ok  	go/version	0.003s
+ok  	hash	0.003s
+BenchmarkAdler32KB
+ok  	hash/adler32	0.003s
+BenchmarkCRC32
+ok  	hash/crc32	0.003s
+BenchmarkCrc64
+ok  	hash/crc64	0.003s
+BenchmarkFnv32KB
+BenchmarkFnv32aKB
+BenchmarkFnv64KB
+BenchmarkFnv64aKB
+BenchmarkFnv128KB
+BenchmarkFnv128aKB
+ok  	hash/fnv	0.003s
+BenchmarkHash
+BenchmarkComparable
+ok  	hash/maphash	0.005s
+BenchmarkEscape
+BenchmarkEscapeNone
+BenchmarkUnescape
+BenchmarkUnescapeNone
+BenchmarkUnescapeSparse
+BenchmarkUnescapeDense
+ok  	html	0.004s
+BenchmarkCSSEscaper
+BenchmarkCSSEscaperNoSpecials
+BenchmarkDecodeCSS
+BenchmarkDecodeCSSNoSpecials
+BenchmarkCSSValueFilter
+BenchmarkCSSValueFilterOk
+BenchmarkEscapedExecute
+BenchmarkHTMLNospaceEscaper
+BenchmarkHTMLNospaceEscaperNoSpecials
+BenchmarkStripTags
+BenchmarkStripTagsNoSpecials
+BenchmarkJSValEscaperWithNum
+BenchmarkJSValEscaperWithStr
+BenchmarkJSValEscaperWithStrNoSpecials
+BenchmarkJSValEscaperWithObj
+BenchmarkJSValEscaperWithObjNoSpecials
+BenchmarkJSStrEscaperNoSpecials
+BenchmarkJSStrEscaper
+BenchmarkJSRegexpEscaperNoSpecials
+BenchmarkJSRegexpEscaper
+BenchmarkTemplateSpecialTags
+BenchmarkURLEscaper
+BenchmarkURLEscaperNoSpecials
+BenchmarkURLNormalizer
+BenchmarkURLNormalizerNoSpecials
+BenchmarkSrcsetFilter
+BenchmarkSrcsetFilterNoSpecials
+ok  	html/template	0.006s
+BenchmarkAt
+BenchmarkSet
+BenchmarkRGBAAt
+BenchmarkRGBASetRGBA
+BenchmarkRGBA64At
+BenchmarkRGBA64SetRGBA64
+BenchmarkNRGBAAt
+BenchmarkNRGBASetNRGBA
+BenchmarkNRGBA64At
+BenchmarkNRGBA64SetNRGBA64
+BenchmarkAlphaAt
+BenchmarkAlphaSetAlpha
+BenchmarkAlpha16At
+BenchmarkAlphaSetAlpha16
+BenchmarkGrayAt
+BenchmarkGraySetGray
+BenchmarkGray16At
+BenchmarkGraySetGray16
+ok  	image	0.004s
+BenchmarkYCbCrToRGB
+BenchmarkRGBToYCbCr
+BenchmarkYCbCrToRGBA
+BenchmarkNYCbCrAToRGBA
+ok  	image/color	0.003s
+?   	image/color/palette	[no test files]
+BenchmarkFillOver
+BenchmarkFillSrc
+BenchmarkCopyOver
+BenchmarkCopySrc
+BenchmarkNRGBAOver
+BenchmarkNRGBASrc
+BenchmarkYCbCr
+BenchmarkGray
+BenchmarkCMYK
+BenchmarkGlyphOver
+BenchmarkRGBAMaskOver
+BenchmarkGrayMaskOver
+BenchmarkRGBA64ImageMaskOver
+BenchmarkRGBA
+BenchmarkPalettedFill
+BenchmarkPalettedRGBA
+BenchmarkGenericOver
+BenchmarkGenericMaskOver
+BenchmarkGenericSrc
+BenchmarkGenericMaskSrc
+ok  	image/draw	0.004s
+BenchmarkDecode
+BenchmarkEncodeRandomPaletted
+BenchmarkEncodeRandomRGBA
+BenchmarkEncodeRealisticPaletted
+BenchmarkEncodeRealisticRGBA
+ok  	image/gif	0.004s
+?   	image/internal/imageutil	[no test files]
+BenchmarkFDCT
+BenchmarkIDCT
+BenchmarkDecodeBaseline
+BenchmarkDecodeProgressive
+BenchmarkEncodeRGBA
+BenchmarkEncodeYCbCr
+ok  	image/jpeg	0.004s
+BenchmarkPaeth
+BenchmarkDecodeGray
+BenchmarkDecodeNRGBAGradient
+BenchmarkDecodeNRGBAOpaque
+BenchmarkDecodePaletted
+BenchmarkDecodeRGB
+BenchmarkDecodeInterlacing
+BenchmarkEncodeGray
+BenchmarkEncodeGrayWithBufferPool
+BenchmarkEncodeNRGBOpaque
+BenchmarkEncodeNRGBA
+BenchmarkEncodePaletted
+BenchmarkEncodeRGBOpaque
+BenchmarkEncodeRGBA
+ok  	image/png	0.003s
+BenchmarkNew
+BenchmarkSaveRestore
+ok  	index/suffixarray	0.004s
+ok  	internal/abi	0.003s
+?   	internal/asan	[no test files]
+?   	internal/bisect	[no test files]
+ok  	internal/buildcfg	0.005s
+?   	internal/bytealg	[no test files]
+?   	internal/byteorder	[no test files]
+?   	internal/cfg	[no test files]
+BenchmarkBlock
+ok  	internal/chacha8rand	0.004s
+ok  	internal/copyright	0.004s
+?   	internal/coverage	[no test files]
+?   	internal/coverage/calloc	[no test files]
+ok  	internal/coverage/cfile	0.006s
+ok  	internal/coverage/cformat	0.006s
+ok  	internal/coverage/cmerge	0.006s
+?   	internal/coverage/decodecounter	[no test files]
+?   	internal/coverage/decodemeta	[no test files]
+?   	internal/coverage/encodecounter	[no test files]
+?   	internal/coverage/encodemeta	[no test files]
+ok  	internal/coverage/pods	0.011s
+?   	internal/coverage/rtcov	[no test files]
+ok  	internal/coverage/slicereader	0.006s
+ok  	internal/coverage/slicewriter	0.006s
+?   	internal/coverage/stringtab	[no test files]
+ok  	internal/coverage/test	0.005s
+?   	internal/coverage/uleb128	[no test files]
+ok  	internal/cpu	0.004s
+ok  	internal/dag	0.023s
+ok  	internal/diff	0.013s
+?   	internal/exportdata	[no test files]
+?   	internal/filepathlite	[no test files]
+ok  	internal/fmtsort	0.010s
+BenchmarkMarshalCorpusFile
+BenchmarkUnmarshalCorpusFile
+BenchmarkMutatorBytes
+BenchmarkMutatorString
+BenchmarkMutatorAllBasicTypes
+BenchmarkByteSliceMutators
+BenchmarkWorkerFuzzOverhead
+BenchmarkWorkerPing
+BenchmarkWorkerFuzz
+BenchmarkWorkerMinimize
+ok  	internal/fuzz	0.011s
+?   	internal/goarch	[no test files]
+ok  	internal/godebug	0.012s
+ok  	internal/godebugs	0.012s
+?   	internal/goexperiment	[no test files]
+?   	internal/goos	[no test files]
+?   	internal/goroot	[no test files]
+ok  	internal/gover	0.012s
+?   	internal/goversion	[no test files]
+ok  	internal/itoa	0.008s
+?   	internal/lazyregexp	[no test files]
+?   	internal/lazytemplate	[no test files]
+?   	internal/msan	[no test files]
+?   	internal/nettrace	[no test files]
+?   	internal/obscuretestdata	[no test files]
+?   	internal/oserror	[no test files]
+ok  	internal/pkgbits	0.003s
+ok  	internal/platform	0.003s
+BenchmarkSplicePipe
+BenchmarkSplicePipePoolParallel
+BenchmarkSplicePipeNativeParallel
+ok  	internal/poll	0.004s
+ok  	internal/profile	0.003s
+?   	internal/profilerecord	[no test files]
+?   	internal/race	[no test files]
+ok  	internal/reflectlite	0.003s
+BenchmarkAnd32
+BenchmarkAnd32Parallel
+BenchmarkAnd64
+BenchmarkAnd64Parallel
+BenchmarkOr32
+BenchmarkOr32Parallel
+BenchmarkOr64
+BenchmarkOr64Parallel
+BenchmarkAtomicLoad64
+BenchmarkAtomicStore64
+BenchmarkAtomicLoad
+BenchmarkAtomicStore
+BenchmarkAtomicLoad8
+BenchmarkAtomicStore8
+BenchmarkAnd8
+BenchmarkAnd
+BenchmarkAnd8Parallel
+BenchmarkAndParallel
+BenchmarkOr8
+BenchmarkOr
+BenchmarkOr8Parallel
+BenchmarkOrParallel
+BenchmarkXadd
+BenchmarkXadd64
+BenchmarkCas
+BenchmarkCas64
+BenchmarkXchg
+BenchmarkXchg64
+BenchmarkXchg8
+BenchmarkXchg8Parallel
+ok  	internal/runtime/atomic	0.003s
+?   	internal/runtime/exithook	[no test files]
+ok  	internal/runtime/maps	0.009s
+BenchmarkMulUintptr
+ok  	internal/runtime/math	0.009s
+ok  	internal/runtime/sys	0.009s
+ok  	internal/runtime/syscall	0.009s
+ok  	internal/saferio	0.008s
+ok  	internal/singleflight	0.008s
+?   	internal/stringslite	[no test files]
+BenchmarkHashTrieMapLoadSmall
+BenchmarkHashTrieMapLoad
+BenchmarkHashTrieMapLoadLarge
+BenchmarkHashTrieMapLoadOrStore
+BenchmarkHashTrieMapLoadOrStoreLarge
+ok  	internal/sync	0.046s
+ok  	internal/synctest	0.013s
+?   	internal/syscall/execenv	[no test files]
+BenchmarkParallelGetRandom
+ok  	internal/syscall/unix	0.014s
+ok  	internal/sysinfo	0.008s
+?   	internal/syslist	[no test files]
+ok  	internal/testenv	0.008s
+?   	internal/testlog	[no test files]
+?   	internal/testpty	[no test files]
+ok  	internal/trace	0.007s
+?   	internal/trace/event	[no test files]
+?   	internal/trace/event/go122	[no test files]
+ok  	internal/trace/internal/oldtrace	0.016s
+?   	internal/trace/internal/testgen/go122	[no test files]
+?   	internal/trace/raw	[no test files]
+?   	internal/trace/testtrace	[no test files]
+?   	internal/trace/traceviewer	[no test files]
+?   	internal/trace/traceviewer/format	[no test files]
+?   	internal/trace/version	[no test files]
+?   	internal/txtar	[no test files]
+ok  	internal/types/errors	0.019s
+ok  	internal/unsafeheader	0.005s
+ok  	internal/xcoff	0.004s
+BenchmarkLarge
+ok  	internal/zstd	0.033s
+BenchmarkCopyNSmall
+BenchmarkCopyNLarge
+ok  	io	0.004s
+ok  	io/fs	0.020s
+ok  	io/ioutil	0.015s
+ok  	iter	0.004s
+BenchmarkItoa
+BenchmarkPrintln
+BenchmarkPrintlnNoFlags
+BenchmarkConcurrent
+BenchmarkDiscard
+ok  	log	0.008s
+?   	log/internal	[no test files]
+BenchmarkAttrString
+BenchmarkWriteTime
+BenchmarkJSONHandler
+BenchmarkPreformatting
+BenchmarkJSONEncoding
+BenchmarkNopLog
+BenchmarkPC
+BenchmarkRecord
+BenchmarkDispatch
+BenchmarkUnsafeStrings
+ok  	log/slog	0.012s
+?   	log/slog/internal	[no test files]
+BenchmarkAttrs
+ok  	log/slog/internal/benchmarks	0.006s
+ok  	log/slog/internal/buffer	0.023s
+?   	log/slog/internal/slogtest	[no test files]
+ok  	log/syslog	0.005s
+BenchmarkMapClone
+ok  	maps	0.005s
+BenchmarkAcos
+BenchmarkAcosh
+BenchmarkAsin
+BenchmarkAsinh
+BenchmarkAtan
+BenchmarkAtanh
+BenchmarkAtan2
+BenchmarkCbrt
+BenchmarkCeil
+BenchmarkCopysign
+BenchmarkCos
+BenchmarkCosh
+BenchmarkErf
+BenchmarkErfc
+BenchmarkErfinv
+BenchmarkErfcinv
+BenchmarkExp
+BenchmarkExpGo
+BenchmarkExpm1
+BenchmarkExp2
+BenchmarkExp2Go
+BenchmarkAbs
+BenchmarkDim
+BenchmarkFloor
+BenchmarkMax
+BenchmarkMin
+BenchmarkMod
+BenchmarkFrexp
+BenchmarkGamma
+BenchmarkHypot
+BenchmarkHypotGo
+BenchmarkIlogb
+BenchmarkJ0
+BenchmarkJ1
+BenchmarkJn
+BenchmarkLdexp
+BenchmarkLgamma
+BenchmarkLog
+BenchmarkLogb
+BenchmarkLog1p
+BenchmarkLog10
+BenchmarkLog2
+BenchmarkModf
+BenchmarkNextafter32
+BenchmarkNextafter64
+BenchmarkPowInt
+BenchmarkPowFrac
+BenchmarkPow10Pos
+BenchmarkPow10Neg
+BenchmarkRound
+BenchmarkRoundToEven
+BenchmarkRemainder
+BenchmarkSignbit
+BenchmarkSin
+BenchmarkSincos
+BenchmarkSinh
+BenchmarkSqrtIndirect
+BenchmarkSqrtLatency
+BenchmarkSqrtIndirectLatency
+BenchmarkSqrtGoLatency
+BenchmarkSqrtPrime
+BenchmarkTan
+BenchmarkTanh
+BenchmarkTrunc
+BenchmarkY0
+BenchmarkY1
+BenchmarkYn
+BenchmarkFloat64bits
+BenchmarkFloat64frombits
+BenchmarkFloat32bits
+BenchmarkFloat32frombits
+BenchmarkFMA
+ok  	math	0.019s
+BenchmarkAddVV
+BenchmarkSubVV
+BenchmarkAddVW
+BenchmarkAddVWext
+BenchmarkSubVW
+BenchmarkSubVWext
+BenchmarkMulAddVWW
+BenchmarkAddMulVVW
+BenchmarkDivWVW
+BenchmarkNonZeroShifts
+BenchmarkDecimalConversion
+BenchmarkFloatString
+BenchmarkFloatAdd
+BenchmarkFloatSub
+BenchmarkParseFloatSmallExp
+BenchmarkParseFloatLargeExp
+BenchmarkGCD10x10
+BenchmarkGCD10x100
+BenchmarkGCD10x1000
+BenchmarkGCD10x10000
+BenchmarkGCD10x100000
+BenchmarkGCD100x100
+BenchmarkGCD100x1000
+BenchmarkGCD100x10000
+BenchmarkGCD100x100000
+BenchmarkGCD1000x1000
+BenchmarkGCD1000x10000
+BenchmarkGCD1000x100000
+BenchmarkGCD10000x10000
+BenchmarkGCD10000x100000
+BenchmarkGCD100000x100000
+BenchmarkHilbert
+BenchmarkBinomial
+BenchmarkQuoRem
+BenchmarkExp
+BenchmarkExpMont
+BenchmarkExp2
+BenchmarkBitset
+BenchmarkBitsetNeg
+BenchmarkBitsetOrig
+BenchmarkBitsetNegOrig
+BenchmarkModSqrt225_Tonelli
+BenchmarkModSqrt225_3Mod4
+BenchmarkModSqrt231_Tonelli
+BenchmarkModSqrt231_5Mod8
+BenchmarkModInverse
+BenchmarkSqrt
+BenchmarkIntSqr
+BenchmarkDiv
+BenchmarkMul
+BenchmarkNatMul
+BenchmarkZeroShifts
+BenchmarkExp3Power
+BenchmarkFibo
+BenchmarkNatSqr
+BenchmarkNatSetBytes
+BenchmarkScanPi
+BenchmarkStringPiParallel
+BenchmarkScan
+BenchmarkString
+BenchmarkLeafSize
+BenchmarkProbablyPrime
+BenchmarkRatCmp
+BenchmarkFloatPrecExact
+BenchmarkFloatPrecMixed
+BenchmarkFloatPrecInexact
+BenchmarkFloatSqrt
+ok  	math/big	0.083s
+BenchmarkLeadingZeros
+BenchmarkLeadingZeros8
+BenchmarkLeadingZeros16
+BenchmarkLeadingZeros32
+BenchmarkLeadingZeros64
+BenchmarkTrailingZeros
+BenchmarkTrailingZeros8
+BenchmarkTrailingZeros16
+BenchmarkTrailingZeros32
+BenchmarkTrailingZeros64
+BenchmarkOnesCount
+BenchmarkOnesCount8
+BenchmarkOnesCount16
+BenchmarkOnesCount32
+BenchmarkOnesCount64
+BenchmarkRotateLeft
+BenchmarkRotateLeft8
+BenchmarkRotateLeft16
+BenchmarkRotateLeft32
+BenchmarkRotateLeft64
+BenchmarkReverse
+BenchmarkReverse8
+BenchmarkReverse16
+BenchmarkReverse32
+BenchmarkReverse64
+BenchmarkReverseBytes
+BenchmarkReverseBytes16
+BenchmarkReverseBytes32
+BenchmarkReverseBytes64
+BenchmarkAdd
+BenchmarkAdd32
+BenchmarkAdd64
+BenchmarkAdd64multiple
+BenchmarkSub
+BenchmarkSub32
+BenchmarkSub64
+BenchmarkSub64multiple
+BenchmarkMul
+BenchmarkMul32
+BenchmarkMul64
+BenchmarkDiv
+BenchmarkDiv32
+BenchmarkDiv64
+ok  	math/bits	0.004s
+BenchmarkAbs
+BenchmarkAcos
+BenchmarkAcosh
+BenchmarkAsin
+BenchmarkAsinh
+BenchmarkAtan
+BenchmarkAtanh
+BenchmarkConj
+BenchmarkCos
+BenchmarkCosh
+BenchmarkExp
+BenchmarkLog
+BenchmarkLog10
+BenchmarkPhase
+BenchmarkPolar
+BenchmarkPow
+BenchmarkRect
+BenchmarkSin
+BenchmarkSinh
+BenchmarkSqrt
+BenchmarkTan
+BenchmarkTanh
+ok  	math/cmplx	0.004s
+BenchmarkInt63Threadsafe
+BenchmarkInt63ThreadsafeParallel
+BenchmarkInt63Unthreadsafe
+BenchmarkIntn1000
+BenchmarkInt63n1000
+BenchmarkInt31n1000
+BenchmarkFloat32
+BenchmarkFloat64
+BenchmarkPerm3
+BenchmarkPerm30
+BenchmarkPerm30ViaShuffle
+BenchmarkShuffleOverhead
+BenchmarkRead3
+BenchmarkRead64
+BenchmarkRead1000
+BenchmarkConcurrent
+ok  	math/rand	0.018s
+BenchmarkChaCha8MarshalBinary
+BenchmarkChaCha8MarshalBinaryRead
+BenchmarkChaCha8
+BenchmarkChaCha8Read
+BenchmarkPCG_DXSM
+BenchmarkSourceUint64
+BenchmarkGlobalInt64
+BenchmarkGlobalInt64Parallel
+BenchmarkGlobalUint64
+BenchmarkGlobalUint64Parallel
+BenchmarkInt64
+BenchmarkUint64
+BenchmarkGlobalIntN1000
+BenchmarkIntN1000
+BenchmarkInt64N1000
+BenchmarkInt64N1e8
+BenchmarkInt64N1e9
+BenchmarkInt64N2e9
+BenchmarkInt64N1e18
+BenchmarkInt64N2e18
+BenchmarkInt64N4e18
+BenchmarkInt32N1000
+BenchmarkInt32N1e8
+BenchmarkInt32N1e9
+BenchmarkInt32N2e9
+BenchmarkFloat32
+BenchmarkFloat64
+BenchmarkExpFloat64
+BenchmarkNormFloat64
+BenchmarkPerm3
+BenchmarkPerm30
+BenchmarkPerm30ViaShuffle
+BenchmarkShuffleOverhead
+BenchmarkConcurrent
+ok  	math/rand/v2	0.026s
+BenchmarkQEncodeWord
+BenchmarkQDecodeWord
+BenchmarkQDecodeHeader
+BenchmarkTypeByExtension
+BenchmarkExtensionsByType
+ok  	mime	0.004s
+BenchmarkReadForm
+ok  	mime/multipart	0.005s
+BenchmarkWriter
+ok  	mime/quotedprintable	0.006s
+BenchmarkGoLookupIP
+BenchmarkGoLookupIPNoSuchHost
+BenchmarkGoLookupIPWithBrokenNameServer
+BenchmarkDNSName
+BenchmarkInterfaces
+BenchmarkInterfaceByIndex
+BenchmarkInterfaceByName
+BenchmarkInterfaceAddrs
+BenchmarkInterfacesAndAddrs
+BenchmarkInterfacesAndMulticastAddrs
+BenchmarkParseIP
+BenchmarkParseIPValidIPv4
+BenchmarkParseIPValidIPv6
+BenchmarkIPMarshalText
+BenchmarkIPString
+BenchmarkIPMaskString
+BenchmarkIPEqual
+BenchmarkSendfileZeroBytes
+BenchmarkSendFile
+BenchmarkSplice
+BenchmarkSpliceFile
+BenchmarkTCP4OneShot
+BenchmarkTCP4OneShotTimeout
+BenchmarkTCP4Persistent
+BenchmarkTCP4PersistentTimeout
+BenchmarkTCP6OneShot
+BenchmarkTCP6OneShotTimeout
+BenchmarkTCP6Persistent
+BenchmarkTCP6PersistentTimeout
+BenchmarkTCP4ConcurrentReadWrite
+BenchmarkTCP6ConcurrentReadWrite
+BenchmarkSetReadDeadline
+BenchmarkUDP6LinkLocalUnicast
+BenchmarkReadWriteMsgUDPAddrPort
+BenchmarkWriteToReadFromUDP
+BenchmarkWriteToReadFromUDPAddrPort
+ok  	net	0.007s
+BenchmarkCookieString
+BenchmarkReadSetCookies
+BenchmarkReadCookies
+BenchmarkHeaderWriteSubset
+BenchmarkCopyValues
+BenchmarkHexEscapeNonASCII
+BenchmarkFindChild
+BenchmarkMultiConflicts
+BenchmarkServerMatch
+BenchmarkReadRequestChrome
+BenchmarkReadRequestCurl
+BenchmarkReadRequestApachebench
+BenchmarkReadRequestSiege
+BenchmarkReadRequestWrk
+BenchmarkFileAndServer_1KB
+BenchmarkFileAndServer_16MB
+BenchmarkFileAndServer_64MB
+BenchmarkServeMux
+BenchmarkServeMux_SkipServe
+BenchmarkClientServer
+BenchmarkClientServerParallel
+BenchmarkServer
+BenchmarkClient
+BenchmarkServerFakeConnNoKeepAlive
+BenchmarkServerFakeConnWithKeepAlive
+BenchmarkServerFakeConnWithKeepAliveLite
+BenchmarkServerHandlerTypeLen
+BenchmarkServerHandlerNoLen
+BenchmarkServerHandlerNoType
+BenchmarkServerHandlerNoHeader
+BenchmarkServerHijack
+BenchmarkCloseNotifier
+BenchmarkResponseStatusLine
+ok  	net/http	0.009s
+ok  	net/http/cgi	0.011s
+ok  	net/http/cookiejar	0.006s
+ok  	net/http/fcgi	0.007s
+ok  	net/http/httptest	0.009s
+ok  	net/http/httptrace	0.008s
+BenchmarkServeHTTP
+ok  	net/http/httputil	0.008s
+ok  	net/http/internal	0.004s
+ok  	net/http/internal/ascii	0.004s
+?   	net/http/internal/testcert	[no test files]
+ok  	net/http/pprof	0.012s
+ok  	net/internal/cgotest	0.003s
+ok  	net/internal/socktest	0.004s
+ok  	net/mail	0.007s
+BenchmarkIPNextPrev
+BenchmarkBinaryMarshalRoundTrip
+BenchmarkStdIPv4
+BenchmarkIPv4
+BenchmarkIPv4_inline
+BenchmarkStdIPv6
+BenchmarkIPv6
+BenchmarkIPv4Contains
+BenchmarkIPv6Contains
+BenchmarkParseAddr
+BenchmarkStdParseIP
+BenchmarkAddrString
+BenchmarkIPStringExpanded
+BenchmarkAddrMarshalText
+BenchmarkAddrPortString
+BenchmarkAddrPortMarshalText
+BenchmarkPrefixMasking
+BenchmarkPrefixMarshalText
+BenchmarkParseAddrPort
+BenchmarkAs16
+ok  	net/netip	0.008s
+BenchmarkEndToEnd
+BenchmarkEndToEndHTTP
+BenchmarkEndToEndAsync
+BenchmarkEndToEndAsyncHTTP
+ok  	net/rpc	0.008s
+ok  	net/rpc/jsonrpc	0.007s
+ok  	net/smtp	0.007s
+BenchmarkReadMIMEHeader
+BenchmarkUncommon
+ok  	net/textproto	0.006s
+BenchmarkString
+BenchmarkResolvePath
+BenchmarkQueryEscape
+BenchmarkPathEscape
+BenchmarkQueryUnescape
+BenchmarkPathUnescape
+ok  	net/url	0.006s
+BenchmarkExpand
+BenchmarkReaddirname
+BenchmarkReaddir
+BenchmarkReadDir
+BenchmarkStatDot
+BenchmarkStatFile
+BenchmarkStatDir
+BenchmarkLstatDot
+BenchmarkLstatFile
+BenchmarkLstatDir
+BenchmarkRemoveAll
+ok  	os	0.007s
+BenchmarkExecHostname
+ok  	os/exec	0.010s
+ok  	os/exec/internal/fdtest	0.004s
+ok  	os/signal	0.006s
+BenchmarkCurrent
+ok  	os/user	0.006s
+ok  	path	0.005s
+ok  	path/filepath	0.004s
+ok  	plugin	0.008s
+BenchmarkBool
+BenchmarkString
+BenchmarkBytes
+BenchmarkNamedBytes
+BenchmarkBytesArray
+BenchmarkSliceLen
+BenchmarkMapLen
+BenchmarkStringLen
+BenchmarkArrayLen
+BenchmarkSliceCap
+BenchmarkDeepEqual
+BenchmarkMapsDeepEqual
+BenchmarkIsZero
+BenchmarkSetZero
+BenchmarkSelect
+BenchmarkCall
+BenchmarkCallMethod
+BenchmarkCallArgCopy
+BenchmarkPtrTo
+BenchmarkFieldByName1
+BenchmarkFieldByName2
+BenchmarkFieldByName3
+BenchmarkInterfaceBig
+BenchmarkInterfaceSmall
+BenchmarkNew
+BenchmarkMap
+BenchmarkMapIterNext
+BenchmarkTypeForString
+BenchmarkTypeForError
+ok  	reflect	0.008s
+?   	reflect/internal/example1	[no test files]
+?   	reflect/internal/example2	[no test files]
+BenchmarkFind
+BenchmarkFindAllNoMatches
+BenchmarkFindString
+BenchmarkFindSubmatch
+BenchmarkFindStringSubmatch
+BenchmarkLiteral
+BenchmarkNotLiteral
+BenchmarkMatchClass
+BenchmarkMatchClass_InRange
+BenchmarkReplaceAll
+BenchmarkAnchoredLiteralShortNonMatch
+BenchmarkAnchoredLiteralLongNonMatch
+BenchmarkAnchoredShortMatch
+BenchmarkAnchoredLongMatch
+BenchmarkOnePassShortA
+BenchmarkNotOnePassShortA
+BenchmarkOnePassShortB
+BenchmarkNotOnePassShortB
+BenchmarkOnePassLongPrefix
+BenchmarkOnePassLongNotPrefix
+BenchmarkMatchParallelShared
+BenchmarkMatchParallelCopied
+BenchmarkQuoteMetaAll
+BenchmarkQuoteMetaNone
+BenchmarkCompile
+BenchmarkMatch
+BenchmarkMatch_onepass_regex
+ok  	regexp	0.005s
+BenchmarkEmptyOpContext
+BenchmarkIsWordChar
+ok  	regexp/syntax	0.104s
+BenchmarkCallers
+BenchmarkFPCallers
+BenchmarkMakeChan
+BenchmarkChanNonblocking
+BenchmarkSelectUncontended
+BenchmarkSelectSyncContended
+BenchmarkSelectAsyncContended
+BenchmarkSelectNonblock
+BenchmarkChanUncontended
+BenchmarkChanContended
+BenchmarkChanSync
+BenchmarkChanSyncWork
+BenchmarkChanProdCons0
+BenchmarkChanProdCons10
+BenchmarkChanProdCons100
+BenchmarkChanProdConsWork0
+BenchmarkChanProdConsWork10
+BenchmarkChanProdConsWork100
+BenchmarkSelectProdCons
+BenchmarkReceiveDataFromClosedChan
+BenchmarkChanCreation
+BenchmarkChanSem
+BenchmarkChanPopular
+BenchmarkChanClosed
+BenchmarkCallClosure
+BenchmarkCallClosure1
+BenchmarkCallClosure2
+BenchmarkCallClosure3
+BenchmarkCallClosure4
+BenchmarkComplex128DivNormal
+BenchmarkComplex128DivNisNaN
+BenchmarkComplex128DivDisNaN
+BenchmarkComplex128DivNisInf
+BenchmarkComplex128DivDisInf
+BenchmarkAllocation
+BenchmarkReadMemStats
+BenchmarkReadMemStatsLatency
+BenchmarkWriteBarrier
+BenchmarkBulkWriteBarrier
+BenchmarkScanStackNoLocals
+BenchmarkMSpanCountAlloc
+BenchmarkHash5
+BenchmarkHash16
+BenchmarkHash64
+BenchmarkHash1024
+BenchmarkHash65536
+BenchmarkAlignedLoad
+BenchmarkUnalignedLoad
+BenchmarkEqEfaceConcrete
+BenchmarkEqIfaceConcrete
+BenchmarkNeEfaceConcrete
+BenchmarkNeIfaceConcrete
+BenchmarkConvT2EByteSized
+BenchmarkConvT2ESmall
+BenchmarkConvT2EUintptr
+BenchmarkConvT2ELarge
+BenchmarkConvT2ISmall
+BenchmarkConvT2IUintptr
+BenchmarkConvT2ILarge
+BenchmarkConvI2E
+BenchmarkConvI2I
+BenchmarkAssertE2T
+BenchmarkAssertE2TLarge
+BenchmarkAssertE2I
+BenchmarkAssertI2T
+BenchmarkAssertI2I
+BenchmarkAssertI2E
+BenchmarkAssertE2E
+BenchmarkAssertE2T2
+BenchmarkAssertE2T2Blank
+BenchmarkAssertI2E2
+BenchmarkAssertI2E2Blank
+BenchmarkAssertE2E2
+BenchmarkAssertE2E2Blank
+BenchmarkConvT2Ezero
+BenchmarkMalloc8
+BenchmarkMalloc16
+BenchmarkMallocTypeInfo8
+BenchmarkMallocTypeInfo16
+BenchmarkMallocLargeStruct
+BenchmarkGoroutineSelect
+BenchmarkGoroutineBlocking
+BenchmarkGoroutineForRange
+BenchmarkGoroutineIdle
+BenchmarkHashStringSpeed
+BenchmarkHashBytesSpeed
+BenchmarkHashInt32Speed
+BenchmarkHashInt64Speed
+BenchmarkHashStringArraySpeed
+BenchmarkMegMap
+BenchmarkMegOneMap
+BenchmarkMegEqMap
+BenchmarkMegEmptyMap
+BenchmarkMegEmptyMapWithInterfaceKey
+BenchmarkSmallStrMap
+BenchmarkMapStringKeysEight_16
+BenchmarkMapStringKeysEight_32
+BenchmarkMapStringKeysEight_64
+BenchmarkMapStringKeysEight_128
+BenchmarkMapStringKeysEight_256
+BenchmarkMapStringKeysEight_1M
+BenchmarkMapFirst
+BenchmarkMapMid
+BenchmarkMapLast
+BenchmarkMapCycle
+BenchmarkRepeatedLookupStrMapKey32
+BenchmarkRepeatedLookupStrMapKey1M
+BenchmarkMakeMap
+BenchmarkNewEmptyMap
+BenchmarkNewSmallMap
+BenchmarkSameLengthMap
+BenchmarkSmallKeyMap
+BenchmarkMapPopulate
+BenchmarkComplexAlgMap
+BenchmarkGoMapClear
+BenchmarkMapStringConversion
+BenchmarkMapInterfaceString
+BenchmarkMapInterfacePtr
+BenchmarkNewEmptyMapHintLessThan8
+BenchmarkNewEmptyMapHintGreaterThan8
+BenchmarkMapIter
+BenchmarkMapIterLowLoad
+BenchmarkMapAccessHit
+BenchmarkMapAccessMiss
+BenchmarkMapAssignExists
+BenchmarkMapAssignFillNoHint
+BenchmarkMapAssignGrowLatency
+BenchmarkMapAssignFillHint
+BenchmarkMapAssignFillClear
+BenchmarkMapAssignAddition
+BenchmarkMapAssignAppend
+BenchmarkMapDelete
+BenchmarkMapPop
+BenchmarkMapDeleteLargeKey
+BenchmarkMapSmallAccessHit
+BenchmarkMapSmallAccessMiss
+BenchmarkMemmove
+BenchmarkMemmoveOverlap
+BenchmarkMemmoveUnalignedDst
+BenchmarkMemmoveUnalignedDstOverlap
+BenchmarkMemmoveUnalignedSrc
+BenchmarkMemmoveUnalignedSrcDst
+BenchmarkMemmoveUnalignedSrcOverlap
+BenchmarkMemclr
+BenchmarkMemclrUnaligned
+BenchmarkGoMemclr
+BenchmarkMemclrRange
+BenchmarkClearFat7
+BenchmarkClearFat8
+BenchmarkClearFat11
+BenchmarkClearFat12
+BenchmarkClearFat13
+BenchmarkClearFat14
+BenchmarkClearFat15
+BenchmarkClearFat16
+BenchmarkClearFat24
+BenchmarkClearFat32
+BenchmarkClearFat40
+BenchmarkClearFat48
+BenchmarkClearFat56
+BenchmarkClearFat64
+BenchmarkClearFat72
+BenchmarkClearFat128
+BenchmarkClearFat256
+BenchmarkClearFat512
+BenchmarkClearFat1024
+BenchmarkClearFat1032
+BenchmarkClearFat1040
+BenchmarkCopyFat7
+BenchmarkCopyFat8
+BenchmarkCopyFat11
+BenchmarkCopyFat12
+BenchmarkCopyFat13
+BenchmarkCopyFat14
+BenchmarkCopyFat15
+BenchmarkCopyFat16
+BenchmarkCopyFat24
+BenchmarkCopyFat32
+BenchmarkCopyFat64
+BenchmarkCopyFat72
+BenchmarkCopyFat128
+BenchmarkCopyFat256
+BenchmarkCopyFat512
+BenchmarkCopyFat520
+BenchmarkCopyFat1024
+BenchmarkCopyFat1032
+BenchmarkCopyFat1040
+BenchmarkIssue18740
+BenchmarkMemclrKnownSize1
+BenchmarkMemclrKnownSize2
+BenchmarkMemclrKnownSize4
+BenchmarkMemclrKnownSize8
+BenchmarkMemclrKnownSize16
+BenchmarkMemclrKnownSize32
+BenchmarkMemclrKnownSize64
+BenchmarkMemclrKnownSize112
+BenchmarkMemclrKnownSize128
+BenchmarkMemclrKnownSize192
+BenchmarkMemclrKnownSize248
+BenchmarkMemclrKnownSize256
+BenchmarkMemclrKnownSize512
+BenchmarkMemclrKnownSize1024
+BenchmarkMemclrKnownSize4096
+BenchmarkMemclrKnownSize512KiB
+BenchmarkReadMetricsLatency
+BenchmarkFinalizer
+BenchmarkFinalizerRun
+BenchmarkMinFloat
+BenchmarkMaxFloat
+BenchmarkPallocBitsSummarize
+BenchmarkFindBitRange64
+BenchmarkNetpollBreak
+BenchmarkSyscall
+BenchmarkSyscallWork
+BenchmarkSyscallExcess
+BenchmarkSyscallExcessWork
+BenchmarkPinnerPinUnpinBatch
+BenchmarkPinnerPinUnpinBatchDouble
+BenchmarkPinnerPinUnpinBatchTiny
+BenchmarkPinnerPinUnpin
+BenchmarkPinnerPinUnpinTiny
+BenchmarkPinnerPinUnpinDouble
+BenchmarkPinnerPinUnpinParallel
+BenchmarkPinnerPinUnpinParallelTiny
+BenchmarkPinnerPinUnpinParallelDouble
+BenchmarkPinnerIsPinnedOnPinned
+BenchmarkPinnerIsPinnedOnUnpinned
+BenchmarkPinnerIsPinnedOnPinnedParallel
+BenchmarkPinnerIsPinnedOnUnpinnedParallel
+BenchmarkPingPongHog
+BenchmarkStackGrowth
+BenchmarkStackGrowthDeep
+BenchmarkCreateGoroutines
+BenchmarkCreateGoroutinesParallel
+BenchmarkCreateGoroutinesCapture
+BenchmarkCreateGoroutinesSingle
+BenchmarkClosureCall
+BenchmarkWakeupParallelSpinning
+BenchmarkWakeupParallelSyscall
+BenchmarkMatmult
+BenchmarkFastrand
+BenchmarkFastrand64
+BenchmarkFastrandHashiter
+BenchmarkFastrandn
+BenchmarkIfaceCmp100
+BenchmarkIfaceCmpNil100
+BenchmarkEfaceCmpDiff
+BenchmarkEfaceCmpDiffIndirect
+BenchmarkDefer
+BenchmarkDefer10
+BenchmarkDeferMany
+BenchmarkPanicRecover
+BenchmarkGoroutineProfile
+BenchmarkProcYield
+BenchmarkOSYield
+BenchmarkMutexContention
+BenchmarkMutexCapture
+BenchmarkMutexHandoff
+BenchmarkRWMutexUncontended
+BenchmarkRWMutexWrite100
+BenchmarkRWMutexWrite10
+BenchmarkRWMutexWorkWrite100
+BenchmarkRWMutexWorkWrite10
+BenchmarkSemTable
+BenchmarkMakeSliceCopy
+BenchmarkMakeSlice
+BenchmarkGrowSlice
+BenchmarkExtendSlice
+BenchmarkAppend
+BenchmarkAppendGrowByte
+BenchmarkAppendGrowString
+BenchmarkAppendSlice
+BenchmarkAppendSliceLarge
+BenchmarkAppendStr
+BenchmarkAppendSpecialCase
+BenchmarkCopy
+BenchmarkAppendInPlace
+BenchmarkStackCopyPtr
+BenchmarkStackCopy
+BenchmarkStackCopyNoCache
+BenchmarkStackCopyWithStkobj
+BenchmarkIssue18138
+BenchmarkCompareStringEqual
+BenchmarkCompareStringIdentical
+BenchmarkCompareStringSameLength
+BenchmarkCompareStringDifferentLength
+BenchmarkCompareStringBigUnaligned
+BenchmarkCompareStringBig
+BenchmarkConcatStringAndBytes
+BenchmarkSliceByteToString
+BenchmarkRuneCount
+BenchmarkRuneIterate
+BenchmarkArrayEqual
+BenchmarkFunc
+ok  	runtime	0.007s
+BenchmarkHandle
+ok  	runtime/cgo	0.004s
+?   	runtime/coverage	[no test files]
+ok  	runtime/debug	0.003s
+ok  	runtime/internal/wasitest	0.004s
+ok  	runtime/metrics	0.003s
+BenchmarkLabels
+BenchmarkGoroutine
+ok  	runtime/pprof	0.003s
+?   	runtime/race	[no test files]
+BenchmarkStartRegion
+BenchmarkNewTask
+ok  	runtime/trace	0.003s
+BenchmarkEqualFunc_Large
+BenchmarkIndex_Large
+BenchmarkIndexFunc_Large
+BenchmarkCompact
+BenchmarkCompact_Large
+BenchmarkCompactFunc
+BenchmarkCompactFunc_Large
+BenchmarkReplace
+BenchmarkBinarySearchFloats
+BenchmarkBinarySearchFuncStruct
+BenchmarkSortFuncStruct
+ok  	slices	0.003s
+BenchmarkSearchWrappers
+BenchmarkSortInts
+BenchmarkSlicesSortInts
+BenchmarkSortIsSorted
+BenchmarkSlicesIsSorted
+BenchmarkSortStrings
+BenchmarkSlicesSortStrings
+BenchmarkSortStrings_Sorted
+BenchmarkSlicesSortStrings_Sorted
+BenchmarkSortStructs
+BenchmarkSortFuncStructs
+BenchmarkSortString1K
+BenchmarkSortString1K_Slice
+BenchmarkStableString1K
+BenchmarkSortInt1K
+BenchmarkSortInt1K_Sorted
+BenchmarkSortInt1K_Reversed
+BenchmarkSortInt1K_Mod8
+BenchmarkStableInt1K
+BenchmarkStableInt1K_Slice
+BenchmarkSortInt64K
+BenchmarkSortInt64K_Slice
+BenchmarkStableInt64K
+BenchmarkSort1e2
+BenchmarkStable1e2
+BenchmarkSort1e4
+BenchmarkStable1e4
+BenchmarkSort1e6
+BenchmarkStable1e6
+ok  	sort	0.003s
+BenchmarkAtof64Decimal
+BenchmarkAtof64Float
+BenchmarkAtof64FloatExp
+BenchmarkAtof64Big
+BenchmarkAtof64RandomBits
+BenchmarkAtof64RandomFloats
+BenchmarkAtof64RandomLongFloats
+BenchmarkAtof32Decimal
+BenchmarkAtof32Float
+BenchmarkAtof32FloatExp
+BenchmarkAtof32Random
+BenchmarkAtof32RandomLong
+BenchmarkParseInt
+BenchmarkAtoi
+BenchmarkFormatFloat
+BenchmarkAppendFloat
+BenchmarkFormatInt
+BenchmarkAppendInt
+BenchmarkFormatUint
+BenchmarkAppendUint
+BenchmarkFormatIntSmall
+BenchmarkAppendIntSmall
+BenchmarkAppendUintVarlen
+BenchmarkQuote
+BenchmarkQuoteRune
+BenchmarkAppendQuote
+BenchmarkAppendQuoteRune
+BenchmarkUnquoteEasy
+BenchmarkUnquoteHard
+ok  	strconv	0.003s
+BenchmarkBuildString_Builder
+BenchmarkBuildString_WriteString
+BenchmarkBuildString_ByteBuffer
+BenchmarkClone
+BenchmarkGenericNoMatch
+BenchmarkGenericMatch1
+BenchmarkGenericMatch2
+BenchmarkSingleMaxSkipping
+BenchmarkSingleLongSuffixFail
+BenchmarkSingleMatch
+BenchmarkByteByteNoMatch
+BenchmarkByteByteMatch
+BenchmarkByteStringMatch
+BenchmarkHTMLEscapeNew
+BenchmarkHTMLEscapeOld
+BenchmarkByteStringReplacerWriteString
+BenchmarkByteReplacerWriteString
+BenchmarkByteByteReplaces
+BenchmarkByteByteMap
+BenchmarkMap
+BenchmarkIndexRune
+BenchmarkIndexRuneLongString
+BenchmarkIndexRuneFastPath
+BenchmarkIndex
+BenchmarkLastIndex
+BenchmarkIndexByte
+BenchmarkToUpper
+BenchmarkToLower
+BenchmarkMapNoChanges
+BenchmarkTrim
+BenchmarkToValidUTF8
+BenchmarkEqualFold
+BenchmarkIndexHard1
+BenchmarkIndexHard2
+BenchmarkIndexHard3
+BenchmarkIndexHard4
+BenchmarkLastIndexHard1
+BenchmarkLastIndexHard2
+BenchmarkLastIndexHard3
+BenchmarkCountHard1
+BenchmarkCountHard2
+BenchmarkCountHard3
+BenchmarkIndexTorture
+BenchmarkCountTorture
+BenchmarkCountTortureOverlapping
+BenchmarkCountByte
+BenchmarkFields
+BenchmarkFieldsFunc
+BenchmarkSplitEmptySeparator
+BenchmarkSplitSingleByteSeparator
+BenchmarkSplitMultiByteSeparator
+BenchmarkSplitNSingleByteSeparator
+BenchmarkSplitNMultiByteSeparator
+BenchmarkRepeat
+BenchmarkRepeatLarge
+BenchmarkRepeatSpaces
+BenchmarkIndexAnyASCII
+BenchmarkIndexAnyUTF8
+BenchmarkLastIndexAnyASCII
+BenchmarkLastIndexAnyUTF8
+BenchmarkTrimASCII
+BenchmarkTrimByte
+BenchmarkIndexPeriodic
+BenchmarkJoin
+BenchmarkTrimSpace
+BenchmarkReplaceAll
+ok  	strings	0.073s
+?   	structs	[no test files]
+BenchmarkCond1
+BenchmarkCond2
+BenchmarkCond4
+BenchmarkCond8
+BenchmarkCond16
+BenchmarkCond32
+BenchmarkMapLoadMostlyHits
+BenchmarkMapLoadMostlyMisses
+BenchmarkMapLoadOrStoreBalanced
+BenchmarkMapLoadOrStoreUnique
+BenchmarkMapLoadOrStoreCollision
+BenchmarkMapLoadAndDeleteBalanced
+BenchmarkMapLoadAndDeleteUnique
+BenchmarkMapLoadAndDeleteCollision
+BenchmarkMapRange
+BenchmarkMapAdversarialAlloc
+BenchmarkMapAdversarialDelete
+BenchmarkMapDeleteCollision
+BenchmarkMapSwapCollision
+BenchmarkMapSwapMostlyHits
+BenchmarkMapSwapMostlyMisses
+BenchmarkMapCompareAndSwapCollision
+BenchmarkMapCompareAndSwapNoExistingKey
+BenchmarkMapCompareAndSwapValueNotEqual
+BenchmarkMapCompareAndSwapMostlyHits
+BenchmarkMapCompareAndSwapMostlyMisses
+BenchmarkMapCompareAndDeleteCollision
+BenchmarkMapCompareAndDeleteMostlyHits
+BenchmarkMapCompareAndDeleteMostlyMisses
+BenchmarkMapClear
+BenchmarkUncontendedSemaphore
+BenchmarkContendedSemaphore
+BenchmarkMutexUncontended
+BenchmarkMutex
+BenchmarkMutexSlack
+BenchmarkMutexWork
+BenchmarkMutexWorkSlack
+BenchmarkMutexNoSpin
+BenchmarkMutexSpin
+BenchmarkOnce
+BenchmarkOnceFunc
+BenchmarkOnceValue
+BenchmarkPool
+BenchmarkPoolOverflow
+BenchmarkPoolStarvation
+BenchmarkPoolSTW
+BenchmarkPoolExpensiveNew
+BenchmarkSemaUncontended
+BenchmarkSemaSyntNonblock
+BenchmarkSemaSyntBlock
+BenchmarkSemaWorkNonblock
+BenchmarkSemaWorkBlock
+BenchmarkRWMutexUncontended
+BenchmarkRWMutexWrite100
+BenchmarkRWMutexWrite10
+BenchmarkRWMutexWorkWrite100
+BenchmarkRWMutexWorkWrite10
+BenchmarkWaitGroupUncontended
+BenchmarkWaitGroupAddDone
+BenchmarkWaitGroupAddDoneWork
+BenchmarkWaitGroupWait
+BenchmarkWaitGroupWaitWork
+BenchmarkWaitGroupActuallyWait
+ok  	sync	0.004s
+BenchmarkValueRead
+ok  	sync/atomic	0.003s
+ok  	syscall	0.004s
+TestBenchmarkBLoop
+TestBenchmarkBLoopBreak
+TestBenchmarkBLoopError
+TestBenchmarkBLoopStop
+TestBenchmarkOutput
+TestBenchmarkStartsFrom1
+TestBenchmarkReadMemStatsBeforeFirstRun
+TestBenchmark
+TestBenchmarkContext
+TestTempDirInBenchmark
+TestBenchmarkRace
+TestBenchmarkRaceBLoop
+TestBenchmarkSubRace
+TestBenchmarkBLoopIterationCorrect
+TestBenchmarkBNIterationCorrect
+BenchmarkTBHelper
+BenchmarkRacy
+BenchmarkBLoopRacy
+BenchmarkSubRacy
+BenchmarkBLoopPrint
+BenchmarkBNPrint
+ok  	testing	0.003s
+ok  	testing/fstest	0.003s
+?   	testing/internal/testdeps	[no test files]
+ok  	testing/iotest	0.003s
+ok  	testing/quick	0.003s
+ok  	testing/slogtest	0.003s
+ok  	text/scanner	0.003s
+BenchmarkTable
+BenchmarkPyramid
+BenchmarkRagged
+BenchmarkCode
+ok  	text/tabwriter	0.003s
+ok  	text/template	0.003s
+BenchmarkParseLarge
+BenchmarkVariableString
+BenchmarkListString
+ok  	text/template/parse	0.004s
+BenchmarkAfterFunc1000
+BenchmarkAfter
+BenchmarkStop
+BenchmarkSimultaneousAfterFunc1000
+BenchmarkStartStop1000
+BenchmarkReset
+BenchmarkSleep1000
+BenchmarkParallelTimerLatency
+BenchmarkStaggeredTickerLatency
+BenchmarkAdjustTimers10000
+BenchmarkTicker
+BenchmarkTickerReset
+BenchmarkTickerResetNaive
+BenchmarkNow
+BenchmarkNowUnixNano
+BenchmarkNowUnixMilli
+BenchmarkNowUnixMicro
+BenchmarkFormat
+BenchmarkFormatRFC3339
+BenchmarkFormatRFC3339Nano
+BenchmarkFormatNow
+BenchmarkMarshalJSON
+BenchmarkMarshalText
+BenchmarkMarshalBinary
+BenchmarkParse
+BenchmarkParseRFC3339UTC
+BenchmarkParseRFC3339UTCBytes
+BenchmarkParseRFC3339TZ
+BenchmarkParseRFC3339TZBytes
+BenchmarkParseDuration
+BenchmarkHour
+BenchmarkSecond
+BenchmarkDate
+BenchmarkYear
+BenchmarkYearDay
+BenchmarkMonth
+BenchmarkDay
+BenchmarkISOWeek
+BenchmarkGoString
+BenchmarkDateFunc
+BenchmarkUnmarshalText
+ok  	time	0.004s
+?   	time/tzdata	[no test files]
+BenchmarkToUpper
+BenchmarkToLower
+BenchmarkSimpleFold
+ok  	unicode	0.003s
+BenchmarkDecodeValidASCII
+BenchmarkDecodeValidJapaneseChars
+BenchmarkDecodeRune
+BenchmarkEncodeValidASCII
+BenchmarkEncodeValidJapaneseChars
+BenchmarkAppendRuneValidASCII
+BenchmarkAppendRuneValidJapaneseChars
+BenchmarkEncodeRune
+ok  	unicode/utf16	0.004s
+BenchmarkRuneCountTenASCIIChars
+BenchmarkRuneCountTenJapaneseChars
+BenchmarkRuneCountInStringTenASCIIChars
+BenchmarkRuneCountInStringTenJapaneseChars
+BenchmarkValidTenASCIIChars
+BenchmarkValid100KASCIIChars
+BenchmarkValidTenJapaneseChars
+BenchmarkValidLongMostlyASCII
+BenchmarkValidLongJapanese
+BenchmarkValidStringTenASCIIChars
+BenchmarkValidString100KASCIIChars
+BenchmarkValidStringTenJapaneseChars
+BenchmarkValidStringLongMostlyASCII
+BenchmarkValidStringLongJapanese
+BenchmarkEncodeASCIIRune
+BenchmarkEncodeSpanishRune
+BenchmarkEncodeJapaneseRune
+BenchmarkEncodeMaxRune
+BenchmarkEncodeInvalidRuneMaxPlusOne
+BenchmarkEncodeInvalidRuneSurrogate
+BenchmarkEncodeInvalidRuneNegative
+BenchmarkAppendASCIIRune
+BenchmarkAppendSpanishRune
+BenchmarkAppendJapaneseRune
+BenchmarkAppendMaxRune
+BenchmarkAppendInvalidRuneMaxPlusOne
+BenchmarkAppendInvalidRuneSurrogate
+BenchmarkAppendInvalidRuneNegative
+BenchmarkDecodeASCIIRune
+BenchmarkDecodeJapaneseRune
+BenchmarkFullRune
+ok  	unicode/utf8	0.003s
+BenchmarkMake
+BenchmarkMakeMany
+BenchmarkMakeManyMany
+ok  	unique	0.034s
+?   	unsafe	[no test files]
+ok  	weak	0.003s
