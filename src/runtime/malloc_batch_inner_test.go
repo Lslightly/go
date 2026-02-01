@@ -21,24 +21,28 @@ func fakepair(idx int8) mallocPairsTy {
 	}
 }
 
+func fakem() *m {
+	return &m{}
+}
+
 /*
 fullTime must be ringCap-2. [0, ..., ringCap-2] fills ring buffer
 Then front becomes ringCap-1, end is ringCap-1 also.
 After ringCap-1 push, end is ringCap-2, front becomes ringCap-2, fullTime is (ringCap-1)*2-1
 */
 func testRingBufferPushPop() (fullIdx, front, end int8) {
-	ring := &batchTransTy{}
+	mp := fakem()
 	for i := range (ringCap - 1) * 2 {
-		ring.push(fakepair(i))
-		if ring.full() {
-			ring.clear()
+		mp.batchPush(fakepair(i))
+		if mp.batchFull() {
+			mp.batchClear()
 			fullIdx = i
 		}
 	}
-	for i := ring.front; i != ring.end; i = (i + 1) % ringCap {
-		FreeMSpan((*MSpan)(ring.todos[i].span))
+	for i := mp.batchFront; i != mp.batchEnd; i = nextRingIdx(i) {
+		FreeMSpan((*MSpan)(mp.batchTodos[i].span))
 	}
-	return fullIdx, ring.front, ring.end
+	return fullIdx, mp.batchFront, mp.batchEnd
 }
 
 var TestRingBufferPushPop = testRingBufferPushPop

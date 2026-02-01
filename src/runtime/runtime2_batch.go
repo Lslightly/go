@@ -534,27 +534,34 @@ type m struct {
 	_       uint32 // align next field to 8 bytes
 
 	// Fields not known to debuggers.
-	procid          uint64            // for debuggers, but offset not hard-coded
-	gsignal         *g                // signal-handling g
-	goSigStack      gsignalStack      // Go-allocated signal handling stack
-	sigmask         sigset            // storage for saved signal mask
-	tls             [tlsSlots]uintptr // thread-local storage (for x86 extern register)
-	mstartfn        func()
-	curg            *g       // current running goroutine
-	caughtsig       guintptr // goroutine running during fatal signal
-	p               puintptr // attached p for executing go code (nil if not executing go code)
-	nextp           puintptr
-	oldp            puintptr // the p that was attached before executing a syscall
-	id              int64
-	mallocing       int32
-	throwing        throwType
-	postMallocTodo  batchTransTy
-	preemptoff      string // if != "", keep curg running on this m
-	locks           int32
-	dying           int32
-	profilehz       int32
-	spinning        bool // m is out of work and is actively looking for work
-	blocked         bool // m is blocked on a note
+	procid     uint64            // for debuggers, but offset not hard-coded
+	gsignal    *g                // signal-handling g
+	goSigStack gsignalStack      // Go-allocated signal handling stack
+	sigmask    sigset            // storage for saved signal mask
+	tls        [tlsSlots]uintptr // thread-local storage (for x86 extern register)
+	mstartfn   func()
+	curg       *g       // current running goroutine
+	caughtsig  guintptr // goroutine running during fatal signal
+	p          puintptr // attached p for executing go code (nil if not executing go code)
+	nextp      puintptr
+	oldp       puintptr // the p that was attached before executing a syscall
+	id         int64
+	mallocing  int32
+	throwing   throwType
+	preemptoff string // if != "", keep curg running on this m
+	locks      int32
+	dying      int32
+	profilehz  int32
+	spinning   bool // m is out of work and is actively looking for work
+	blocked    bool // m is blocked on a note
+
+	// batch
+	batchFront          int8 // waste one slot, end is the next slot to fill
+	batchEnd            int8 // waste one slot, end is the next slot to fill
+	batchCheckGCTrigger bool
+	batching            bool
+	batchTodos          batchTodoRingTy
+
 	newSigstack     bool // minit on C thread called sigaltstack
 	printlock       int8
 	incgo           bool          // m is executing a cgo call

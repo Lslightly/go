@@ -14,28 +14,23 @@ type mallocPairsTy struct {
 
 const ringCap int8 = 8
 
-type batchTransTy struct {
-	todos          [ringCap]mallocPairsTy
-	front, end     int8 // waste one slot, end is the next slot to fill
-	checkGCTrigger bool
-	batching       bool
-}
+type batchTodoRingTy [ringCap]mallocPairsTy
 
 func nextRingIdx(idx int8) int8 { return (idx + 1) & 0b111 }
-func (ring *batchTransTy) full() bool {
-	return nextRingIdx(ring.end) == ring.front
+func (mp *m) batchFull() bool {
+	return nextRingIdx(mp.batchEnd) == mp.batchFront
 }
-func (ring *batchTransTy) push(todo mallocPairsTy) {
-	ring.todos[ring.end] = todo
-	// println("push at", ring.end, "span addr", todo.span)
-	ring.end = nextRingIdx(ring.end)
+func (mp *m) batchPush(todo mallocPairsTy) {
+	mp.batchTodos[mp.batchEnd] = todo
+	// println("push at", mp.batchEnd, "span addr", todo.span)
+	mp.batchEnd = nextRingIdx(mp.batchEnd)
 }
-func (ring *batchTransTy) clear() {
-	ring.front = ring.end
+func (mp *m) batchClear() {
+	mp.batchFront = mp.batchEnd
 }
 
-func (ring *batchTransTy) statusPrint() {
-	println("ring front", ring.front, "end", ring.end, "checkGCTigger", ring.checkGCTrigger)
+func (mp *m) batchStatusPrint() {
+	println("mp batchFront", mp.batchFront, "batchEnd", mp.batchEnd, "checkGCTigger", mp.batchCheckGCTrigger)
 }
 
 func BatchEnter() {
@@ -49,10 +44,10 @@ func BatchEnter() {
 		}
 	}
 	mp.mallocing = 1
-	mp.postMallocTodo.batching = true
+	mp.batching = true
 }
 
-func flushPostMallocTodos(ring *batchTransTy) {
+func (mp *m) batchFlush() {
 	// Ensure that the stores above that initialize x to
 	// type-safe memory and set the heap bits occur before
 	// the caller can make x observable to the garbage
@@ -60,9 +55,9 @@ func flushPostMallocTodos(ring *batchTransTy) {
 	// the garbage collector could follow a pointer to x,
 	// but see uninitialized memory or stale heap bits.
 	publicationBarrier()
-	// ring.statusPrint()
-	for idx := ring.front; idx != ring.end; idx = nextRingIdx(idx) {
-		todo := ring.todos[idx]
+	// mp.statusPrint()
+	for idx := mp.batchFront; idx != mp.batchEnd; idx = nextRingIdx(idx) {
+		todo := mp.batchTodos[idx]
 		// println("todo idx", idx, "span addr", todo.span)
 
 		// As x and the heap bits are initialized, update
@@ -81,24 +76,23 @@ func flushPostMallocTodos(ring *batchTransTy) {
 	// This may be racing with GC so do it atomically if there can be
 	// a race marking the bit.
 	if writeBarrier.enabled {
-		for idx := ring.front; idx != ring.end; idx = nextRingIdx(idx) {
-			todo := ring.todos[idx]
+		for idx := mp.batchFront; idx != mp.batchEnd; idx = nextRingIdx(idx) {
+			todo := mp.batchTodos[idx]
 			gcmarknewobject(todo.span, uintptr(todo.x))
 		}
 	}
-	ring.clear()
+	mp.batchClear()
 }
 
 func BatchExit() {
 	mp := getg().m
-	ring := &mp.postMallocTodo
-	flushPostMallocTodos(ring)
-	if ring.checkGCTrigger {
+	mp.batchFlush()
+	if mp.batchCheckGCTrigger {
 		if t := (gcTrigger{kind: gcTriggerHeap}); t.test() {
 			gcStart(t)
 		}
 	}
-	ring.batching = false
+	mp.batching = false
 	mp.mallocing = 0
 	releasem(mp)
 }

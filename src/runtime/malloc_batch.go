@@ -1050,7 +1050,7 @@ func mallocgc(size uintptr, typ *_type, needzero bool) unsafe.Pointer {
 	var x unsafe.Pointer
 	var elemsize uintptr
 	mp := getg().m
-	if !mp.postMallocTodo.batching {
+	if !mp.batching {
 		if size <= maxSmallSize-mallocHeaderSize {
 			if typ == nil || !typ.Pointers() {
 				if size < maxTinySize {
@@ -1084,15 +1084,14 @@ func mallocgc(size uintptr, typ *_type, needzero bool) unsafe.Pointer {
 		} else {
 			x, elemsize, span, checkGCTigger = mallocgcLargeCore(size, typ, needzero)
 		}
-		todo := &mp.postMallocTodo
-		todo.checkGCTrigger = todo.checkGCTrigger || checkGCTigger
+		mp.batchCheckGCTrigger = mp.batchCheckGCTrigger || checkGCTigger
 		if span != nil {
-			todo.push(mallocPairsTy{
+			mp.batchPush(mallocPairsTy{
 				span: span,
 				x:    x,
 			})
-			if todo.full() {
-				flushPostMallocTodos(todo)
+			if mp.batchFull() {
+				mp.batchFlush()
 			}
 		}
 	}

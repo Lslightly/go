@@ -3,9 +3,9 @@ goarch: arm64
 pkg: runtime
                      │ default.txt │              batch.txt               │
                      │   sec/op    │    sec/op     vs base                │
-Malloc8-64             22.02n ± 0%   19.07n ±  1%  -13.37% (p=0.000 n=10)
-Malloc16-64            38.49n ± 0%   29.90n ±  2%  -22.33% (p=0.000 n=10)
-MallocTypeInfo8-64     28.50n ± 0%   28.05n ±  1%   -1.58% (p=0.000 n=10)
-MallocTypeInfo16-64    38.12n ± 0%   35.62n ±  1%   -6.55% (p=0.000 n=10)
-MallocLargeStruct-64   402.5n ± 0%   366.1n ± 17%   -9.03% (p=0.021 n=10)
-geomean                51.73n        46.12n        -10.85%
+Malloc8-64             23.14n ± 7%   19.88n ±  2%  -14.13% (p=0.000 n=10)
+Malloc16-64            38.48n ± 0%   30.58n ±  1%  -20.54% (p=0.000 n=10)
+MallocTypeInfo8-64     28.52n ± 0%   28.24n ±  1%   -0.98% (p=0.006 n=10)
+MallocTypeInfo16-64    38.17n ± 0%   35.91n ±  2%   -5.93% (p=0.000 n=10)
+MallocLargeStruct-64   400.3n ± 0%   351.9n ± 19%  -12.10% (p=0.022 n=10)
+geomean                52.22n        46.48n        -10.99%

@@ -9,7 +9,7 @@ import (
 )
 
 // sync with malloc_batchlib.go ringCap
-const ringCap int8 = 14
+const ringCap int8 = 8
 
 func TestPushPop(t *testing.T) {
 	fullIdx, front, end := TestRingBufferPushPop()
