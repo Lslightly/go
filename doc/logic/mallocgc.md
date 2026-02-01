@@ -70,6 +70,28 @@ Large
 
 所以这又对循环内的语句做了进一步要求。
 
+`mp.mallocing != 0`
+- `userArenaNextFree`，调用栈：
+   - `(*userArena).alloc`
+   - `(*userArena).new`, `(*userArena).slice`
+   - `arena_arena_New`, `arena_arena_Slice`
+   - `(*Arena).New`, `(*Arena).MakeSlice`
+- `newUserArenaChunk`，调用栈:
+   - `(*userArena).refill`
+   - `(*userArena).alloc`, `newUserArena`
+   - `(*userArena).new`, `(*userArena).slice`, `arena_newArena`
+   - `arena_arena_New`, `arena_arena_Slice`, `arena.NewArena`
+- `cgoCheckPtrWrite`，当 `GOEXPERIMENT=cgocheck2` 开启时在CGO代码中自动插入调用
+- `itabAdd`
+   - 在 `typeAssert`，即 `iface.(T)` 时调用
+- `panicCheck1`, `panicCheck2`，各种运行时安全保障机制(out of range等)触发时检查
+- `gopanic` `panic` builtin函数触发
+
+`mp.mallocing == 0`时throw
+- `ensureSwept`
+- `sweep`
+
+
 ## deductAssistCredit
 
 ```
@@ -85,5 +107,8 @@ Large
 
 `gcBlackenEnabled`只有在`_gcphase`变为 `_GCmark`时才会设置为1.
 
+## memclrNoHeapPointers
+
+在 aarch64 上，[实现](../../src/runtime/memclr_arm64.s#L9-24)为 `DC ZVA, R0` 指令。
 
 
