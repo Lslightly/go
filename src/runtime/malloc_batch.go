@@ -1068,23 +1068,23 @@ func mallocgc(size uintptr, typ *_type, needzero bool) unsafe.Pointer {
 		}
 	} else {
 		var span *mspan
-		var checkGCTigger bool
+		var checkGCTrigger bool
 		if size <= maxSmallSize-mallocHeaderSize {
 			if typ == nil || !typ.Pointers() {
 				if size < maxTinySize {
-					x, elemsize, span, checkGCTigger = mallocgcTinyCore(size, typ, needzero)
+					x, elemsize, span, checkGCTrigger = mallocgcTinyCore(size, typ, needzero)
 				} else {
-					x, elemsize, span, checkGCTigger = mallocgcSmallNoscanCore(size, typ, needzero)
+					x, elemsize, span, checkGCTrigger = mallocgcSmallNoscanCore(size, typ, needzero)
 				}
 			} else if heapBitsInSpan(size) {
-				x, elemsize, span, checkGCTigger = mallocgcSmallScanNoHeaderCore(size, typ, needzero)
+				x, elemsize, span, checkGCTrigger = mallocgcSmallScanNoHeaderCore(size, typ, needzero)
 			} else {
-				x, elemsize, span, checkGCTigger = mallocgcSmallScanHeaderCore(size, typ, needzero)
+				x, elemsize, span, checkGCTrigger = mallocgcSmallScanHeaderCore(size, typ, needzero)
 			}
 		} else {
-			x, elemsize, span, checkGCTigger = mallocgcLargeCore(size, typ, needzero)
+			x, elemsize, span, checkGCTrigger = mallocgcLargeCore(size, typ, needzero)
 		}
-		mp.batchCheckGCTrigger = mp.batchCheckGCTrigger || checkGCTigger
+		mp.batchCheckGCTrigger = mp.batchCheckGCTrigger || checkGCTrigger
 		if span != nil {
 			mp.batchPush(mallocPairsTy{
 				span: span,
