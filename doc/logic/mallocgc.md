@@ -71,6 +71,8 @@ Large
 所以这又对循环内的语句做了进一步要求。
 
 `mp.mallocing != 0`
+
+arena package相关
 - `userArenaNextFree`，进入分支报错`throw("malloc deadlock")`，调用栈：
    - `(*userArena).alloc`
    - `(*userArena).new`, `(*userArena).slice`
@@ -81,9 +83,15 @@ Large
    - `(*userArena).alloc`, `newUserArena`
    - `(*userArena).new`, `(*userArena).slice`, `arena_newArena`
    - `arena_arena_New`, `arena_arena_Slice`, `arena.NewArena`
+
+cgo相关
 - `cgoCheckPtrWrite`（当 `GOEXPERIMENT=cgocheck2` 开启时在CGO代码中自动插入对 `cgoCheckPtrWrite` 的调用），进入分支则从函数返回。
+
+type assertion `x.(Type)`相关
 - `itabAdd`，进入分支报错 `throw("malloc deadlock")`
    - 在 `typeAssert`，即 `iface.(T)` 时调用
+
+panic以及运行时检查机制(比如是否数组越界等)相关
 - `panicCheck1`, `panicCheck2`，进入分支报错 `throw(msg), throw(err)`。各种运行时安全保障机制(out of range等)触发时检查
 - `gopanic`，进入分支报错 `throw("panic during malloc")`。`panic` builtin函数触发
 
