@@ -71,25 +71,25 @@ Large
 所以这又对循环内的语句做了进一步要求。
 
 `mp.mallocing != 0`
-- `userArenaNextFree`，调用栈：
+- `userArenaNextFree`，进入分支报错`throw("malloc deadlock")`，调用栈：
    - `(*userArena).alloc`
    - `(*userArena).new`, `(*userArena).slice`
    - `arena_arena_New`, `arena_arena_Slice`
    - `(*Arena).New`, `(*Arena).MakeSlice`
-- `newUserArenaChunk`，调用栈:
+- `newUserArenaChunk`，进入分支报错`throw("malloc deadlock")`，调用栈:
    - `(*userArena).refill`
    - `(*userArena).alloc`, `newUserArena`
    - `(*userArena).new`, `(*userArena).slice`, `arena_newArena`
    - `arena_arena_New`, `arena_arena_Slice`, `arena.NewArena`
-- `cgoCheckPtrWrite`，当 `GOEXPERIMENT=cgocheck2` 开启时在CGO代码中自动插入调用
-- `itabAdd`
+- `cgoCheckPtrWrite`（当 `GOEXPERIMENT=cgocheck2` 开启时在CGO代码中自动插入对 `cgoCheckPtrWrite` 的调用），进入分支则从函数返回。
+- `itabAdd`，进入分支报错 `throw("malloc deadlock")`
    - 在 `typeAssert`，即 `iface.(T)` 时调用
-- `panicCheck1`, `panicCheck2`，各种运行时安全保障机制(out of range等)触发时检查
-- `gopanic` `panic` builtin函数触发
+- `panicCheck1`, `panicCheck2`，进入分支报错 `throw(msg), throw(err)`。各种运行时安全保障机制(out of range等)触发时检查
+- `gopanic`，进入分支报错 `throw("panic during malloc")`。`panic` builtin函数触发
 
 `mp.mallocing == 0`时throw
-- `ensureSwept`
-- `sweep`
+- `ensureSwept`，进入分支报错 `throw("mspan.ensureSwept: m is not locked")`
+- `sweep`，进入分支报错 `throw("mspan.sweep: m is not locked")`
 
 
 ## deductAssistCredit
@@ -110,5 +110,17 @@ Large
 ## memclrNoHeapPointers
 
 在 aarch64 上，[实现](../../src/runtime/memclr_arm64.s#L9-24)为 `DC ZVA, R0` 指令。
+
+## checkGCTrigger
+
+由 `(*mcache).nextFree` 函数返回，当 span 的 `freeIndex` 和 `span.nelems`相同，即`span`已满时，`checkGCTrigger`设置为 `true`，需要检查是否触发GC。
+
+## gcTrigger.test
+
+`gcTrigger{kind: gcTriggerHeap}.test()`
+
+判断 `gcController.heapLive.Load() >= gcController.trigger()`。`trigger`函数主要涉及计算
+
+触发条件还是看 [gc-pacer-design.md](https://github.com/golang/proposal/blob/master/design/44167-gc-pacer-redesign.md) 好一些。
 
 
