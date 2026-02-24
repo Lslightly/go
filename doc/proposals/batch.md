@@ -57,5 +57,45 @@ mp.mallocing = 0
 
 动机案例中提到的模式在Go语言项目中存在，例如：
 
+### 优化模式约束
 
+由于目前采用 `runtime.BatchEnter` 和 `runtime.BatchExit` 两个函数，因此在这个上下文之间，不能有return，退出该上下文的情况，或者至少应该通过 `defer runtime.BatchExit()`的形式保证可以退出batch模式。如果是处在某个for循环内，由于控制流退出这个for循环，即退出上下文，那么从代码变换的角度可能就不好做。
 
+比如
+
+```
+for {
+    BatchEnter()
+    for {
+        break
+        continue
+        return
+    }
+    BatchExit()
+}
+```
+
+如果采用函数调用嵌套defer的方式，就会修改为
+
+```go
+for {
+    c := runtime.Batch(func() {
+        for {
+            return BREAK // break
+            return CONTINUE // continue
+            return RETURN // return
+        }
+    })
+    if c == BREAK {
+        break
+    }
+    if c == CONTINUE {
+        continue
+    }
+    if c == RETURN {
+        return
+    }
+}
+```
+
+会比较复杂。所以需要对for循环做限制
