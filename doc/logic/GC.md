@@ -43,3 +43,29 @@ gcmarkBits用于确定当前对象是否已被扫描。0表示白色，1表示�
 
 `gcController`这个组件是GC步调控制器，这个控制器会决定什么时候触发垃圾收集以及多少mutator assists和后台标记工作要做。
 
+## mcache flush releaseAll
+
+`(*mcache).releaseAll` 会将 `span` 全部归还为 `mcentral`，归还方式为 `(*mcentral).uncacheSpan`，同时还会将 `*mcache` 中的相关参数置零，比如 `tinyAllocs`, `tiny`, `tinyoffset`, `scanAlloc`
+
+mcache flush 会在 `(*mcache).prepareForSweep` 时调用。
+
+## startCycle
+
+清理 `gcController` 的状态。
+
+后台标记协程所占用的P的目标值是所有P数量的25%。即25%的工作用于后台GC标记。
+
+`dedicatedMarkWorkersNeeded`即四舍五入需要的worker数量。
+
+`(*gcControllerState).revise`函数用于调整GC cycle中的assist率
+
+## gcMarkTinyAllocs
+
+将所有p对应的`mcache`中的`tiny`对象
+
+## stopTheWroldWithSema
+
+在停止P方面，首先执行`preemptall`，然后将处于`_Psyscall`的P的状态变为`_Pgcstop`，然后停止idle P，然后等待剩余的P。
+
+`sched.stopwait`用于检测是否所有的P都已暂停。
+

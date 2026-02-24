@@ -17,7 +17,7 @@ func fakepair(idx int8) mallocPairsTy {
 	a := new(int)
 	return mallocPairsTy{
 		span: fakespan(uint16(idx)),
-		x:    unsafe.Pointer(a),
+		x:    uintptr(unsafe.Pointer(a)),
 	}
 }
 

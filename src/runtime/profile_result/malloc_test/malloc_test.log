@@ -1,275 +1,220 @@
 goos: linux
 goarch: arm64
 pkg: runtime
-BenchmarkMalloc8-64                     244160911               25.67 ns/op
-BenchmarkMalloc8-64                     234452665               24.60 ns/op
-BenchmarkMalloc8-64                     235880169               24.77 ns/op
-BenchmarkMalloc8-64                     243532430               23.00 ns/op
-BenchmarkMalloc8-64                     246257629               23.97 ns/op
-BenchmarkMalloc8-64                     246468720               23.29 ns/op
-BenchmarkMalloc8-64                     260386674               22.43 ns/op
-BenchmarkMalloc8-64                     272392044               22.00 ns/op
-BenchmarkMalloc8-64                     272576966               22.01 ns/op
-BenchmarkMalloc8-64                     259314627               22.43 ns/op
-BenchmarkMalloc16-64                    154863774               38.69 ns/op
-BenchmarkMalloc16-64                    154998087               38.52 ns/op
-BenchmarkMalloc16-64                    156038374               38.45 ns/op
-BenchmarkMalloc16-64                    155335065               38.54 ns/op
-BenchmarkMalloc16-64                    155934636               38.51 ns/op
-BenchmarkMalloc16-64                    156265532               38.45 ns/op
-BenchmarkMalloc16-64                    155746740               38.45 ns/op
-BenchmarkMalloc16-64                    153008304               38.46 ns/op
-BenchmarkMalloc16-64                    155625217               38.43 ns/op
-BenchmarkMalloc16-64                    155606516               38.54 ns/op
-BenchmarkMallocTypeInfo8-64             211192184               28.41 ns/op
-BenchmarkMallocTypeInfo8-64             211051764               28.50 ns/op
-BenchmarkMallocTypeInfo8-64             210919136               28.57 ns/op
-BenchmarkMallocTypeInfo8-64             210345278               28.57 ns/op
-BenchmarkMallocTypeInfo8-64             210361850               28.58 ns/op
-BenchmarkMallocTypeInfo8-64             205747424               29.27 ns/op
-BenchmarkMallocTypeInfo8-64             210417936               28.54 ns/op
-BenchmarkMallocTypeInfo8-64             210979512               28.47 ns/op
-BenchmarkMallocTypeInfo8-64             210754728               28.46 ns/op
-BenchmarkMallocTypeInfo8-64             210480673               28.47 ns/op
-BenchmarkMallocTypeInfo16-64            157088786               38.16 ns/op
-BenchmarkMallocTypeInfo16-64            157551739               38.22 ns/op
-BenchmarkMallocTypeInfo16-64            157053322               38.27 ns/op
-BenchmarkMallocTypeInfo16-64            156889520               38.19 ns/op
-BenchmarkMallocTypeInfo16-64            156506154               38.08 ns/op
-BenchmarkMallocTypeInfo16-64            156933420               38.14 ns/op
-BenchmarkMallocTypeInfo16-64            157089468               38.20 ns/op
-BenchmarkMallocTypeInfo16-64            157168831               38.05 ns/op
-BenchmarkMallocTypeInfo16-64            157335630               38.21 ns/op
-BenchmarkMallocTypeInfo16-64            157470015               38.03 ns/op
-BenchmarkMallocLargeStruct-64           15099393               399.0 ns/op
-BenchmarkMallocLargeStruct-64           14906817               400.2 ns/op
-BenchmarkMallocLargeStruct-64           15070716               398.8 ns/op
-BenchmarkMallocLargeStruct-64           15028854               401.2 ns/op
-BenchmarkMallocLargeStruct-64           14951012               401.6 ns/op
-BenchmarkMallocLargeStruct-64           14182686               401.7 ns/op
-BenchmarkMallocLargeStruct-64           14851603               400.6 ns/op
-BenchmarkMallocLargeStruct-64           15050030               400.5 ns/op
-BenchmarkMallocLargeStruct-64           14807826               400.1 ns/op
-BenchmarkMallocLargeStruct-64           14926144               400.1 ns/op
+BenchmarkMalloc8
+BenchmarkMalloc8-64              	163292559	        21.96 ns/op
+BenchmarkMalloc8-64              	162778465	        22.05 ns/op
+BenchmarkMalloc8-64              	162882482	        22.02 ns/op
+BenchmarkMalloc8-64              	163152129	        22.05 ns/op
+BenchmarkMalloc8-64              	163020738	        22.11 ns/op
+BenchmarkMalloc8-64              	162963313	        22.15 ns/op
+BenchmarkMalloc8-64              	163887590	        22.13 ns/op
+BenchmarkMalloc8-64              	162199215	        22.14 ns/op
+BenchmarkMalloc8-64              	162208772	        22.17 ns/op
+BenchmarkMalloc8-64              	162121400	        22.11 ns/op
+BenchmarkMalloc16
+BenchmarkMalloc16-64             	91539068	        38.97 ns/op
+BenchmarkMalloc16-64             	95334159	        38.95 ns/op
+BenchmarkMalloc16-64             	89861388	        38.77 ns/op
+BenchmarkMalloc16-64             	91488378	        38.67 ns/op
+BenchmarkMalloc16-64             	90140979	        38.73 ns/op
+BenchmarkMalloc16-64             	91422022	        38.64 ns/op
+BenchmarkMalloc16-64             	90025184	        38.84 ns/op
+BenchmarkMalloc16-64             	89802165	        38.82 ns/op
+BenchmarkMalloc16-64             	90157143	        38.80 ns/op
+BenchmarkMalloc16-64             	91764235	        38.79 ns/op
+BenchmarkMallocTypeInfo8
+BenchmarkMallocTypeInfo8-64      	125859900	        28.55 ns/op
+BenchmarkMallocTypeInfo8-64      	126439425	        28.51 ns/op
+BenchmarkMallocTypeInfo8-64      	126051859	        28.66 ns/op
+BenchmarkMallocTypeInfo8-64      	126333525	        28.51 ns/op
+BenchmarkMallocTypeInfo8-64      	125745901	        28.47 ns/op
+BenchmarkMallocTypeInfo8-64      	126513950	        28.57 ns/op
+BenchmarkMallocTypeInfo8-64      	125941252	        28.47 ns/op
+BenchmarkMallocTypeInfo8-64      	126487876	        28.36 ns/op
+BenchmarkMallocTypeInfo8-64      	126557295	        28.35 ns/op
+BenchmarkMallocTypeInfo8-64      	126019233	        28.43 ns/op
+BenchmarkMallocTypeInfo16
+BenchmarkMallocTypeInfo16-64     	91736128	        37.99 ns/op
+BenchmarkMallocTypeInfo16-64     	97584432	        38.12 ns/op
+BenchmarkMallocTypeInfo16-64     	93805159	        38.20 ns/op
+BenchmarkMallocTypeInfo16-64     	97732470	        38.16 ns/op
+BenchmarkMallocTypeInfo16-64     	93666212	        38.15 ns/op
+BenchmarkMallocTypeInfo16-64     	93362254	        38.33 ns/op
+BenchmarkMallocTypeInfo16-64     	95050432	        38.18 ns/op
+BenchmarkMallocTypeInfo16-64     	94333986	        38.49 ns/op
+BenchmarkMallocTypeInfo16-64     	93977700	        38.20 ns/op
+BenchmarkMallocTypeInfo16-64     	94940288	        38.30 ns/op
+BenchmarkMallocLargeStruct
+    malloc_test.go:408: LargeStruct Run Cnt 1
+    malloc_test.go:408: LargeStruct Run Cnt 101
+    malloc_test.go:408: LargeStruct Run Cnt 10101
+    malloc_test.go:408: LargeStruct Run Cnt 1010101
+    malloc_test.go:408: LargeStruct Run Cnt 9649744
+BenchmarkMallocLargeStruct-64    	 8639643	       417.3 ns/op	         1.000 /cgo/go-to-c-calls:calls	         1.408 /cpu/classes/gc/mark/assist:cpu-seconds	        30.57 /cpu/classes/gc/mark/dedicated:cpu-seconds	         0.2973 /cpu/classes/gc/mark/idle:cpu-seconds	       182.4 /cpu/classes/gc/pause:cpu-seconds	       214.7 /cpu/classes/gc/total:cpu-seconds	     12277 /cpu/classes/idle:cpu-seconds	         0.0000007 /cpu/classes/scavenge/assist:cpu-seconds	         0.6402 /cpu/classes/scavenge/background:cpu-seconds	         0.6402 /cpu/classes/scavenge/total:cpu-seconds	     12776 /cpu/classes/total:cpu-seconds	       283.6 /cpu/classes/user:cpu-seconds	     29219 /gc/cycles/automatic:gc-cycles	       226.0 /gc/cycles/forced:gc-cycles	     29445 /gc/cycles/total:gc-cycles	       100.0 /gc/gogc:percent	9223372036854775808 /gc/gomemlimit:bytes	         9.000 /gc/heap/allocs-by-size:bytes	77983522992 /gc/heap/allocs:bytes	5479006615 /gc/heap/allocs:objects	         9.000 /gc/heap/frees-by-size:bytes	77977804192 /gc/heap/frees:bytes	5479001569 /gc/heap/frees:objects	   6472274 /gc/heap/goal:bytes	   3063712 /gc/heap/live:bytes	      5046 /gc/heap/objects:objects	1319293976 /gc/heap/tiny/allocs:objects	     29446 /gc/limiter/last-enabled:gc-cycle	         0.0000655 /gc/pauses:seconds	    322546 /gc/scan/globals:bytes	   3572832 /gc/scan/heap:bytes	     22304 /gc/scan/stack:bytes	   3917682 /gc/scan/total:bytes	      2048 /gc/stack/starting-size:bytes	   1073152 /memory/classes/heap/free:bytes	   5718800 /memory/classes/heap/objects:bytes	   7741440 /memory/classes/heap/released:bytes	   1277952 /memory/classes/heap/stacks:bytes	    867568 /memory/classes/heap/unused:bytes	      1208 /memory/classes/metadata/mcache/free:bytes	     77312 /memory/classes/metadata/mcache/inuse:bytes	     89280 /memory/classes/metadata/mspan/free:bytes	    384000 /memory/classes/metadata/mspan/inuse:bytes	   2673248 /memory/classes/metadata/other:bytes	   3310902 /memory/classes/other:bytes	   1448442 /memory/classes/profiling/buckets:bytes	  24663304 /memory/classes/total:bytes	        64.00 /sched/gomaxprocs:threads	         3.000 /sched/goroutines:goroutines	         0.0000001 /sched/latencies:seconds	         0.0000328 /sched/pauses/stopping/gc:seconds	         0.0000328 /sched/pauses/stopping/other:seconds	         0.0000655 /sched/pauses/total/gc:seconds	         0.0000819 /sched/pauses/total/other:seconds	         7.167 /sync/mutex/wait/total:seconds
+    malloc_test.go:408: LargeStruct Run Cnt 9649745
+    malloc_test.go:408: LargeStruct Run Cnt 9649845
+    malloc_test.go:408: LargeStruct Run Cnt 9659845
+    malloc_test.go:408: LargeStruct Run Cnt 10659845
+    malloc_test.go:408: LargeStruct Run Cnt 19187029
+BenchmarkMallocLargeStruct-64    	 8527184	       415.4 ns/op	         1.000 /cgo/go-to-c-calls:calls	         1.408 /cpu/classes/gc/mark/assist:cpu-seconds	        34.24 /cpu/classes/gc/mark/dedicated:cpu-seconds	         0.3537 /cpu/classes/gc/mark/idle:cpu-seconds	       200.1 /cpu/classes/gc/pause:cpu-seconds	       236.1 /cpu/classes/gc/total:cpu-seconds	     12498 /cpu/classes/idle:cpu-seconds	         0.0000007 /cpu/classes/scavenge/assist:cpu-seconds	         0.8574 /cpu/classes/scavenge/background:cpu-seconds	         0.8574 /cpu/classes/scavenge/total:cpu-seconds	     13031 /cpu/classes/total:cpu-seconds	       295.9 /cpu/classes/user:cpu-seconds	     31924 /gc/cycles/automatic:gc-cycles	       231.0 /gc/cycles/forced:gc-cycles	     32155 /gc/cycles/total:gc-cycles	       100.0 /gc/gogc:percent	9223372036854775808 /gc/gomemlimit:bytes	         9.000 /gc/heap/allocs-by-size:bytes	86529327096 /gc/heap/allocs:bytes	5488550644 /gc/heap/allocs:objects	         9.000 /gc/heap/frees-by-size:bytes	86524865696 /gc/heap/frees:bytes	5488547021 /gc/heap/frees:objects	   6478946 /gc/heap/goal:bytes	   3066968 /gc/heap/live:bytes	      3623 /gc/heap/objects:objects	1319294010 /gc/heap/tiny/allocs:objects	     32155 /gc/limiter/last-enabled:gc-cycle	         0.0000655 /gc/pauses:seconds	    322546 /gc/scan/globals:bytes	   2599128 /gc/scan/heap:bytes	     22464 /gc/scan/stack:bytes	   2944138 /gc/scan/total:bytes	      2048 /gc/stack/starting-size:bytes	   2850816 /memory/classes/heap/free:bytes	   4461400 /memory/classes/heap/objects:bytes	   7340032 /memory/classes/heap/released:bytes	   1277952 /memory/classes/heap/stacks:bytes	    847016 /memory/classes/heap/unused:bytes	      1208 /memory/classes/metadata/mcache/free:bytes	     77312 /memory/classes/metadata/mcache/inuse:bytes	    171040 /memory/classes/metadata/mspan/free:bytes	    302240 /memory/classes/metadata/mspan/inuse:bytes	   2583136 /memory/classes/metadata/other:bytes	   3302494 /memory/classes/other:bytes	   1448658 /memory/classes/profiling/buckets:bytes	  24663304 /memory/classes/total:bytes	        64.00 /sched/gomaxprocs:threads	         3.000 /sched/goroutines:goroutines	         0.0000001 /sched/latencies:seconds	         0.0000328 /sched/pauses/stopping/gc:seconds	         0.0000328 /sched/pauses/stopping/other:seconds	         0.0000655 /sched/pauses/total/gc:seconds	         0.0000819 /sched/pauses/total/other:seconds	         8.034 /sync/mutex/wait/total:seconds
+    malloc_test.go:408: LargeStruct Run Cnt 19187030
+    malloc_test.go:408: LargeStruct Run Cnt 19187130
+    malloc_test.go:408: LargeStruct Run Cnt 19197130
+    malloc_test.go:408: LargeStruct Run Cnt 20197130
+    malloc_test.go:408: LargeStruct Run Cnt 28868484
+BenchmarkMallocLargeStruct-64    	 8671354	       422.3 ns/op	         1.000 /cgo/go-to-c-calls:calls	         1.408 /cpu/classes/gc/mark/assist:cpu-seconds	        38.03 /cpu/classes/gc/mark/dedicated:cpu-seconds	         0.4123 /cpu/classes/gc/mark/idle:cpu-seconds	       217.8 /cpu/classes/gc/pause:cpu-seconds	       257.7 /cpu/classes/gc/total:cpu-seconds	     12725 /cpu/classes/idle:cpu-seconds	         0.0000007 /cpu/classes/scavenge/assist:cpu-seconds	         1.089 /cpu/classes/scavenge/background:cpu-seconds	         1.089 /cpu/classes/scavenge/total:cpu-seconds	     13292 /cpu/classes/total:cpu-seconds	       308.3 /cpu/classes/user:cpu-seconds	     34645 /gc/cycles/automatic:gc-cycles	       236.0 /gc/cycles/forced:gc-cycles	     34881 /gc/cycles/total:gc-cycles	       100.0 /gc/gogc:percent	9223372036854775808 /gc/gomemlimit:bytes	         9.000 /gc/heap/allocs-by-size:bytes	95204301584 /gc/heap/allocs:bytes	5498238806 /gc/heap/allocs:objects	         9.000 /gc/heap/frees-by-size:bytes	95199398744 /gc/heap/frees:bytes	5498234546 /gc/heap/frees:objects	   6259090 /gc/heap/goal:bytes	   2957112 /gc/heap/live:bytes	      4260 /gc/heap/objects:objects	1319294044 /gc/heap/tiny/allocs:objects	     34881 /gc/limiter/last-enabled:gc-cycle	         0.0000655 /gc/pauses:seconds	    322546 /gc/scan/globals:bytes	   3171184 /gc/scan/heap:bytes	     22320 /gc/scan/stack:bytes	   3516050 /gc/scan/total:bytes	      2048 /gc/stack/starting-size:bytes	   2392064 /memory/classes/heap/free:bytes	   4902840 /memory/classes/heap/objects:bytes	   7364608 /memory/classes/heap/released:bytes	   1277952 /memory/classes/heap/stacks:bytes	    839752 /memory/classes/heap/unused:bytes	      1208 /memory/classes/metadata/mcache/free:bytes	     77312 /memory/classes/metadata/mcache/inuse:bytes	     78880 /memory/classes/metadata/mspan/free:bytes	    394400 /memory/classes/metadata/mspan/inuse:bytes	   2583136 /memory/classes/metadata/other:bytes	   3302494 /memory/classes/other:bytes	   1448658 /memory/classes/profiling/buckets:bytes	  24663304 /memory/classes/total:bytes	        64.00 /sched/gomaxprocs:threads	         3.000 /sched/goroutines:goroutines	         0.0000001 /sched/latencies:seconds	         0.0000328 /sched/pauses/stopping/gc:seconds	         0.0000328 /sched/pauses/stopping/other:seconds	         0.0000655 /sched/pauses/total/gc:seconds	         0.0000819 /sched/pauses/total/other:seconds	         8.911 /sync/mutex/wait/total:seconds
+    malloc_test.go:408: LargeStruct Run Cnt 28868485
+    malloc_test.go:408: LargeStruct Run Cnt 28868585
+    malloc_test.go:408: LargeStruct Run Cnt 28878585
+    malloc_test.go:408: LargeStruct Run Cnt 29878585
+    malloc_test.go:408: LargeStruct Run Cnt 38602174
+BenchmarkMallocLargeStruct-64    	 8723589	       419.1 ns/op	         1.000 /cgo/go-to-c-calls:calls	         1.409 /cpu/classes/gc/mark/assist:cpu-seconds	        41.94 /cpu/classes/gc/mark/dedicated:cpu-seconds	         0.4788 /cpu/classes/gc/mark/idle:cpu-seconds	       235.4 /cpu/classes/gc/pause:cpu-seconds	       279.3 /cpu/classes/gc/total:cpu-seconds	     12952 /cpu/classes/idle:cpu-seconds	         0.0000007 /cpu/classes/scavenge/assist:cpu-seconds	         1.320 /cpu/classes/scavenge/background:cpu-seconds	         1.320 /cpu/classes/scavenge/total:cpu-seconds	     13553 /cpu/classes/total:cpu-seconds	       320.7 /cpu/classes/user:cpu-seconds	     37344 /gc/cycles/automatic:gc-cycles	       241.0 /gc/cycles/forced:gc-cycles	     37585 /gc/cycles/total:gc-cycles	       100.0 /gc/gogc:percent	9223372036854775808 /gc/gomemlimit:bytes	         9.000 /gc/heap/allocs-by-size:bytes	103926064968 /gc/heap/allocs:bytes	5507979029 /gc/heap/allocs:objects	         9.000 /gc/heap/frees-by-size:bytes	103921556368 /gc/heap/frees:bytes	5507975354 /gc/heap/frees:objects	   6493842 /gc/heap/goal:bytes	   3074488 /gc/heap/live:bytes	      3675 /gc/heap/objects:objects	1319294078 /gc/heap/tiny/allocs:objects	     37585 /gc/limiter/last-enabled:gc-cycle	         0.0000655 /gc/pauses:seconds	    322546 /gc/scan/globals:bytes	   2664104 /gc/scan/heap:bytes	     22320 /gc/scan/stack:bytes	   3008970 /gc/scan/total:bytes	      2048 /gc/stack/starting-size:bytes	   2834432 /memory/classes/heap/free:bytes	   4508600 /memory/classes/heap/objects:bytes	   7307264 /memory/classes/heap/released:bytes	   1277952 /memory/classes/heap/stacks:bytes	    848968 /memory/classes/heap/unused:bytes	      1208 /memory/classes/metadata/mcache/free:bytes	     77312 /memory/classes/metadata/mcache/inuse:bytes	    106720 /memory/classes/metadata/mspan/free:bytes	    366560 /memory/classes/metadata/mspan/inuse:bytes	   2583136 /memory/classes/metadata/other:bytes	   3302494 /memory/classes/other:bytes	   1448658 /memory/classes/profiling/buckets:bytes	  24663304 /memory/classes/total:bytes	        64.00 /sched/gomaxprocs:threads	         3.000 /sched/goroutines:goroutines	         0.0000001 /sched/latencies:seconds	         0.0000328 /sched/pauses/stopping/gc:seconds	         0.0000328 /sched/pauses/stopping/other:seconds	         0.0000655 /sched/pauses/total/gc:seconds	         0.0000819 /sched/pauses/total/other:seconds	         9.813 /sync/mutex/wait/total:seconds
+    malloc_test.go:408: LargeStruct Run Cnt 38602175
+    malloc_test.go:408: LargeStruct Run Cnt 38602275
+    malloc_test.go:408: LargeStruct Run Cnt 38612275
+    malloc_test.go:408: LargeStruct Run Cnt 39612275
+    malloc_test.go:408: LargeStruct Run Cnt 48217331
+BenchmarkMallocLargeStruct-64    	 8605056	       415.4 ns/op	         1.000 /cgo/go-to-c-calls:calls	         1.409 /cpu/classes/gc/mark/assist:cpu-seconds	        45.69 /cpu/classes/gc/mark/dedicated:cpu-seconds	         0.5359 /cpu/classes/gc/mark/idle:cpu-seconds	       252.9 /cpu/classes/gc/pause:cpu-seconds	       300.5 /cpu/classes/gc/total:cpu-seconds	     13175 /cpu/classes/idle:cpu-seconds	         0.0000007 /cpu/classes/scavenge/assist:cpu-seconds	         1.550 /cpu/classes/scavenge/background:cpu-seconds	         1.550 /cpu/classes/scavenge/total:cpu-seconds	     13810 /cpu/classes/total:cpu-seconds	       332.8 /cpu/classes/user:cpu-seconds	     40004 /gc/cycles/automatic:gc-cycles	       246.0 /gc/cycles/forced:gc-cycles	     40250 /gc/cycles/total:gc-cycles	       100.0 /gc/gogc:percent	9223372036854775808 /gc/gomemlimit:bytes	         9.000 /gc/heap/allocs-by-size:bytes	112541642288 /gc/heap/allocs:bytes	5517600850 /gc/heap/allocs:objects	         9.000 /gc/heap/frees-by-size:bytes	112535645272 /gc/heap/frees:bytes	5517595581 /gc/heap/frees:objects	   6612482 /gc/heap/goal:bytes	   3133848 /gc/heap/live:bytes	      5269 /gc/heap/objects:objects	1319294112 /gc/heap/tiny/allocs:objects	     40250 /gc/limiter/last-enabled:gc-cycle	         0.0000655 /gc/pauses:seconds	    322546 /gc/scan/globals:bytes	   1665280 /gc/scan/heap:bytes	     22240 /gc/scan/stack:bytes	   2010066 /gc/scan/total:bytes	      2048 /gc/stack/starting-size:bytes	   1425408 /memory/classes/heap/free:bytes	   5997016 /memory/classes/heap/objects:bytes	   7110656 /memory/classes/heap/released:bytes	   1277952 /memory/classes/heap/stacks:bytes	    867880 /memory/classes/heap/unused:bytes	      1208 /memory/classes/metadata/mcache/free:bytes	     77312 /memory/classes/metadata/mcache/inuse:bytes	     98240 /memory/classes/metadata/mspan/free:bytes	    375040 /memory/classes/metadata/mspan/inuse:bytes	   2681440 /memory/classes/metadata/other:bytes	   3302286 /memory/classes/other:bytes	   1448866 /memory/classes/profiling/buckets:bytes	  24663304 /memory/classes/total:bytes	        64.00 /sched/gomaxprocs:threads	         3.000 /sched/goroutines:goroutines	         0.0000001 /sched/latencies:seconds	         0.0000328 /sched/pauses/stopping/gc:seconds	         0.0000328 /sched/pauses/stopping/other:seconds	         0.0000655 /sched/pauses/total/gc:seconds	         0.0000819 /sched/pauses/total/other:seconds	        10.69 /sync/mutex/wait/total:seconds
+    malloc_test.go:408: LargeStruct Run Cnt 48217332
+    malloc_test.go:408: LargeStruct Run Cnt 48217432
+    malloc_test.go:408: LargeStruct Run Cnt 48227432
+    malloc_test.go:408: LargeStruct Run Cnt 49227432
+    malloc_test.go:408: LargeStruct Run Cnt 57814210
+BenchmarkMallocLargeStruct-64    	 8586778	       421.4 ns/op	         1.000 /cgo/go-to-c-calls:calls	         1.409 /cpu/classes/gc/mark/assist:cpu-seconds	        49.31 /cpu/classes/gc/mark/dedicated:cpu-seconds	         0.5878 /cpu/classes/gc/mark/idle:cpu-seconds	       270.1 /cpu/classes/gc/pause:cpu-seconds	       321.4 /cpu/classes/gc/total:cpu-seconds	     13401 /cpu/classes/idle:cpu-seconds	         0.0000007 /cpu/classes/scavenge/assist:cpu-seconds	         1.776 /cpu/classes/scavenge/background:cpu-seconds	         1.776 /cpu/classes/scavenge/total:cpu-seconds	     14069 /cpu/classes/total:cpu-seconds	       345.0 /cpu/classes/user:cpu-seconds	     42642 /gc/cycles/automatic:gc-cycles	       251.0 /gc/cycles/forced:gc-cycles	     42893 /gc/cycles/total:gc-cycles	       100.0 /gc/gogc:percent	9223372036854775808 /gc/gomemlimit:bytes	         9.000 /gc/heap/allocs-by-size:bytes	121140831560 /gc/heap/allocs:bytes	5527204344 /gc/heap/allocs:objects	         9.000 /gc/heap/frees-by-size:bytes	121134440192 /gc/heap/frees:bytes	5527198701 /gc/heap/frees:objects	   6598050 /gc/heap/goal:bytes	   3126584 /gc/heap/live:bytes	      5643 /gc/heap/objects:objects	1319294146 /gc/heap/tiny/allocs:objects	     42894 /gc/limiter/last-enabled:gc-cycle	         0.0000655 /gc/pauses:seconds	    322546 /gc/scan/globals:bytes	   4069224 /gc/scan/heap:bytes	     22336 /gc/scan/stack:bytes	   4414106 /gc/scan/total:bytes	      2048 /gc/stack/starting-size:bytes	    647168 /memory/classes/heap/free:bytes	   6391368 /memory/classes/heap/objects:bytes	   7479296 /memory/classes/heap/released:bytes	   1277952 /memory/classes/heap/stacks:bytes	    883128 /memory/classes/heap/unused:bytes	      1208 /memory/classes/metadata/mcache/free:bytes	     77312 /memory/classes/metadata/mcache/inuse:bytes	    105120 /memory/classes/metadata/mspan/free:bytes	    368160 /memory/classes/metadata/mspan/inuse:bytes	   2681440 /memory/classes/metadata/other:bytes	   3302286 /memory/classes/other:bytes	   1448866 /memory/classes/profiling/buckets:bytes	  24663304 /memory/classes/total:bytes	        64.00 /sched/gomaxprocs:threads	         3.000 /sched/goroutines:goroutines	         0.0000001 /sched/latencies:seconds	         0.0000328 /sched/pauses/stopping/gc:seconds	         0.0000328 /sched/pauses/stopping/other:seconds	         0.0000655 /sched/pauses/total/gc:seconds	         0.0000819 /sched/pauses/total/other:seconds	        11.57 /sync/mutex/wait/total:seconds
+    malloc_test.go:408: LargeStruct Run Cnt 57814211
+    malloc_test.go:408: LargeStruct Run Cnt 57814311
+    malloc_test.go:408: LargeStruct Run Cnt 57824311
+    malloc_test.go:408: LargeStruct Run Cnt 58824311
+    malloc_test.go:408: LargeStruct Run Cnt 67528035
+BenchmarkMallocLargeStruct-64    	 8703724	       417.6 ns/op	         1.000 /cgo/go-to-c-calls:calls	         1.409 /cpu/classes/gc/mark/assist:cpu-seconds	        52.99 /cpu/classes/gc/mark/dedicated:cpu-seconds	         0.6448 /cpu/classes/gc/mark/idle:cpu-seconds	       287.6 /cpu/classes/gc/pause:cpu-seconds	       342.6 /cpu/classes/gc/total:cpu-seconds	     13627 /cpu/classes/idle:cpu-seconds	         0.0000007 /cpu/classes/scavenge/assist:cpu-seconds	         2.009 /cpu/classes/scavenge/background:cpu-seconds	         2.009 /cpu/classes/scavenge/total:cpu-seconds	     14329 /cpu/classes/total:cpu-seconds	       357.2 /cpu/classes/user:cpu-seconds	     45292 /gc/cycles/automatic:gc-cycles	       256.0 /gc/cycles/forced:gc-cycles	     45548 /gc/cycles/total:gc-cycles	       100.0 /gc/gogc:percent	9223372036854775808 /gc/gomemlimit:bytes	         9.000 /gc/heap/allocs-by-size:bytes	129844803576 /gc/heap/allocs:bytes	5536924790 /gc/heap/allocs:objects	         9.000 /gc/heap/frees-by-size:bytes	129838178656 /gc/heap/frees:bytes	5536918801 /gc/heap/frees:objects	   7192578 /gc/heap/goal:bytes	   3423896 /gc/heap/live:bytes	      5989 /gc/heap/objects:objects	1319294180 /gc/heap/tiny/allocs:objects	     45548 /gc/limiter/last-enabled:gc-cycle	         0.0000655 /gc/pauses:seconds	    322546 /gc/scan/globals:bytes	   1503360 /gc/scan/heap:bytes	     22240 /gc/scan/stack:bytes	   1848146 /gc/scan/total:bytes	      2048 /gc/stack/starting-size:bytes	   1409024 /memory/classes/heap/free:bytes	   6624920 /memory/classes/heap/objects:bytes	   6463488 /memory/classes/heap/released:bytes	   1277952 /memory/classes/heap/stacks:bytes	    870760 /memory/classes/heap/unused:bytes	      1208 /memory/classes/metadata/mcache/free:bytes	     77312 /memory/classes/metadata/mcache/inuse:bytes	     86880 /memory/classes/metadata/mspan/free:bytes	    386400 /memory/classes/metadata/mspan/inuse:bytes	   2714208 /memory/classes/metadata/other:bytes	   3302286 /memory/classes/other:bytes	   1448866 /memory/classes/profiling/buckets:bytes	  24663304 /memory/classes/total:bytes	        64.00 /sched/gomaxprocs:threads	         3.000 /sched/goroutines:goroutines	         0.0000001 /sched/latencies:seconds	         0.0000328 /sched/pauses/stopping/gc:seconds	         0.0000328 /sched/pauses/stopping/other:seconds	         0.0000655 /sched/pauses/total/gc:seconds	         0.0000819 /sched/pauses/total/other:seconds	        12.41 /sync/mutex/wait/total:seconds
+    malloc_test.go:408: LargeStruct Run Cnt 67528036
+    malloc_test.go:408: LargeStruct Run Cnt 67528136
+    malloc_test.go:408: LargeStruct Run Cnt 67538136
+    malloc_test.go:408: LargeStruct Run Cnt 68538136
+    malloc_test.go:408: LargeStruct Run Cnt 77111412
+BenchmarkMallocLargeStruct-64    	 8573276	       416.0 ns/op	         1.000 /cgo/go-to-c-calls:calls	         1.410 /cpu/classes/gc/mark/assist:cpu-seconds	        56.69 /cpu/classes/gc/mark/dedicated:cpu-seconds	         0.7030 /cpu/classes/gc/mark/idle:cpu-seconds	       305.1 /cpu/classes/gc/pause:cpu-seconds	       363.9 /cpu/classes/gc/total:cpu-seconds	     13849 /cpu/classes/idle:cpu-seconds	         0.0000007 /cpu/classes/scavenge/assist:cpu-seconds	         2.247 /cpu/classes/scavenge/background:cpu-seconds	         2.247 /cpu/classes/scavenge/total:cpu-seconds	     14585 /cpu/classes/total:cpu-seconds	       369.1 /cpu/classes/user:cpu-seconds	     47883 /gc/cycles/automatic:gc-cycles	       261.0 /gc/cycles/forced:gc-cycles	     48144 /gc/cycles/total:gc-cycles	       100.0 /gc/gogc:percent	9223372036854775808 /gc/gomemlimit:bytes	         9.000 /gc/heap/allocs-by-size:bytes	138431926408 /gc/heap/allocs:bytes	5546514572 /gc/heap/allocs:objects	         9.000 /gc/heap/frees-by-size:bytes	138426267248 /gc/heap/frees:bytes	5546509695 /gc/heap/frees:objects	   6820210 /gc/heap/goal:bytes	   3237656 /gc/heap/live:bytes	      4877 /gc/heap/objects:objects	1319294214 /gc/heap/tiny/allocs:objects	     48144 /gc/limiter/last-enabled:gc-cycle	         0.0000655 /gc/pauses:seconds	    322546 /gc/scan/globals:bytes	   1783584 /gc/scan/heap:bytes	     22352 /gc/scan/stack:bytes	   2128482 /gc/scan/total:bytes	      2048 /gc/stack/starting-size:bytes	   2088960 /memory/classes/heap/free:bytes	   5659160 /memory/classes/heap/objects:bytes	   6807552 /memory/classes/heap/released:bytes	   1277952 /memory/classes/heap/stacks:bytes	    845288 /memory/classes/heap/unused:bytes	      1208 /memory/classes/metadata/mcache/free:bytes	     77312 /memory/classes/metadata/mcache/inuse:bytes	     86880 /memory/classes/metadata/mspan/free:bytes	    386400 /memory/classes/metadata/mspan/inuse:bytes	   2681440 /memory/classes/metadata/other:bytes	   3302286 /memory/classes/other:bytes	   1448866 /memory/classes/profiling/buckets:bytes	  24663304 /memory/classes/total:bytes	        64.00 /sched/gomaxprocs:threads	         3.000 /sched/goroutines:goroutines	         0.0000001 /sched/latencies:seconds	         0.0000328 /sched/pauses/stopping/gc:seconds	         0.0000328 /sched/pauses/stopping/other:seconds	         0.0000655 /sched/pauses/total/gc:seconds	         0.0000819 /sched/pauses/total/other:seconds	        13.24 /sync/mutex/wait/total:seconds
+    malloc_test.go:408: LargeStruct Run Cnt 77111413
+    malloc_test.go:408: LargeStruct Run Cnt 77111513
+    malloc_test.go:408: LargeStruct Run Cnt 77121513
+    malloc_test.go:408: LargeStruct Run Cnt 78121513
+    malloc_test.go:408: LargeStruct Run Cnt 86752439
+BenchmarkMallocLargeStruct-64    	 8630926	       423.6 ns/op	         1.000 /cgo/go-to-c-calls:calls	         1.410 /cpu/classes/gc/mark/assist:cpu-seconds	        60.37 /cpu/classes/gc/mark/dedicated:cpu-seconds	         0.7567 /cpu/classes/gc/mark/idle:cpu-seconds	       322.3 /cpu/classes/gc/pause:cpu-seconds	       384.8 /cpu/classes/gc/total:cpu-seconds	     14078 /cpu/classes/idle:cpu-seconds	         0.0000007 /cpu/classes/scavenge/assist:cpu-seconds	         2.480 /cpu/classes/scavenge/background:cpu-seconds	         2.480 /cpu/classes/scavenge/total:cpu-seconds	     14846 /cpu/classes/total:cpu-seconds	       381.1 /cpu/classes/user:cpu-seconds	     50462 /gc/cycles/automatic:gc-cycles	       266.0 /gc/cycles/forced:gc-cycles	     50728 /gc/cycles/total:gc-cycles	       100.0 /gc/gogc:percent	9223372036854775808 /gc/gomemlimit:bytes	         9.000 /gc/heap/allocs-by-size:bytes	147070674296 /gc/heap/allocs:bytes	5556161933 /gc/heap/allocs:objects	         9.000 /gc/heap/frees-by-size:bytes	147064967712 /gc/heap/frees:bytes	5556156994 /gc/heap/frees:objects	   7216274 /gc/heap/goal:bytes	   3435608 /gc/heap/live:bytes	      4939 /gc/heap/objects:objects	1319294248 /gc/heap/tiny/allocs:objects	     50728 /gc/limiter/last-enabled:gc-cycle	         0.0000655 /gc/pauses:seconds	    322546 /gc/scan/globals:bytes	   1320832 /gc/scan/heap:bytes	     22512 /gc/scan/stack:bytes	   1665890 /gc/scan/total:bytes	      2048 /gc/stack/starting-size:bytes	   1712128 /memory/classes/heap/free:bytes	   5706584 /memory/classes/heap/objects:bytes	   7127040 /memory/classes/heap/released:bytes	   1277952 /memory/classes/heap/stacks:bytes	    822440 /memory/classes/heap/unused:bytes	      1208 /memory/classes/metadata/mcache/free:bytes	     77312 /memory/classes/metadata/mcache/inuse:bytes	     86560 /memory/classes/metadata/mspan/free:bytes	    386720 /memory/classes/metadata/mspan/inuse:bytes	   2714208 /memory/classes/metadata/other:bytes	   3302286 /memory/classes/other:bytes	   1448866 /memory/classes/profiling/buckets:bytes	  24663304 /memory/classes/total:bytes	        64.00 /sched/gomaxprocs:threads	         3.000 /sched/goroutines:goroutines	         0.0000001 /sched/latencies:seconds	         0.0000328 /sched/pauses/stopping/gc:seconds	         0.0000328 /sched/pauses/stopping/other:seconds	         0.0000655 /sched/pauses/total/gc:seconds	         0.0000819 /sched/pauses/total/other:seconds	        14.06 /sync/mutex/wait/total:seconds
+    malloc_test.go:408: LargeStruct Run Cnt 86752440
+    malloc_test.go:408: LargeStruct Run Cnt 86752540
+    malloc_test.go:408: LargeStruct Run Cnt 86762540
+    malloc_test.go:408: LargeStruct Run Cnt 87762540
+    malloc_test.go:408: LargeStruct Run Cnt 96424160
+BenchmarkMallocLargeStruct-64    	 8661620	       418.2 ns/op	         1.000 /cgo/go-to-c-calls:calls	         1.410 /cpu/classes/gc/mark/assist:cpu-seconds	        63.94 /cpu/classes/gc/mark/dedicated:cpu-seconds	         0.8103 /cpu/classes/gc/mark/idle:cpu-seconds	       339.5 /cpu/classes/gc/pause:cpu-seconds	       405.7 /cpu/classes/gc/total:cpu-seconds	     14304 /cpu/classes/idle:cpu-seconds	         0.0000007 /cpu/classes/scavenge/assist:cpu-seconds	         2.722 /cpu/classes/scavenge/background:cpu-seconds	         2.722 /cpu/classes/scavenge/total:cpu-seconds	     15105 /cpu/classes/total:cpu-seconds	       393.0 /cpu/classes/user:cpu-seconds	     53020 /gc/cycles/automatic:gc-cycles	       271.0 /gc/cycles/forced:gc-cycles	     53291 /gc/cycles/total:gc-cycles	       100.0 /gc/gogc:percent	9223372036854775808 /gc/gomemlimit:bytes	         9.000 /gc/heap/allocs-by-size:bytes	155736942648 /gc/heap/allocs:bytes	5565839982 /gc/heap/allocs:objects	         9.000 /gc/heap/frees-by-size:bytes	155732871008 /gc/heap/frees:bytes	5565837016 /gc/heap/frees:objects	   6788306 /gc/heap/goal:bytes	   3221720 /gc/heap/live:bytes	      2966 /gc/heap/objects:objects	1319294282 /gc/heap/tiny/allocs:objects	     53291 /gc/limiter/last-enabled:gc-cycle	         0.0000655 /gc/pauses:seconds	    322546 /gc/scan/globals:bytes	   2168768 /gc/scan/heap:bytes	     22320 /gc/scan/stack:bytes	   2513634 /gc/scan/total:bytes	      2048 /gc/stack/starting-size:bytes	   3383296 /memory/classes/heap/free:bytes	   4071640 /memory/classes/heap/objects:bytes	   7151616 /memory/classes/heap/released:bytes	   1277952 /memory/classes/heap/stacks:bytes	    794408 /memory/classes/heap/unused:bytes	      1208 /memory/classes/metadata/mcache/free:bytes	     77312 /memory/classes/metadata/mcache/inuse:bytes	    118080 /memory/classes/metadata/mspan/free:bytes	    355200 /memory/classes/metadata/mspan/inuse:bytes	   2681440 /memory/classes/metadata/other:bytes	   3302286 /memory/classes/other:bytes	   1448866 /memory/classes/profiling/buckets:bytes	  24663304 /memory/classes/total:bytes	        64.00 /sched/gomaxprocs:threads	         3.000 /sched/goroutines:goroutines	         0.0000001 /sched/latencies:seconds	         0.0000328 /sched/pauses/stopping/gc:seconds	         0.0000328 /sched/pauses/stopping/other:seconds	         0.0000655 /sched/pauses/total/gc:seconds	         0.0000819 /sched/pauses/total/other:seconds	        14.84 /sync/mutex/wait/total:seconds
 PASS
-ok      runtime 433.361s
+ok  	runtime	236.176s
 goos: linux
 goarch: arm64
 pkg: runtime
-BenchmarkMalloc8-64                     277671663               21.81 ns/op
-BenchmarkMalloc8-64                     274386517               21.99 ns/op
-BenchmarkMalloc8-64                     274114444               21.83 ns/op
-BenchmarkMalloc8-64                     274487744               21.85 ns/op
-BenchmarkMalloc8-64                     275213019               21.87 ns/op
-BenchmarkMalloc8-64                     273865669               21.85 ns/op
-BenchmarkMalloc8-64                     275008100               21.81 ns/op
-BenchmarkMalloc8-64                     274246872               21.80 ns/op
-BenchmarkMalloc8-64                     274840207               21.84 ns/op
-BenchmarkMalloc8-64                     275488903               21.81 ns/op
-BenchmarkMalloc16-64                    66593146                89.45 ns/op
-BenchmarkMalloc16-64                    66369808                89.49 ns/op
-BenchmarkMalloc16-64                    66446197                89.49 ns/op
-BenchmarkMalloc16-64                    66567444                89.46 ns/op
-BenchmarkMalloc16-64                    66465342                89.49 ns/op
-BenchmarkMalloc16-64                    66652380                89.48 ns/op
-BenchmarkMalloc16-64                    66424218                89.37 ns/op
-BenchmarkMalloc16-64                    66543007                89.38 ns/op
-BenchmarkMalloc16-64                    66512865                89.37 ns/op
-BenchmarkMalloc16-64                    66520136                89.38 ns/op
-BenchmarkMallocTypeInfo8-64             60145045                98.80 ns/op
-BenchmarkMallocTypeInfo8-64             60223742                98.80 ns/op
-BenchmarkMallocTypeInfo8-64             60402516                98.81 ns/op
-BenchmarkMallocTypeInfo8-64             60224256                98.78 ns/op
-BenchmarkMallocTypeInfo8-64             60209438                98.77 ns/op
-BenchmarkMallocTypeInfo8-64             60105694                98.79 ns/op
-BenchmarkMallocTypeInfo8-64             60316292                98.76 ns/op
-BenchmarkMallocTypeInfo8-64             60079899                98.75 ns/op
-BenchmarkMallocTypeInfo8-64             60162336                98.79 ns/op
-BenchmarkMallocTypeInfo8-64             60216423                98.78 ns/op
-BenchmarkMallocTypeInfo16-64            56269558               105.8 ns/op
-BenchmarkMallocTypeInfo16-64            56287173               105.8 ns/op
-BenchmarkMallocTypeInfo16-64            56304530               105.8 ns/op
-BenchmarkMallocTypeInfo16-64            56354092               105.8 ns/op
-BenchmarkMallocTypeInfo16-64            56275807               105.9 ns/op
-BenchmarkMallocTypeInfo16-64            56289565               105.8 ns/op
-BenchmarkMallocTypeInfo16-64            56201118               105.8 ns/op
-BenchmarkMallocTypeInfo16-64            56292396               105.8 ns/op
-BenchmarkMallocTypeInfo16-64            56280188               105.8 ns/op
-BenchmarkMallocTypeInfo16-64            56564806               105.8 ns/op
-BenchmarkMallocLargeStruct-64           13934745               420.9 ns/op
-BenchmarkMallocLargeStruct-64           14249001               419.2 ns/op
-BenchmarkMallocLargeStruct-64           14539784               418.9 ns/op
-BenchmarkMallocLargeStruct-64           14376900               419.9 ns/op
-BenchmarkMallocLargeStruct-64           14344276               420.2 ns/op
-BenchmarkMallocLargeStruct-64           14343504               418.5 ns/op
-BenchmarkMallocLargeStruct-64           14319015               419.4 ns/op
-BenchmarkMallocLargeStruct-64           14291025               416.0 ns/op
-BenchmarkMallocLargeStruct-64           14387247               417.7 ns/op
-BenchmarkMallocLargeStruct-64           14439304               418.1 ns/op
+BenchmarkMalloc8
+BenchmarkMalloc8-64              	165706473	        21.84 ns/op
+BenchmarkMalloc8-64              	164662716	        21.82 ns/op
+BenchmarkMalloc8-64              	164885420	        21.83 ns/op
+BenchmarkMalloc8-64              	164775920	        21.81 ns/op
+BenchmarkMalloc8-64              	164910930	        21.83 ns/op
+BenchmarkMalloc8-64              	165012054	        21.81 ns/op
+BenchmarkMalloc8-64              	164877541	        21.83 ns/op
+BenchmarkMalloc8-64              	164947370	        21.81 ns/op
+BenchmarkMalloc8-64              	164845368	        21.80 ns/op
+BenchmarkMalloc8-64              	165052034	        21.82 ns/op
+BenchmarkMalloc16
+BenchmarkMalloc16-64             	100000000	        33.82 ns/op
+BenchmarkMalloc16-64             	100000000	        33.83 ns/op
+BenchmarkMalloc16-64             	100000000	        33.72 ns/op
+BenchmarkMalloc16-64             	100000000	        33.76 ns/op
+BenchmarkMalloc16-64             	100000000	        33.71 ns/op
+BenchmarkMalloc16-64             	100000000	        33.77 ns/op
+BenchmarkMalloc16-64             	100000000	        33.70 ns/op
+BenchmarkMalloc16-64             	100000000	        33.76 ns/op
+BenchmarkMalloc16-64             	100000000	        33.73 ns/op
+BenchmarkMalloc16-64             	100000000	        33.77 ns/op
+BenchmarkMallocTypeInfo8
+BenchmarkMallocTypeInfo8-64      	100000000	        31.45 ns/op
+BenchmarkMallocTypeInfo8-64      	100000000	        31.44 ns/op
+BenchmarkMallocTypeInfo8-64      	100000000	        31.41 ns/op
+BenchmarkMallocTypeInfo8-64      	100000000	        31.39 ns/op
+BenchmarkMallocTypeInfo8-64      	100000000	        31.36 ns/op
+BenchmarkMallocTypeInfo8-64      	100000000	        31.37 ns/op
+BenchmarkMallocTypeInfo8-64      	100000000	        31.35 ns/op
+BenchmarkMallocTypeInfo8-64      	100000000	        31.37 ns/op
+BenchmarkMallocTypeInfo8-64      	100000000	        31.33 ns/op
+BenchmarkMallocTypeInfo8-64      	100000000	        31.37 ns/op
+BenchmarkMallocTypeInfo16
+BenchmarkMallocTypeInfo16-64     	89615481	        39.68 ns/op
+BenchmarkMallocTypeInfo16-64     	89288104	        39.64 ns/op
+BenchmarkMallocTypeInfo16-64     	90599883	        39.57 ns/op
+BenchmarkMallocTypeInfo16-64     	89528697	        39.57 ns/op
+BenchmarkMallocTypeInfo16-64     	89528920	        39.55 ns/op
+BenchmarkMallocTypeInfo16-64     	90368227	        39.50 ns/op
+BenchmarkMallocTypeInfo16-64     	89613608	        39.57 ns/op
+BenchmarkMallocTypeInfo16-64     	89577440	        39.54 ns/op
+BenchmarkMallocTypeInfo16-64     	90526274	        39.60 ns/op
+BenchmarkMallocTypeInfo16-64     	90234518	        39.60 ns/op
+BenchmarkMallocLargeStruct
+    malloc_batch_test.go:109: LargeStruct Run Cnt 1
+    malloc_batch_test.go:109: LargeStruct Run Cnt 101
+    malloc_batch_test.go:109: LargeStruct Run Cnt 10101
+    malloc_batch_test.go:109: LargeStruct Run Cnt 1010101
+    malloc_batch_test.go:109: LargeStruct Run Cnt 9887591
+BenchmarkMallocLargeStruct-64    	 8877490	       404.9 ns/op	         1.000 /cgo/go-to-c-calls:calls	         1.025 /cpu/classes/gc/mark/assist:cpu-seconds	        29.55 /cpu/classes/gc/mark/dedicated:cpu-seconds	         0.3642 /cpu/classes/gc/mark/idle:cpu-seconds	       174.4 /cpu/classes/gc/pause:cpu-seconds	       205.4 /cpu/classes/gc/total:cpu-seconds	     10051 /cpu/classes/idle:cpu-seconds	         0.0000003 /cpu/classes/scavenge/assist:cpu-seconds	         0.5675 /cpu/classes/scavenge/background:cpu-seconds	         0.5675 /cpu/classes/scavenge/total:cpu-seconds	     10499 /cpu/classes/total:cpu-seconds	       241.7 /cpu/classes/user:cpu-seconds	     25499 /gc/cycles/automatic:gc-cycles	       216.0 /gc/cycles/forced:gc-cycles	     25715 /gc/cycles/total:gc-cycles	       100.0 /gc/gogc:percent	9223372036854775808 /gc/gomemlimit:bytes	         9.000 /gc/heap/allocs-by-size:bytes	68928759632 /gc/heap/allocs:bytes	4269030337 /gc/heap/allocs:objects	         9.000 /gc/heap/frees-by-size:bytes	68923053632 /gc/heap/frees:bytes	4269025298 /gc/heap/frees:objects	   6565986 /gc/heap/goal:bytes	   3110624 /gc/heap/live:bytes	      5039 /gc/heap/objects:objects	1329877049 /gc/heap/tiny/allocs:objects	     25716 /gc/limiter/last-enabled:gc-cycle	         0.0000819 /gc/pauses:seconds	    322354 /gc/scan/globals:bytes	   3583960 /gc/scan/heap:bytes	     22384 /gc/scan/stack:bytes	   3928698 /gc/scan/total:bytes	      2048 /gc/stack/starting-size:bytes	   1245184 /memory/classes/heap/free:bytes	   5706000 /memory/classes/heap/objects:bytes	   7684096 /memory/classes/heap/released:bytes	   1277952 /memory/classes/heap/stacks:bytes	    765680 /memory/classes/heap/unused:bytes	      1208 /memory/classes/metadata/mcache/free:bytes	     77312 /memory/classes/metadata/mcache/inuse:bytes	    171520 /memory/classes/metadata/mspan/free:bytes	    350720 /memory/classes/metadata/mspan/inuse:bytes	   2791984 /memory/classes/metadata/other:bytes	   2749760 /memory/classes/other:bytes	   1448672 /memory/classes/profiling/buckets:bytes	  24270088 /memory/classes/total:bytes	        64.00 /sched/gomaxprocs:threads	         3.000 /sched/goroutines:goroutines	         0.0000001 /sched/latencies:seconds	         0.0000328 /sched/pauses/stopping/gc:seconds	         0.0000328 /sched/pauses/stopping/other:seconds	         0.0000819 /sched/pauses/total/gc:seconds	         0.0000819 /sched/pauses/total/other:seconds	         6.926 /sync/mutex/wait/total:seconds
+    malloc_batch_test.go:109: LargeStruct Run Cnt 9887592
+    malloc_batch_test.go:109: LargeStruct Run Cnt 9887692
+    malloc_batch_test.go:109: LargeStruct Run Cnt 9897692
+    malloc_batch_test.go:109: LargeStruct Run Cnt 10897692
+    malloc_batch_test.go:109: LargeStruct Run Cnt 19799184
+BenchmarkMallocLargeStruct-64    	 8901492	       405.2 ns/op	         1.000 /cgo/go-to-c-calls:calls	         1.025 /cpu/classes/gc/mark/assist:cpu-seconds	        33.63 /cpu/classes/gc/mark/dedicated:cpu-seconds	         0.4275 /cpu/classes/gc/mark/idle:cpu-seconds	       195.3 /cpu/classes/gc/pause:cpu-seconds	       230.4 /cpu/classes/gc/total:cpu-seconds	     10271 /cpu/classes/idle:cpu-seconds	         0.0000003 /cpu/classes/scavenge/assist:cpu-seconds	         0.7959 /cpu/classes/scavenge/background:cpu-seconds	         0.7959 /cpu/classes/scavenge/total:cpu-seconds	     10757 /cpu/classes/total:cpu-seconds	       254.6 /cpu/classes/user:cpu-seconds	     28263 /gc/cycles/automatic:gc-cycles	       221.0 /gc/cycles/forced:gc-cycles	     28484 /gc/cycles/total:gc-cycles	       100.0 /gc/gogc:percent	9223372036854775808 /gc/gomemlimit:bytes	         9.000 /gc/heap/allocs-by-size:bytes	77809917608 /gc/heap/allocs:bytes	4278948314 /gc/heap/allocs:objects	         9.000 /gc/heap/frees-by-size:bytes	77805337712 /gc/heap/frees:bytes	4278944536 /gc/heap/frees:objects	   7539554 /gc/heap/goal:bytes	   3597368 /gc/heap/live:bytes	      3778 /gc/heap/objects:objects	1329877082 /gc/heap/tiny/allocs:objects	     28484 /gc/limiter/last-enabled:gc-cycle	         0.0000819 /gc/pauses:seconds	    322354 /gc/scan/globals:bytes	   2205016 /gc/scan/heap:bytes	     22464 /gc/scan/stack:bytes	   2549834 /gc/scan/total:bytes	      2048 /gc/stack/starting-size:bytes	   2957312 /memory/classes/heap/free:bytes	   4579896 /memory/classes/heap/objects:bytes	   7217152 /memory/classes/heap/released:bytes	   1277952 /memory/classes/heap/stacks:bytes	    744904 /memory/classes/heap/unused:bytes	      1208 /memory/classes/metadata/mcache/free:bytes	     77312 /memory/classes/metadata/mcache/inuse:bytes	    178560 /memory/classes/metadata/mspan/free:bytes	    343680 /memory/classes/metadata/mspan/inuse:bytes	   2720376 /memory/classes/metadata/other:bytes	   2723064 /memory/classes/other:bytes	   1448672 /memory/classes/profiling/buckets:bytes	  24270088 /memory/classes/total:bytes	        64.00 /sched/gomaxprocs:threads	         3.000 /sched/goroutines:goroutines	         0.0000001 /sched/latencies:seconds	         0.0000328 /sched/pauses/stopping/gc:seconds	         0.0000328 /sched/pauses/stopping/other:seconds	         0.0000819 /sched/pauses/total/gc:seconds	         0.0000819 /sched/pauses/total/other:seconds	         7.867 /sync/mutex/wait/total:seconds
+    malloc_batch_test.go:109: LargeStruct Run Cnt 19799185
+    malloc_batch_test.go:109: LargeStruct Run Cnt 19799285
+    malloc_batch_test.go:109: LargeStruct Run Cnt 19809285
+    malloc_batch_test.go:109: LargeStruct Run Cnt 20809285
+    malloc_batch_test.go:109: LargeStruct Run Cnt 29756609
+BenchmarkMallocLargeStruct-64    	 8947324	       404.0 ns/op	         1.000 /cgo/go-to-c-calls:calls	         1.025 /cpu/classes/gc/mark/assist:cpu-seconds	        37.61 /cpu/classes/gc/mark/dedicated:cpu-seconds	         0.4825 /cpu/classes/gc/mark/idle:cpu-seconds	       215.9 /cpu/classes/gc/pause:cpu-seconds	       255.1 /cpu/classes/gc/total:cpu-seconds	     10491 /cpu/classes/idle:cpu-seconds	         0.0000003 /cpu/classes/scavenge/assist:cpu-seconds	         1.026 /cpu/classes/scavenge/background:cpu-seconds	         1.026 /cpu/classes/scavenge/total:cpu-seconds	     11014 /cpu/classes/total:cpu-seconds	       267.4 /cpu/classes/user:cpu-seconds	     31017 /gc/cycles/automatic:gc-cycles	       226.0 /gc/cycles/forced:gc-cycles	     31243 /gc/cycles/total:gc-cycles	       100.0 /gc/gogc:percent	9223372036854775808 /gc/gomemlimit:bytes	         9.000 /gc/heap/allocs-by-size:bytes	86732122112 /gc/heap/allocs:bytes	4288912168 /gc/heap/allocs:objects	         9.000 /gc/heap/frees-by-size:bytes	86726833704 /gc/heap/frees:bytes	4288907695 /gc/heap/frees:objects	   7203986 /gc/heap/goal:bytes	   3429592 /gc/heap/live:bytes	      4473 /gc/heap/objects:objects	1329877116 /gc/heap/tiny/allocs:objects	     31243 /gc/limiter/last-enabled:gc-cycle	         0.0000819 /gc/pauses:seconds	    322354 /gc/scan/globals:bytes	   1919552 /gc/scan/heap:bytes	     22448 /gc/scan/stack:bytes	   2264354 /gc/scan/total:bytes	      2048 /gc/stack/starting-size:bytes	   1949696 /memory/classes/heap/free:bytes	   5288408 /memory/classes/heap/objects:bytes	   7413760 /memory/classes/heap/released:bytes	   1277952 /memory/classes/heap/stacks:bytes	    749096 /memory/classes/heap/unused:bytes	      1208 /memory/classes/metadata/mcache/free:bytes	     77312 /memory/classes/metadata/mcache/inuse:bytes	    132640 /memory/classes/metadata/mspan/free:bytes	    389600 /memory/classes/metadata/mspan/inuse:bytes	   2818680 /memory/classes/metadata/other:bytes	   2723064 /memory/classes/other:bytes	   1448672 /memory/classes/profiling/buckets:bytes	  24270088 /memory/classes/total:bytes	        64.00 /sched/gomaxprocs:threads	         3.000 /sched/goroutines:goroutines	         0.0000001 /sched/latencies:seconds	         0.0000328 /sched/pauses/stopping/gc:seconds	         0.0000328 /sched/pauses/stopping/other:seconds	         0.0000819 /sched/pauses/total/gc:seconds	         0.0000819 /sched/pauses/total/other:seconds	         8.828 /sync/mutex/wait/total:seconds
+    malloc_batch_test.go:109: LargeStruct Run Cnt 29756610
+    malloc_batch_test.go:109: LargeStruct Run Cnt 29756710
+    malloc_batch_test.go:109: LargeStruct Run Cnt 29766710
+    malloc_batch_test.go:109: LargeStruct Run Cnt 30766710
+    malloc_batch_test.go:109: LargeStruct Run Cnt 39666892
+BenchmarkMallocLargeStruct-64    	 8900182	       402.5 ns/op	         1.000 /cgo/go-to-c-calls:calls	         1.025 /cpu/classes/gc/mark/assist:cpu-seconds	        41.43 /cpu/classes/gc/mark/dedicated:cpu-seconds	         0.5347 /cpu/classes/gc/mark/idle:cpu-seconds	       236.2 /cpu/classes/gc/pause:cpu-seconds	       279.2 /cpu/classes/gc/total:cpu-seconds	     10710 /cpu/classes/idle:cpu-seconds	         0.0000003 /cpu/classes/scavenge/assist:cpu-seconds	         1.255 /cpu/classes/scavenge/background:cpu-seconds	         1.255 /cpu/classes/scavenge/total:cpu-seconds	     11270 /cpu/classes/total:cpu-seconds	       280.1 /cpu/classes/user:cpu-seconds	     33741 /gc/cycles/automatic:gc-cycles	       231.0 /gc/cycles/forced:gc-cycles	     33972 /gc/cycles/total:gc-cycles	       100.0 /gc/gogc:percent	9223372036854775808 /gc/gomemlimit:bytes	         9.000 /gc/heap/allocs-by-size:bytes	95612095648 /gc/heap/allocs:bytes	4298828921 /gc/heap/allocs:objects	         9.000 /gc/heap/frees-by-size:bytes	95606217544 /gc/heap/frees:bytes	4298823849 /gc/heap/frees:objects	   7390594 /gc/heap/goal:bytes	   3522904 /gc/heap/live:bytes	      5072 /gc/heap/objects:objects	1329877150 /gc/heap/tiny/allocs:objects	     33972 /gc/limiter/last-enabled:gc-cycle	         0.0000819 /gc/pauses:seconds	    322354 /gc/scan/globals:bytes	   3582016 /gc/scan/heap:bytes	     22432 /gc/scan/stack:bytes	   3926802 /gc/scan/total:bytes	      2048 /gc/stack/starting-size:bytes	   1720320 /memory/classes/heap/free:bytes	   5878104 /memory/classes/heap/objects:bytes	   7143424 /memory/classes/heap/released:bytes	   1277952 /memory/classes/heap/stacks:bytes	    757416 /memory/classes/heap/unused:bytes	      1208 /memory/classes/metadata/mcache/free:bytes	     77312 /memory/classes/metadata/mcache/inuse:bytes	    180640 /memory/classes/metadata/mspan/free:bytes	    341600 /memory/classes/metadata/mspan/inuse:bytes	   2722424 /memory/classes/metadata/other:bytes	   2721016 /memory/classes/other:bytes	   1448672 /memory/classes/profiling/buckets:bytes	  24270088 /memory/classes/total:bytes	        64.00 /sched/gomaxprocs:threads	         3.000 /sched/goroutines:goroutines	         0.0000001 /sched/latencies:seconds	         0.0000328 /sched/pauses/stopping/gc:seconds	         0.0000328 /sched/pauses/stopping/other:seconds	         0.0000819 /sched/pauses/total/gc:seconds	         0.0000819 /sched/pauses/total/other:seconds	         9.743 /sync/mutex/wait/total:seconds
+    malloc_batch_test.go:109: LargeStruct Run Cnt 39666893
+    malloc_batch_test.go:109: LargeStruct Run Cnt 39666993
+    malloc_batch_test.go:109: LargeStruct Run Cnt 39676993
+    malloc_batch_test.go:109: LargeStruct Run Cnt 40676993
+    malloc_batch_test.go:109: LargeStruct Run Cnt 49655376
+BenchmarkMallocLargeStruct-64    	 8978383	       400.2 ns/op	         1.000 /cgo/go-to-c-calls:calls	         1.025 /cpu/classes/gc/mark/assist:cpu-seconds	        45.28 /cpu/classes/gc/mark/dedicated:cpu-seconds	         0.5864 /cpu/classes/gc/mark/idle:cpu-seconds	       256.9 /cpu/classes/gc/pause:cpu-seconds	       303.7 /cpu/classes/gc/total:cpu-seconds	     10929 /cpu/classes/idle:cpu-seconds	         0.0000003 /cpu/classes/scavenge/assist:cpu-seconds	         1.486 /cpu/classes/scavenge/background:cpu-seconds	         1.486 /cpu/classes/scavenge/total:cpu-seconds	     11527 /cpu/classes/total:cpu-seconds	       292.7 /cpu/classes/user:cpu-seconds	     36457 /gc/cycles/automatic:gc-cycles	       236.0 /gc/cycles/forced:gc-cycles	     36693 /gc/cycles/total:gc-cycles	       100.0 /gc/gogc:percent	9223372036854775808 /gc/gomemlimit:bytes	         9.000 /gc/heap/allocs-by-size:bytes	104562149304 /gc/heap/allocs:bytes	4308823904 /gc/heap/allocs:objects	         9.000 /gc/heap/frees-by-size:bytes	104557755488 /gc/heap/frees:bytes	4308820463 /gc/heap/frees:objects	   6609938 /gc/heap/goal:bytes	   3132632 /gc/heap/live:bytes	      3441 /gc/heap/objects:objects	1329877184 /gc/heap/tiny/allocs:objects	     36693 /gc/limiter/last-enabled:gc-cycle	         0.0000819 /gc/pauses:seconds	    322354 /gc/scan/globals:bytes	   2501120 /gc/scan/heap:bytes	     22320 /gc/scan/stack:bytes	   2845794 /gc/scan/total:bytes	      2048 /gc/stack/starting-size:bytes	   3055616 /memory/classes/heap/free:bytes	   4393816 /memory/classes/heap/objects:bytes	   7061504 /memory/classes/heap/released:bytes	   1277952 /memory/classes/heap/stacks:bytes	    726184 /memory/classes/heap/unused:bytes	      1208 /memory/classes/metadata/mcache/free:bytes	     77312 /memory/classes/metadata/mcache/inuse:bytes	    133920 /memory/classes/metadata/mspan/free:bytes	    388320 /memory/classes/metadata/mspan/inuse:bytes	   2984568 /memory/classes/metadata/other:bytes	   2721016 /memory/classes/other:bytes	   1448672 /memory/classes/profiling/buckets:bytes	  24270088 /memory/classes/total:bytes	        64.00 /sched/gomaxprocs:threads	         3.000 /sched/goroutines:goroutines	         0.0000001 /sched/latencies:seconds	         0.0000328 /sched/pauses/stopping/gc:seconds	         0.0000328 /sched/pauses/stopping/other:seconds	         0.0000819 /sched/pauses/total/gc:seconds	         0.0000819 /sched/pauses/total/other:seconds	        10.65 /sync/mutex/wait/total:seconds
+    malloc_batch_test.go:109: LargeStruct Run Cnt 49655377
+    malloc_batch_test.go:109: LargeStruct Run Cnt 49655477
+    malloc_batch_test.go:109: LargeStruct Run Cnt 49665477
+    malloc_batch_test.go:109: LargeStruct Run Cnt 50665477
+    malloc_batch_test.go:109: LargeStruct Run Cnt 59667872
+BenchmarkMallocLargeStruct-64    	 9002395	       401.1 ns/op	         1.000 /cgo/go-to-c-calls:calls	         1.026 /cpu/classes/gc/mark/assist:cpu-seconds	        49.28 /cpu/classes/gc/mark/dedicated:cpu-seconds	         0.6446 /cpu/classes/gc/mark/idle:cpu-seconds	       277.3 /cpu/classes/gc/pause:cpu-seconds	       328.2 /cpu/classes/gc/total:cpu-seconds	     11149 /cpu/classes/idle:cpu-seconds	         0.0000003 /cpu/classes/scavenge/assist:cpu-seconds	         1.735 /cpu/classes/scavenge/background:cpu-seconds	         1.735 /cpu/classes/scavenge/total:cpu-seconds	     11784 /cpu/classes/total:cpu-seconds	       305.3 /cpu/classes/user:cpu-seconds	     39158 /gc/cycles/automatic:gc-cycles	       241.0 /gc/cycles/forced:gc-cycles	     39399 /gc/cycles/total:gc-cycles	       100.0 /gc/gogc:percent	9223372036854775808 /gc/gomemlimit:bytes	         9.000 /gc/heap/allocs-by-size:bytes	113533700456 /gc/heap/allocs:bytes	4318842781 /gc/heap/allocs:objects	         9.000 /gc/heap/frees-by-size:bytes	113528031664 /gc/heap/frees:bytes	4318837786 /gc/heap/frees:objects	   6875234 /gc/heap/goal:bytes	   3265208 /gc/heap/live:bytes	      4995 /gc/heap/objects:objects	1329877218 /gc/heap/tiny/allocs:objects	     39399 /gc/limiter/last-enabled:gc-cycle	         0.0000819 /gc/pauses:seconds	    322354 /gc/scan/globals:bytes	   1697720 /gc/scan/heap:bytes	     22464 /gc/scan/stack:bytes	   2042538 /gc/scan/total:bytes	      2048 /gc/stack/starting-size:bytes	   1671168 /memory/classes/heap/free:bytes	   5668792 /memory/classes/heap/objects:bytes	   7299072 /memory/classes/heap/released:bytes	   1277952 /memory/classes/heap/stacks:bytes	    761928 /memory/classes/heap/unused:bytes	      1208 /memory/classes/metadata/mcache/free:bytes	     77312 /memory/classes/metadata/mcache/inuse:bytes	    151200 /memory/classes/metadata/mspan/free:bytes	    371040 /memory/classes/metadata/mspan/inuse:bytes	   2822776 /memory/classes/metadata/other:bytes	   2718968 /memory/classes/other:bytes	   1448672 /memory/classes/profiling/buckets:bytes	  24270088 /memory/classes/total:bytes	        64.00 /sched/gomaxprocs:threads	         3.000 /sched/goroutines:goroutines	         0.0000001 /sched/latencies:seconds	         0.0000328 /sched/pauses/stopping/gc:seconds	         0.0000328 /sched/pauses/stopping/other:seconds	         0.0000819 /sched/pauses/total/gc:seconds	         0.0000819 /sched/pauses/total/other:seconds	        11.55 /sync/mutex/wait/total:seconds
+    malloc_batch_test.go:109: LargeStruct Run Cnt 59667873
+    malloc_batch_test.go:109: LargeStruct Run Cnt 59667973
+    malloc_batch_test.go:109: LargeStruct Run Cnt 59677973
+    malloc_batch_test.go:109: LargeStruct Run Cnt 60677973
+    malloc_batch_test.go:109: LargeStruct Run Cnt 69653309
+BenchmarkMallocLargeStruct-64    	 8975336	       399.9 ns/op	         1.000 /cgo/go-to-c-calls:calls	         1.026 /cpu/classes/gc/mark/assist:cpu-seconds	        53.11 /cpu/classes/gc/mark/dedicated:cpu-seconds	         0.7003 /cpu/classes/gc/mark/idle:cpu-seconds	       297.2 /cpu/classes/gc/pause:cpu-seconds	       352.1 /cpu/classes/gc/total:cpu-seconds	     11368 /cpu/classes/idle:cpu-seconds	         0.0000003 /cpu/classes/scavenge/assist:cpu-seconds	         1.975 /cpu/classes/scavenge/background:cpu-seconds	         1.975 /cpu/classes/scavenge/total:cpu-seconds	     12040 /cpu/classes/total:cpu-seconds	       317.9 /cpu/classes/user:cpu-seconds	     41837 /gc/cycles/automatic:gc-cycles	       246.0 /gc/cycles/forced:gc-cycles	     42083 /gc/cycles/total:gc-cycles	       100.0 /gc/gogc:percent	9223372036854775808 /gc/gomemlimit:bytes	         9.000 /gc/heap/allocs-by-size:bytes	122481035992 /gc/heap/allocs:bytes	4328834491 /gc/heap/allocs:objects	         9.000 /gc/heap/frees-by-size:bytes	122475023280 /gc/heap/frees:bytes	4328829348 /gc/heap/frees:objects	   6686706 /gc/heap/goal:bytes	   3170984 /gc/heap/live:bytes	      5143 /gc/heap/objects:objects	1329877252 /gc/heap/tiny/allocs:objects	     42083 /gc/limiter/last-enabled:gc-cycle	         0.0000819 /gc/pauses:seconds	    322354 /gc/scan/globals:bytes	   1269152 /gc/scan/heap:bytes	     22384 /gc/scan/stack:bytes	   1613890 /gc/scan/total:bytes	      2048 /gc/stack/starting-size:bytes	   2105344 /memory/classes/heap/free:bytes	   6012712 /memory/classes/heap/objects:bytes	   6504448 /memory/classes/heap/released:bytes	   1277952 /memory/classes/heap/stacks:bytes	    778456 /memory/classes/heap/unused:bytes	      1208 /memory/classes/metadata/mcache/free:bytes	     77312 /memory/classes/metadata/mcache/inuse:bytes	    173440 /memory/classes/metadata/mspan/free:bytes	    348800 /memory/classes/metadata/mspan/inuse:bytes	   2822776 /memory/classes/metadata/other:bytes	   2718968 /memory/classes/other:bytes	   1448672 /memory/classes/profiling/buckets:bytes	  24270088 /memory/classes/total:bytes	        64.00 /sched/gomaxprocs:threads	         3.000 /sched/goroutines:goroutines	         0.0000001 /sched/latencies:seconds	         0.0000328 /sched/pauses/stopping/gc:seconds	         0.0000328 /sched/pauses/stopping/other:seconds	         0.0000819 /sched/pauses/total/gc:seconds	         0.0000819 /sched/pauses/total/other:seconds	        12.40 /sync/mutex/wait/total:seconds
+    malloc_batch_test.go:109: LargeStruct Run Cnt 69653310
+    malloc_batch_test.go:109: LargeStruct Run Cnt 69653410
+    malloc_batch_test.go:109: LargeStruct Run Cnt 69663410
+    malloc_batch_test.go:109: LargeStruct Run Cnt 70663410
+    malloc_batch_test.go:109: LargeStruct Run Cnt 79698630
+BenchmarkMallocLargeStruct-64    	 9035220	       398.5 ns/op	         1.000 /cgo/go-to-c-calls:calls	         1.026 /cpu/classes/gc/mark/assist:cpu-seconds	        56.85 /cpu/classes/gc/mark/dedicated:cpu-seconds	         0.7543 /cpu/classes/gc/mark/idle:cpu-seconds	       317.4 /cpu/classes/gc/pause:cpu-seconds	       376.0 /cpu/classes/gc/total:cpu-seconds	     11588 /cpu/classes/idle:cpu-seconds	         0.0000003 /cpu/classes/scavenge/assist:cpu-seconds	         2.222 /cpu/classes/scavenge/background:cpu-seconds	         2.222 /cpu/classes/scavenge/total:cpu-seconds	     12297 /cpu/classes/total:cpu-seconds	       330.3 /cpu/classes/user:cpu-seconds	     44470 /gc/cycles/automatic:gc-cycles	       251.0 /gc/cycles/forced:gc-cycles	     44721 /gc/cycles/total:gc-cycles	       100.0 /gc/gogc:percent	9223372036854775808 /gc/gomemlimit:bytes	         9.000 /gc/heap/allocs-by-size:bytes	131482074632 /gc/heap/allocs:bytes	4338886041 /gc/heap/allocs:objects	         9.000 /gc/heap/frees-by-size:bytes	131476773280 /gc/heap/frees:bytes	4338881750 /gc/heap/frees:objects	   6887554 /gc/heap/goal:bytes	   3271400 /gc/heap/live:bytes	      4291 /gc/heap/objects:objects	1329877285 /gc/heap/tiny/allocs:objects	     44721 /gc/limiter/last-enabled:gc-cycle	         0.0000819 /gc/pauses:seconds	    322354 /gc/scan/globals:bytes	   3344840 /gc/scan/heap:bytes	     22400 /gc/scan/stack:bytes	   3689594 /gc/scan/total:bytes	      2048 /gc/stack/starting-size:bytes	   2621440 /memory/classes/heap/free:bytes	   5301352 /memory/classes/heap/objects:bytes	   6856704 /memory/classes/heap/released:bytes	   1277952 /memory/classes/heap/stacks:bytes	    719768 /memory/classes/heap/unused:bytes	      1208 /memory/classes/metadata/mcache/free:bytes	     77312 /memory/classes/metadata/mcache/inuse:bytes	    112160 /memory/classes/metadata/mspan/free:bytes	    410080 /memory/classes/metadata/mspan/inuse:bytes	   2726520 /memory/classes/metadata/other:bytes	   2978800 /memory/classes/other:bytes	   1448936 /memory/classes/profiling/buckets:bytes	  24532232 /memory/classes/total:bytes	        64.00 /sched/gomaxprocs:threads	         3.000 /sched/goroutines:goroutines	         0.0000001 /sched/latencies:seconds	         0.0000328 /sched/pauses/stopping/gc:seconds	         0.0000328 /sched/pauses/stopping/other:seconds	         0.0000819 /sched/pauses/total/gc:seconds	         0.0000819 /sched/pauses/total/other:seconds	        13.22 /sync/mutex/wait/total:seconds
+    malloc_batch_test.go:109: LargeStruct Run Cnt 79698631
+    malloc_batch_test.go:109: LargeStruct Run Cnt 79698731
+    malloc_batch_test.go:109: LargeStruct Run Cnt 79708731
+    malloc_batch_test.go:109: LargeStruct Run Cnt 80708731
+    malloc_batch_test.go:109: LargeStruct Run Cnt 89733841
+BenchmarkMallocLargeStruct-64    	 9025110	       400.4 ns/op	         1.000 /cgo/go-to-c-calls:calls	         1.026 /cpu/classes/gc/mark/assist:cpu-seconds	        60.68 /cpu/classes/gc/mark/dedicated:cpu-seconds	         0.8141 /cpu/classes/gc/mark/idle:cpu-seconds	       337.4 /cpu/classes/gc/pause:cpu-seconds	       399.9 /cpu/classes/gc/total:cpu-seconds	     11809 /cpu/classes/idle:cpu-seconds	         0.0000003 /cpu/classes/scavenge/assist:cpu-seconds	         2.486 /cpu/classes/scavenge/background:cpu-seconds	         2.486 /cpu/classes/scavenge/total:cpu-seconds	     12554 /cpu/classes/total:cpu-seconds	       342.7 /cpu/classes/user:cpu-seconds	     47063 /gc/cycles/automatic:gc-cycles	       256.0 /gc/cycles/forced:gc-cycles	     47319 /gc/cycles/total:gc-cycles	       100.0 /gc/gogc:percent	9223372036854775808 /gc/gomemlimit:bytes	         9.000 /gc/heap/allocs-by-size:bytes	140474003440 /gc/heap/allocs:bytes	4348927351 /gc/heap/allocs:objects	         9.000 /gc/heap/frees-by-size:bytes	140467926472 /gc/heap/frees:bytes	4348922148 /gc/heap/frees:objects	   7087666 /gc/heap/goal:bytes	   3371432 /gc/heap/live:bytes	      5203 /gc/heap/objects:objects	1329877319 /gc/heap/tiny/allocs:objects	     47319 /gc/limiter/last-enabled:gc-cycle	         0.0000819 /gc/pauses:seconds	    322354 /gc/scan/globals:bytes	   4055160 /gc/scan/heap:bytes	     22448 /gc/scan/stack:bytes	   4399962 /gc/scan/total:bytes	      2048 /gc/stack/starting-size:bytes	   1564672 /memory/classes/heap/free:bytes	   6076968 /memory/classes/heap/objects:bytes	   7086080 /memory/classes/heap/released:bytes	   1277952 /memory/classes/heap/stacks:bytes	    771544 /memory/classes/heap/unused:bytes	      1208 /memory/classes/metadata/mcache/free:bytes	     77312 /memory/classes/metadata/mcache/inuse:bytes	    131840 /memory/classes/metadata/mspan/free:bytes	    390400 /memory/classes/metadata/mspan/inuse:bytes	   2726520 /memory/classes/metadata/other:bytes	   2978800 /memory/classes/other:bytes	   1448936 /memory/classes/profiling/buckets:bytes	  24532232 /memory/classes/total:bytes	        64.00 /sched/gomaxprocs:threads	         3.000 /sched/goroutines:goroutines	         0.0000001 /sched/latencies:seconds	         0.0000328 /sched/pauses/stopping/gc:seconds	         0.0000328 /sched/pauses/stopping/other:seconds	         0.0000819 /sched/pauses/total/gc:seconds	         0.0000819 /sched/pauses/total/other:seconds	        14.02 /sync/mutex/wait/total:seconds
+    malloc_batch_test.go:109: LargeStruct Run Cnt 89733842
+    malloc_batch_test.go:109: LargeStruct Run Cnt 89733942
+    malloc_batch_test.go:109: LargeStruct Run Cnt 89743942
+    malloc_batch_test.go:109: LargeStruct Run Cnt 90743942
+    malloc_batch_test.go:109: LargeStruct Run Cnt 99769062
+BenchmarkMallocLargeStruct-64    	 9025120	       398.9 ns/op	         1.000 /cgo/go-to-c-calls:calls	         1.027 /cpu/classes/gc/mark/assist:cpu-seconds	        64.51 /cpu/classes/gc/mark/dedicated:cpu-seconds	         0.8715 /cpu/classes/gc/mark/idle:cpu-seconds	       357.3 /cpu/classes/gc/pause:cpu-seconds	       423.7 /cpu/classes/gc/total:cpu-seconds	     12030 /cpu/classes/idle:cpu-seconds	         0.0000003 /cpu/classes/scavenge/assist:cpu-seconds	         2.753 /cpu/classes/scavenge/background:cpu-seconds	         2.753 /cpu/classes/scavenge/total:cpu-seconds	     12811 /cpu/classes/total:cpu-seconds	       354.9 /cpu/classes/user:cpu-seconds	     49636 /gc/cycles/automatic:gc-cycles	       261.0 /gc/cycles/forced:gc-cycles	     49897 /gc/cycles/total:gc-cycles	       100.0 /gc/gogc:percent	9223372036854775808 /gc/gomemlimit:bytes	         9.000 /gc/heap/allocs-by-size:bytes	149465889880 /gc/heap/allocs:bytes	4358968487 /gc/heap/allocs:objects	         9.000 /gc/heap/frees-by-size:bytes	149460121232 /gc/heap/frees:bytes	4358963631 /gc/heap/frees:objects	   8327554 /gc/heap/goal:bytes	   3991368 /gc/heap/live:bytes	      4856 /gc/heap/objects:objects	1329877353 /gc/heap/tiny/allocs:objects	     49897 /gc/limiter/last-enabled:gc-cycle	         0.0000819 /gc/pauses:seconds	    322354 /gc/scan/globals:bytes	   2198304 /gc/scan/heap:bytes	     22464 /gc/scan/stack:bytes	   2543122 /gc/scan/total:bytes	      2048 /gc/stack/starting-size:bytes	   1949696 /memory/classes/heap/free:bytes	   5768648 /memory/classes/heap/objects:bytes	   6889472 /memory/classes/heap/released:bytes	   1277952 /memory/classes/heap/stacks:bytes	    760376 /memory/classes/heap/unused:bytes	      1208 /memory/classes/metadata/mcache/free:bytes	     77312 /memory/classes/metadata/mcache/inuse:bytes	    137760 /memory/classes/metadata/mspan/free:bytes	    384480 /memory/classes/metadata/mspan/inuse:bytes	   2857592 /memory/classes/metadata/other:bytes	   2978800 /memory/classes/other:bytes	   1448936 /memory/classes/profiling/buckets:bytes	  24532232 /memory/classes/total:bytes	        64.00 /sched/gomaxprocs:threads	         3.000 /sched/goroutines:goroutines	         0.0000001 /sched/latencies:seconds	         0.0000328 /sched/pauses/stopping/gc:seconds	         0.0000328 /sched/pauses/stopping/other:seconds	         0.0000819 /sched/pauses/total/gc:seconds	         0.0000819 /sched/pauses/total/other:seconds	        14.84 /sync/mutex/wait/total:seconds
 PASS
-ok      runtime 328.265s
-goos: linux
-goarch: arm64
-pkg: runtime
-BenchmarkMalloc8-64                     340031563               17.65 ns/op
-BenchmarkMalloc8-64                     339803953               17.68 ns/op
-BenchmarkMalloc8-64                     340013136               17.65 ns/op
-BenchmarkMalloc8-64                     339744009               17.67 ns/op
-BenchmarkMalloc8-64                     339713703               17.65 ns/op
-BenchmarkMalloc8-64                     340192644               17.65 ns/op
-BenchmarkMalloc8-64                     339907335               17.65 ns/op
-BenchmarkMalloc8-64                     340246263               17.64 ns/op
-BenchmarkMalloc8-64                     339970077               17.64 ns/op
-BenchmarkMalloc8-64                     340217414               17.62 ns/op
-BenchmarkMalloc16-64                    235018778               25.54 ns/op
-BenchmarkMalloc16-64                    234674638               25.53 ns/op
-BenchmarkMalloc16-64                    235267029               25.50 ns/op
-BenchmarkMalloc16-64                    235140973               30.38 ns/op
-BenchmarkMalloc16-64                    231967764               25.49 ns/op
-BenchmarkMalloc16-64                    235595794               25.43 ns/op
-BenchmarkMalloc16-64                    236254786               25.37 ns/op
-BenchmarkMalloc16-64                    236557903               25.36 ns/op
-BenchmarkMalloc16-64                    236652950               25.34 ns/op
-BenchmarkMalloc16-64                    236594012               25.37 ns/op
-BenchmarkMallocTypeInfo8-64             250118457               23.99 ns/op
-BenchmarkMallocTypeInfo8-64             249975600               23.96 ns/op
-BenchmarkMallocTypeInfo8-64             250387239               23.96 ns/op
-BenchmarkMallocTypeInfo8-64             250473790               23.96 ns/op
-BenchmarkMallocTypeInfo8-64             250157554               23.99 ns/op
-BenchmarkMallocTypeInfo8-64             250088122               23.98 ns/op
-BenchmarkMallocTypeInfo8-64             250354275               23.97 ns/op
-BenchmarkMallocTypeInfo8-64             250297180               23.97 ns/op
-BenchmarkMallocTypeInfo8-64             250154023               23.98 ns/op
-BenchmarkMallocTypeInfo8-64             250238905               23.97 ns/op
-BenchmarkMallocTypeInfo16-64            185662818               33.26 ns/op
-BenchmarkMallocTypeInfo16-64            179537106               32.38 ns/op
-BenchmarkMallocTypeInfo16-64            186040513               32.27 ns/op
-BenchmarkMallocTypeInfo16-64            185951179               31.86 ns/op
-BenchmarkMallocTypeInfo16-64            188599791               31.82 ns/op
-BenchmarkMallocTypeInfo16-64            188563888               31.83 ns/op
-BenchmarkMallocTypeInfo16-64            188645817               31.84 ns/op
-BenchmarkMallocTypeInfo16-64            188521406               31.82 ns/op
-BenchmarkMallocTypeInfo16-64            188384499               31.80 ns/op
-BenchmarkMallocTypeInfo16-64            188904732               31.79 ns/op
-BenchmarkMallocLargeStruct-64           14850805               403.6 ns/op
-BenchmarkMallocLargeStruct-64           14691649               403.6 ns/op
-BenchmarkMallocLargeStruct-64           14971455               402.5 ns/op
-BenchmarkMallocLargeStruct-64           14887724               404.3 ns/op
-BenchmarkMallocLargeStruct-64           14847351               404.8 ns/op
-BenchmarkMallocLargeStruct-64           14750961               404.6 ns/op
-BenchmarkMallocLargeStruct-64           14842771               404.2 ns/op
-BenchmarkMallocLargeStruct-64           14868884               405.3 ns/op
-BenchmarkMallocLargeStruct-64           14713998               404.0 ns/op
-BenchmarkMallocLargeStruct-64           14737057               403.5 ns/op
-PASS
-ok      runtime 405.639s
-goos: linux
-goarch: arm64
-pkg: runtime
-BenchmarkMalloc8-64                     272843059               21.93 ns/op
-BenchmarkMalloc8-64                     273216726               21.99 ns/op
-BenchmarkMalloc8-64                     273353883               22.01 ns/op
-BenchmarkMalloc8-64                     273056779               22.04 ns/op
-BenchmarkMalloc8-64                     273258265               22.06 ns/op
-BenchmarkMalloc8-64                     272727140               22.02 ns/op
-BenchmarkMalloc8-64                     273396540               22.09 ns/op
-BenchmarkMalloc8-64                     273941530               21.95 ns/op
-BenchmarkMalloc8-64                     270166552               22.10 ns/op
-BenchmarkMalloc8-64                     271883460               22.12 ns/op
-BenchmarkMalloc16-64                    155647430               38.50 ns/op
-BenchmarkMalloc16-64                    155966124               38.45 ns/op
-BenchmarkMalloc16-64                    156283918               38.47 ns/op
-BenchmarkMalloc16-64                    155636786               38.32 ns/op
-BenchmarkMalloc16-64                    156607848               38.33 ns/op
-BenchmarkMalloc16-64                    156571942               38.26 ns/op
-BenchmarkMalloc16-64                    156675537               38.37 ns/op
-BenchmarkMalloc16-64                    156795082               38.41 ns/op
-BenchmarkMalloc16-64                    156743605               38.40 ns/op
-BenchmarkMalloc16-64                    156795052               38.25 ns/op
-BenchmarkMallocTypeInfo8-64             209826498               28.64 ns/op
-BenchmarkMallocTypeInfo8-64             210519237               28.59 ns/op
-BenchmarkMallocTypeInfo8-64             210014751               28.63 ns/op
-BenchmarkMallocTypeInfo8-64             209514698               28.63 ns/op
-BenchmarkMallocTypeInfo8-64             209890020               28.58 ns/op
-BenchmarkMallocTypeInfo8-64             209757806               28.54 ns/op
-BenchmarkMallocTypeInfo8-64             209687796               28.51 ns/op
-BenchmarkMallocTypeInfo8-64             209475496               28.62 ns/op
-BenchmarkMallocTypeInfo8-64             209622318               28.61 ns/op
-BenchmarkMallocTypeInfo8-64             210122227               28.63 ns/op
-BenchmarkMallocTypeInfo16-64            155143610               38.75 ns/op
-BenchmarkMallocTypeInfo16-64            154550691               38.78 ns/op
-BenchmarkMallocTypeInfo16-64            155713600               38.59 ns/op
-BenchmarkMallocTypeInfo16-64            156079050               38.61 ns/op
-BenchmarkMallocTypeInfo16-64            155503124               38.82 ns/op
-BenchmarkMallocTypeInfo16-64            155017384               38.75 ns/op
-BenchmarkMallocTypeInfo16-64            154911585               38.71 ns/op
-BenchmarkMallocTypeInfo16-64            154553521               38.66 ns/op
-BenchmarkMallocTypeInfo16-64            155470521               38.83 ns/op
-BenchmarkMallocTypeInfo16-64            154692380               38.66 ns/op
-BenchmarkMallocLargeStruct-64           14423959               416.3 ns/op
-BenchmarkMallocLargeStruct-64           14330745               416.8 ns/op
-BenchmarkMallocLargeStruct-64           14347396               416.8 ns/op
-BenchmarkMallocLargeStruct-64           14445802               415.5 ns/op
-BenchmarkMallocLargeStruct-64           14455400               415.4 ns/op
-BenchmarkMallocLargeStruct-64           14401273               417.7 ns/op
-BenchmarkMallocLargeStruct-64           14395437               415.1 ns/op
-BenchmarkMallocLargeStruct-64           14417296               417.5 ns/op
-BenchmarkMallocLargeStruct-64           14549253               417.4 ns/op
-BenchmarkMallocLargeStruct-64           14407323               418.5 ns/op
-PASS
-ok      runtime 433.846s
-goos: linux
-goarch: arm64
-pkg: runtime
-BenchmarkMalloc8-64                     294889964               20.21 ns/op
-BenchmarkMalloc8-64                     302284801               20.40 ns/op
-BenchmarkMalloc8-64                     302135535               19.85 ns/op
-BenchmarkMalloc8-64                     302347452               19.86 ns/op
-BenchmarkMalloc8-64                     302420878               19.88 ns/op
-BenchmarkMalloc8-64                     298097988               19.94 ns/op
-BenchmarkMalloc8-64                     302077962               19.83 ns/op
-BenchmarkMalloc8-64                     302713868               19.84 ns/op
-BenchmarkMalloc8-64                     301973839               19.91 ns/op
-BenchmarkMalloc8-64                     301625600               19.87 ns/op
-BenchmarkMalloc16-64                    195455588               30.22 ns/op
-BenchmarkMalloc16-64                    196377831               30.57 ns/op
-BenchmarkMalloc16-64                    196770132               30.54 ns/op
-BenchmarkMalloc16-64                    196444716               30.92 ns/op
-BenchmarkMalloc16-64                    196260296               30.58 ns/op
-BenchmarkMalloc16-64                    196953354               30.82 ns/op
-BenchmarkMalloc16-64                    196223265               30.58 ns/op
-BenchmarkMalloc16-64                    196206884               30.62 ns/op
-BenchmarkMalloc16-64                    196174942               30.52 ns/op
-BenchmarkMalloc16-64                    196337120               31.32 ns/op
-BenchmarkMallocTypeInfo8-64             208242402               28.66 ns/op
-BenchmarkMallocTypeInfo8-64             210184872               28.27 ns/op
-BenchmarkMallocTypeInfo8-64             212443245               28.55 ns/op
-BenchmarkMallocTypeInfo8-64             213003026               28.23 ns/op
-BenchmarkMallocTypeInfo8-64             212616942               28.20 ns/op
-BenchmarkMallocTypeInfo8-64             210481293               28.34 ns/op
-BenchmarkMallocTypeInfo8-64             212325519               28.24 ns/op
-BenchmarkMallocTypeInfo8-64             212799919               28.22 ns/op
-BenchmarkMallocTypeInfo8-64             212954982               28.20 ns/op
-BenchmarkMallocTypeInfo8-64             212764119               28.24 ns/op
-BenchmarkMallocTypeInfo16-64            163690930               35.86 ns/op
-BenchmarkMallocTypeInfo16-64            167374041               36.85 ns/op
-BenchmarkMallocTypeInfo16-64            167096366               35.85 ns/op
-BenchmarkMallocTypeInfo16-64            167007748               35.96 ns/op
-BenchmarkMallocTypeInfo16-64            166116680               36.01 ns/op
-BenchmarkMallocTypeInfo16-64            166956804               36.58 ns/op
-BenchmarkMallocTypeInfo16-64            167562858               35.98 ns/op
-BenchmarkMallocTypeInfo16-64            163344972               35.84 ns/op
-BenchmarkMallocTypeInfo16-64            167477779               35.76 ns/op
-BenchmarkMallocTypeInfo16-64            167794929               35.79 ns/op
-BenchmarkMallocLargeStruct-64           23009467               549.6 ns/op
-BenchmarkMallocLargeStruct-64           31722646               419.1 ns/op
-BenchmarkMallocLargeStruct-64           31301335               279.5 ns/op
-BenchmarkMallocLargeStruct-64           31346140               339.0 ns/op
-BenchmarkMallocLargeStruct-64           31487791               370.2 ns/op
-BenchmarkMallocLargeStruct-64           31048801               368.7 ns/op
-BenchmarkMallocLargeStruct-64           30939483               354.4 ns/op
-BenchmarkMallocLargeStruct-64           31000177               349.4 ns/op
-BenchmarkMallocLargeStruct-64           31235106               318.9 ns/op
-BenchmarkMallocLargeStruct-64           31164661               330.8 ns/op
-PASS
-ok      runtime 544.731s
+ok  	runtime	200.361s

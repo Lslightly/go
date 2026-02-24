@@ -17,6 +17,7 @@ import (
 	"reflect"
 	"runtime"
 	. "runtime"
+	"runtime/metrics"
 	"strings"
 	"sync/atomic"
 	"testing"
@@ -363,11 +364,64 @@ type LargeStruct struct {
 	x [16][]byte
 }
 
+var largeStructRunCnt int = 0
+
 func BenchmarkMallocLargeStruct(b *testing.B) {
+	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		p := make([]LargeStruct, 2)
 		Escape(p)
 	}
+	b.StopTimer()
+	descs := metrics.All()
+	sample := make([]metrics.Sample, len(descs))
+	for i, desc := range descs {
+		sample[i].Name = desc.Name
+	}
+	metrics.Read(sample)
+	const epsilon = 1e-15
+	for i, desc := range descs {
+		switch desc.Kind {
+		case metrics.KindUint64:
+			v := sample[i].Value.Uint64()
+			if v == 0 {
+				continue
+			}
+			b.ReportMetric(float64(v), desc.Name)
+		case metrics.KindFloat64:
+			v := sample[i].Value.Float64()
+			if v < epsilon {
+				continue
+			}
+			b.ReportMetric(v, desc.Name)
+		case metrics.KindFloat64Histogram:
+			v := medianBucket(sample[i].Value.Float64Histogram())
+			if v < epsilon {
+				continue
+			}
+			b.ReportMetric(v, desc.Name)
+		case metrics.KindBad:
+			panic("bug in runtime/metrics package!")
+		}
+	}
+	largeStructRunCnt += b.N
+	b.Log("LargeStruct Run Cnt", largeStructRunCnt)
+}
+
+func medianBucket(h *metrics.Float64Histogram) float64 {
+	total := uint64(0)
+	for _, count := range h.Counts {
+		total += count
+	}
+	thresh := total / 2
+	total = 0
+	for i, count := range h.Counts {
+		total += count
+		if total >= thresh {
+			return h.Buckets[i]
+		}
+	}
+	panic("should not happen")
 }
 
 var n = flag.Int("n", 1000, "number of goroutines")

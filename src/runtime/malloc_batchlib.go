@@ -9,7 +9,7 @@ import (
 
 type mallocPairsTy struct {
 	span *mspan
-	x    unsafe.Pointer
+	x    uintptr
 }
 
 const ringCap int8 = 8
@@ -78,7 +78,7 @@ func (mp *m) batchFlush() {
 	if writeBarrier.enabled {
 		for idx := mp.batchFront; idx != mp.batchEnd; idx = nextRingIdx(idx) {
 			todo := mp.batchTodos[idx]
-			gcmarknewobject(todo.span, uintptr(todo.x))
+			gcmarknewobject(todo.span, todo.x)
 		}
 	}
 	mp.batchClear()
@@ -87,14 +87,14 @@ func (mp *m) batchFlush() {
 func BatchExit() {
 	mp := getg().m
 	mp.batchFlush()
+	mp.batching = false
+	mp.mallocing = 0
+	releasem(mp)
 	if mp.batchCheckGCTrigger {
 		if t := (gcTrigger{kind: gcTriggerHeap}); t.test() {
 			gcStart(t)
 		}
 	}
-	mp.batching = false
-	mp.mallocing = 0
-	releasem(mp)
 }
 
 func mallocgcTinyCore(size uintptr, typ *_type, needzero bool) (x unsafe.Pointer, elemsize uintptr, span *mspan, checkGCTrigger bool) {

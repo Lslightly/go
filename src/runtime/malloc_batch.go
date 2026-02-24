@@ -1088,10 +1088,25 @@ func mallocgc(size uintptr, typ *_type, needzero bool) unsafe.Pointer {
 		if span != nil {
 			mp.batchPush(mallocPairsTy{
 				span: span,
-				x:    x,
+				x:    uintptr(x),
 			})
 			if mp.batchFull() {
 				mp.batchFlush()
+				mp.batching = false
+				mp.mallocing = 0
+				releasem(mp)
+				// Assist the GC if needed.
+				if gcBlackenEnabled != 0 {
+					deductAssistCredit(size)
+				}
+				if mp.batchCheckGCTrigger {
+					if t := (gcTrigger{kind: gcTriggerHeap}); t.test() {
+						gcStart(t)
+					}
+				}
+				mp = acquirem()
+				mp.mallocing = 1
+				mp.batching = true
 			}
 		}
 	}
