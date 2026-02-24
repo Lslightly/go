@@ -1,110 +1,950 @@
 goos: linux
 goarch: arm64
 pkg: runtime
-BenchmarkMalloc8
-BenchmarkMalloc8-64              	165706473	        21.84 ns/op
-BenchmarkMalloc8-64              	164662716	        21.82 ns/op
-BenchmarkMalloc8-64              	164885420	        21.83 ns/op
-BenchmarkMalloc8-64              	164775920	        21.81 ns/op
-BenchmarkMalloc8-64              	164910930	        21.83 ns/op
-BenchmarkMalloc8-64              	165012054	        21.81 ns/op
-BenchmarkMalloc8-64              	164877541	        21.83 ns/op
-BenchmarkMalloc8-64              	164947370	        21.81 ns/op
-BenchmarkMalloc8-64              	164845368	        21.80 ns/op
-BenchmarkMalloc8-64              	165052034	        21.82 ns/op
-BenchmarkMalloc16
-BenchmarkMalloc16-64             	100000000	        33.82 ns/op
-BenchmarkMalloc16-64             	100000000	        33.83 ns/op
-BenchmarkMalloc16-64             	100000000	        33.72 ns/op
-BenchmarkMalloc16-64             	100000000	        33.76 ns/op
-BenchmarkMalloc16-64             	100000000	        33.71 ns/op
-BenchmarkMalloc16-64             	100000000	        33.77 ns/op
-BenchmarkMalloc16-64             	100000000	        33.70 ns/op
-BenchmarkMalloc16-64             	100000000	        33.76 ns/op
-BenchmarkMalloc16-64             	100000000	        33.73 ns/op
-BenchmarkMalloc16-64             	100000000	        33.77 ns/op
-BenchmarkMallocTypeInfo8
-BenchmarkMallocTypeInfo8-64      	100000000	        31.45 ns/op
-BenchmarkMallocTypeInfo8-64      	100000000	        31.44 ns/op
-BenchmarkMallocTypeInfo8-64      	100000000	        31.41 ns/op
-BenchmarkMallocTypeInfo8-64      	100000000	        31.39 ns/op
-BenchmarkMallocTypeInfo8-64      	100000000	        31.36 ns/op
-BenchmarkMallocTypeInfo8-64      	100000000	        31.37 ns/op
-BenchmarkMallocTypeInfo8-64      	100000000	        31.35 ns/op
-BenchmarkMallocTypeInfo8-64      	100000000	        31.37 ns/op
-BenchmarkMallocTypeInfo8-64      	100000000	        31.33 ns/op
-BenchmarkMallocTypeInfo8-64      	100000000	        31.37 ns/op
-BenchmarkMallocTypeInfo16
-BenchmarkMallocTypeInfo16-64     	89615481	        39.68 ns/op
-BenchmarkMallocTypeInfo16-64     	89288104	        39.64 ns/op
-BenchmarkMallocTypeInfo16-64     	90599883	        39.57 ns/op
-BenchmarkMallocTypeInfo16-64     	89528697	        39.57 ns/op
-BenchmarkMallocTypeInfo16-64     	89528920	        39.55 ns/op
-BenchmarkMallocTypeInfo16-64     	90368227	        39.50 ns/op
-BenchmarkMallocTypeInfo16-64     	89613608	        39.57 ns/op
-BenchmarkMallocTypeInfo16-64     	89577440	        39.54 ns/op
-BenchmarkMallocTypeInfo16-64     	90526274	        39.60 ns/op
-BenchmarkMallocTypeInfo16-64     	90234518	        39.60 ns/op
-BenchmarkMallocLargeStruct
-    malloc_batch_test.go:109: LargeStruct Run Cnt 1
-    malloc_batch_test.go:109: LargeStruct Run Cnt 101
-    malloc_batch_test.go:109: LargeStruct Run Cnt 10101
-    malloc_batch_test.go:109: LargeStruct Run Cnt 1010101
-    malloc_batch_test.go:109: LargeStruct Run Cnt 9887591
-BenchmarkMallocLargeStruct-64    	 8877490	       404.9 ns/op	         1.000 /cgo/go-to-c-calls:calls	         1.025 /cpu/classes/gc/mark/assist:cpu-seconds	        29.55 /cpu/classes/gc/mark/dedicated:cpu-seconds	         0.3642 /cpu/classes/gc/mark/idle:cpu-seconds	       174.4 /cpu/classes/gc/pause:cpu-seconds	       205.4 /cpu/classes/gc/total:cpu-seconds	     10051 /cpu/classes/idle:cpu-seconds	         0.0000003 /cpu/classes/scavenge/assist:cpu-seconds	         0.5675 /cpu/classes/scavenge/background:cpu-seconds	         0.5675 /cpu/classes/scavenge/total:cpu-seconds	     10499 /cpu/classes/total:cpu-seconds	       241.7 /cpu/classes/user:cpu-seconds	     25499 /gc/cycles/automatic:gc-cycles	       216.0 /gc/cycles/forced:gc-cycles	     25715 /gc/cycles/total:gc-cycles	       100.0 /gc/gogc:percent	9223372036854775808 /gc/gomemlimit:bytes	         9.000 /gc/heap/allocs-by-size:bytes	68928759632 /gc/heap/allocs:bytes	4269030337 /gc/heap/allocs:objects	         9.000 /gc/heap/frees-by-size:bytes	68923053632 /gc/heap/frees:bytes	4269025298 /gc/heap/frees:objects	   6565986 /gc/heap/goal:bytes	   3110624 /gc/heap/live:bytes	      5039 /gc/heap/objects:objects	1329877049 /gc/heap/tiny/allocs:objects	     25716 /gc/limiter/last-enabled:gc-cycle	         0.0000819 /gc/pauses:seconds	    322354 /gc/scan/globals:bytes	   3583960 /gc/scan/heap:bytes	     22384 /gc/scan/stack:bytes	   3928698 /gc/scan/total:bytes	      2048 /gc/stack/starting-size:bytes	   1245184 /memory/classes/heap/free:bytes	   5706000 /memory/classes/heap/objects:bytes	   7684096 /memory/classes/heap/released:bytes	   1277952 /memory/classes/heap/stacks:bytes	    765680 /memory/classes/heap/unused:bytes	      1208 /memory/classes/metadata/mcache/free:bytes	     77312 /memory/classes/metadata/mcache/inuse:bytes	    171520 /memory/classes/metadata/mspan/free:bytes	    350720 /memory/classes/metadata/mspan/inuse:bytes	   2791984 /memory/classes/metadata/other:bytes	   2749760 /memory/classes/other:bytes	   1448672 /memory/classes/profiling/buckets:bytes	  24270088 /memory/classes/total:bytes	        64.00 /sched/gomaxprocs:threads	         3.000 /sched/goroutines:goroutines	         0.0000001 /sched/latencies:seconds	         0.0000328 /sched/pauses/stopping/gc:seconds	         0.0000328 /sched/pauses/stopping/other:seconds	         0.0000819 /sched/pauses/total/gc:seconds	         0.0000819 /sched/pauses/total/other:seconds	         6.926 /sync/mutex/wait/total:seconds
-    malloc_batch_test.go:109: LargeStruct Run Cnt 9887592
-    malloc_batch_test.go:109: LargeStruct Run Cnt 9887692
-    malloc_batch_test.go:109: LargeStruct Run Cnt 9897692
-    malloc_batch_test.go:109: LargeStruct Run Cnt 10897692
-    malloc_batch_test.go:109: LargeStruct Run Cnt 19799184
-BenchmarkMallocLargeStruct-64    	 8901492	       405.2 ns/op	         1.000 /cgo/go-to-c-calls:calls	         1.025 /cpu/classes/gc/mark/assist:cpu-seconds	        33.63 /cpu/classes/gc/mark/dedicated:cpu-seconds	         0.4275 /cpu/classes/gc/mark/idle:cpu-seconds	       195.3 /cpu/classes/gc/pause:cpu-seconds	       230.4 /cpu/classes/gc/total:cpu-seconds	     10271 /cpu/classes/idle:cpu-seconds	         0.0000003 /cpu/classes/scavenge/assist:cpu-seconds	         0.7959 /cpu/classes/scavenge/background:cpu-seconds	         0.7959 /cpu/classes/scavenge/total:cpu-seconds	     10757 /cpu/classes/total:cpu-seconds	       254.6 /cpu/classes/user:cpu-seconds	     28263 /gc/cycles/automatic:gc-cycles	       221.0 /gc/cycles/forced:gc-cycles	     28484 /gc/cycles/total:gc-cycles	       100.0 /gc/gogc:percent	9223372036854775808 /gc/gomemlimit:bytes	         9.000 /gc/heap/allocs-by-size:bytes	77809917608 /gc/heap/allocs:bytes	4278948314 /gc/heap/allocs:objects	         9.000 /gc/heap/frees-by-size:bytes	77805337712 /gc/heap/frees:bytes	4278944536 /gc/heap/frees:objects	   7539554 /gc/heap/goal:bytes	   3597368 /gc/heap/live:bytes	      3778 /gc/heap/objects:objects	1329877082 /gc/heap/tiny/allocs:objects	     28484 /gc/limiter/last-enabled:gc-cycle	         0.0000819 /gc/pauses:seconds	    322354 /gc/scan/globals:bytes	   2205016 /gc/scan/heap:bytes	     22464 /gc/scan/stack:bytes	   2549834 /gc/scan/total:bytes	      2048 /gc/stack/starting-size:bytes	   2957312 /memory/classes/heap/free:bytes	   4579896 /memory/classes/heap/objects:bytes	   7217152 /memory/classes/heap/released:bytes	   1277952 /memory/classes/heap/stacks:bytes	    744904 /memory/classes/heap/unused:bytes	      1208 /memory/classes/metadata/mcache/free:bytes	     77312 /memory/classes/metadata/mcache/inuse:bytes	    178560 /memory/classes/metadata/mspan/free:bytes	    343680 /memory/classes/metadata/mspan/inuse:bytes	   2720376 /memory/classes/metadata/other:bytes	   2723064 /memory/classes/other:bytes	   1448672 /memory/classes/profiling/buckets:bytes	  24270088 /memory/classes/total:bytes	        64.00 /sched/gomaxprocs:threads	         3.000 /sched/goroutines:goroutines	         0.0000001 /sched/latencies:seconds	         0.0000328 /sched/pauses/stopping/gc:seconds	         0.0000328 /sched/pauses/stopping/other:seconds	         0.0000819 /sched/pauses/total/gc:seconds	         0.0000819 /sched/pauses/total/other:seconds	         7.867 /sync/mutex/wait/total:seconds
-    malloc_batch_test.go:109: LargeStruct Run Cnt 19799185
-    malloc_batch_test.go:109: LargeStruct Run Cnt 19799285
-    malloc_batch_test.go:109: LargeStruct Run Cnt 19809285
-    malloc_batch_test.go:109: LargeStruct Run Cnt 20809285
-    malloc_batch_test.go:109: LargeStruct Run Cnt 29756609
-BenchmarkMallocLargeStruct-64    	 8947324	       404.0 ns/op	         1.000 /cgo/go-to-c-calls:calls	         1.025 /cpu/classes/gc/mark/assist:cpu-seconds	        37.61 /cpu/classes/gc/mark/dedicated:cpu-seconds	         0.4825 /cpu/classes/gc/mark/idle:cpu-seconds	       215.9 /cpu/classes/gc/pause:cpu-seconds	       255.1 /cpu/classes/gc/total:cpu-seconds	     10491 /cpu/classes/idle:cpu-seconds	         0.0000003 /cpu/classes/scavenge/assist:cpu-seconds	         1.026 /cpu/classes/scavenge/background:cpu-seconds	         1.026 /cpu/classes/scavenge/total:cpu-seconds	     11014 /cpu/classes/total:cpu-seconds	       267.4 /cpu/classes/user:cpu-seconds	     31017 /gc/cycles/automatic:gc-cycles	       226.0 /gc/cycles/forced:gc-cycles	     31243 /gc/cycles/total:gc-cycles	       100.0 /gc/gogc:percent	9223372036854775808 /gc/gomemlimit:bytes	         9.000 /gc/heap/allocs-by-size:bytes	86732122112 /gc/heap/allocs:bytes	4288912168 /gc/heap/allocs:objects	         9.000 /gc/heap/frees-by-size:bytes	86726833704 /gc/heap/frees:bytes	4288907695 /gc/heap/frees:objects	   7203986 /gc/heap/goal:bytes	   3429592 /gc/heap/live:bytes	      4473 /gc/heap/objects:objects	1329877116 /gc/heap/tiny/allocs:objects	     31243 /gc/limiter/last-enabled:gc-cycle	         0.0000819 /gc/pauses:seconds	    322354 /gc/scan/globals:bytes	   1919552 /gc/scan/heap:bytes	     22448 /gc/scan/stack:bytes	   2264354 /gc/scan/total:bytes	      2048 /gc/stack/starting-size:bytes	   1949696 /memory/classes/heap/free:bytes	   5288408 /memory/classes/heap/objects:bytes	   7413760 /memory/classes/heap/released:bytes	   1277952 /memory/classes/heap/stacks:bytes	    749096 /memory/classes/heap/unused:bytes	      1208 /memory/classes/metadata/mcache/free:bytes	     77312 /memory/classes/metadata/mcache/inuse:bytes	    132640 /memory/classes/metadata/mspan/free:bytes	    389600 /memory/classes/metadata/mspan/inuse:bytes	   2818680 /memory/classes/metadata/other:bytes	   2723064 /memory/classes/other:bytes	   1448672 /memory/classes/profiling/buckets:bytes	  24270088 /memory/classes/total:bytes	        64.00 /sched/gomaxprocs:threads	         3.000 /sched/goroutines:goroutines	         0.0000001 /sched/latencies:seconds	         0.0000328 /sched/pauses/stopping/gc:seconds	         0.0000328 /sched/pauses/stopping/other:seconds	         0.0000819 /sched/pauses/total/gc:seconds	         0.0000819 /sched/pauses/total/other:seconds	         8.828 /sync/mutex/wait/total:seconds
-    malloc_batch_test.go:109: LargeStruct Run Cnt 29756610
-    malloc_batch_test.go:109: LargeStruct Run Cnt 29756710
-    malloc_batch_test.go:109: LargeStruct Run Cnt 29766710
-    malloc_batch_test.go:109: LargeStruct Run Cnt 30766710
-    malloc_batch_test.go:109: LargeStruct Run Cnt 39666892
-BenchmarkMallocLargeStruct-64    	 8900182	       402.5 ns/op	         1.000 /cgo/go-to-c-calls:calls	         1.025 /cpu/classes/gc/mark/assist:cpu-seconds	        41.43 /cpu/classes/gc/mark/dedicated:cpu-seconds	         0.5347 /cpu/classes/gc/mark/idle:cpu-seconds	       236.2 /cpu/classes/gc/pause:cpu-seconds	       279.2 /cpu/classes/gc/total:cpu-seconds	     10710 /cpu/classes/idle:cpu-seconds	         0.0000003 /cpu/classes/scavenge/assist:cpu-seconds	         1.255 /cpu/classes/scavenge/background:cpu-seconds	         1.255 /cpu/classes/scavenge/total:cpu-seconds	     11270 /cpu/classes/total:cpu-seconds	       280.1 /cpu/classes/user:cpu-seconds	     33741 /gc/cycles/automatic:gc-cycles	       231.0 /gc/cycles/forced:gc-cycles	     33972 /gc/cycles/total:gc-cycles	       100.0 /gc/gogc:percent	9223372036854775808 /gc/gomemlimit:bytes	         9.000 /gc/heap/allocs-by-size:bytes	95612095648 /gc/heap/allocs:bytes	4298828921 /gc/heap/allocs:objects	         9.000 /gc/heap/frees-by-size:bytes	95606217544 /gc/heap/frees:bytes	4298823849 /gc/heap/frees:objects	   7390594 /gc/heap/goal:bytes	   3522904 /gc/heap/live:bytes	      5072 /gc/heap/objects:objects	1329877150 /gc/heap/tiny/allocs:objects	     33972 /gc/limiter/last-enabled:gc-cycle	         0.0000819 /gc/pauses:seconds	    322354 /gc/scan/globals:bytes	   3582016 /gc/scan/heap:bytes	     22432 /gc/scan/stack:bytes	   3926802 /gc/scan/total:bytes	      2048 /gc/stack/starting-size:bytes	   1720320 /memory/classes/heap/free:bytes	   5878104 /memory/classes/heap/objects:bytes	   7143424 /memory/classes/heap/released:bytes	   1277952 /memory/classes/heap/stacks:bytes	    757416 /memory/classes/heap/unused:bytes	      1208 /memory/classes/metadata/mcache/free:bytes	     77312 /memory/classes/metadata/mcache/inuse:bytes	    180640 /memory/classes/metadata/mspan/free:bytes	    341600 /memory/classes/metadata/mspan/inuse:bytes	   2722424 /memory/classes/metadata/other:bytes	   2721016 /memory/classes/other:bytes	   1448672 /memory/classes/profiling/buckets:bytes	  24270088 /memory/classes/total:bytes	        64.00 /sched/gomaxprocs:threads	         3.000 /sched/goroutines:goroutines	         0.0000001 /sched/latencies:seconds	         0.0000328 /sched/pauses/stopping/gc:seconds	         0.0000328 /sched/pauses/stopping/other:seconds	         0.0000819 /sched/pauses/total/gc:seconds	         0.0000819 /sched/pauses/total/other:seconds	         9.743 /sync/mutex/wait/total:seconds
-    malloc_batch_test.go:109: LargeStruct Run Cnt 39666893
-    malloc_batch_test.go:109: LargeStruct Run Cnt 39666993
-    malloc_batch_test.go:109: LargeStruct Run Cnt 39676993
-    malloc_batch_test.go:109: LargeStruct Run Cnt 40676993
-    malloc_batch_test.go:109: LargeStruct Run Cnt 49655376
-BenchmarkMallocLargeStruct-64    	 8978383	       400.2 ns/op	         1.000 /cgo/go-to-c-calls:calls	         1.025 /cpu/classes/gc/mark/assist:cpu-seconds	        45.28 /cpu/classes/gc/mark/dedicated:cpu-seconds	         0.5864 /cpu/classes/gc/mark/idle:cpu-seconds	       256.9 /cpu/classes/gc/pause:cpu-seconds	       303.7 /cpu/classes/gc/total:cpu-seconds	     10929 /cpu/classes/idle:cpu-seconds	         0.0000003 /cpu/classes/scavenge/assist:cpu-seconds	         1.486 /cpu/classes/scavenge/background:cpu-seconds	         1.486 /cpu/classes/scavenge/total:cpu-seconds	     11527 /cpu/classes/total:cpu-seconds	       292.7 /cpu/classes/user:cpu-seconds	     36457 /gc/cycles/automatic:gc-cycles	       236.0 /gc/cycles/forced:gc-cycles	     36693 /gc/cycles/total:gc-cycles	       100.0 /gc/gogc:percent	9223372036854775808 /gc/gomemlimit:bytes	         9.000 /gc/heap/allocs-by-size:bytes	104562149304 /gc/heap/allocs:bytes	4308823904 /gc/heap/allocs:objects	         9.000 /gc/heap/frees-by-size:bytes	104557755488 /gc/heap/frees:bytes	4308820463 /gc/heap/frees:objects	   6609938 /gc/heap/goal:bytes	   3132632 /gc/heap/live:bytes	      3441 /gc/heap/objects:objects	1329877184 /gc/heap/tiny/allocs:objects	     36693 /gc/limiter/last-enabled:gc-cycle	         0.0000819 /gc/pauses:seconds	    322354 /gc/scan/globals:bytes	   2501120 /gc/scan/heap:bytes	     22320 /gc/scan/stack:bytes	   2845794 /gc/scan/total:bytes	      2048 /gc/stack/starting-size:bytes	   3055616 /memory/classes/heap/free:bytes	   4393816 /memory/classes/heap/objects:bytes	   7061504 /memory/classes/heap/released:bytes	   1277952 /memory/classes/heap/stacks:bytes	    726184 /memory/classes/heap/unused:bytes	      1208 /memory/classes/metadata/mcache/free:bytes	     77312 /memory/classes/metadata/mcache/inuse:bytes	    133920 /memory/classes/metadata/mspan/free:bytes	    388320 /memory/classes/metadata/mspan/inuse:bytes	   2984568 /memory/classes/metadata/other:bytes	   2721016 /memory/classes/other:bytes	   1448672 /memory/classes/profiling/buckets:bytes	  24270088 /memory/classes/total:bytes	        64.00 /sched/gomaxprocs:threads	         3.000 /sched/goroutines:goroutines	         0.0000001 /sched/latencies:seconds	         0.0000328 /sched/pauses/stopping/gc:seconds	         0.0000328 /sched/pauses/stopping/other:seconds	         0.0000819 /sched/pauses/total/gc:seconds	         0.0000819 /sched/pauses/total/other:seconds	        10.65 /sync/mutex/wait/total:seconds
-    malloc_batch_test.go:109: LargeStruct Run Cnt 49655377
-    malloc_batch_test.go:109: LargeStruct Run Cnt 49655477
-    malloc_batch_test.go:109: LargeStruct Run Cnt 49665477
-    malloc_batch_test.go:109: LargeStruct Run Cnt 50665477
-    malloc_batch_test.go:109: LargeStruct Run Cnt 59667872
-BenchmarkMallocLargeStruct-64    	 9002395	       401.1 ns/op	         1.000 /cgo/go-to-c-calls:calls	         1.026 /cpu/classes/gc/mark/assist:cpu-seconds	        49.28 /cpu/classes/gc/mark/dedicated:cpu-seconds	         0.6446 /cpu/classes/gc/mark/idle:cpu-seconds	       277.3 /cpu/classes/gc/pause:cpu-seconds	       328.2 /cpu/classes/gc/total:cpu-seconds	     11149 /cpu/classes/idle:cpu-seconds	         0.0000003 /cpu/classes/scavenge/assist:cpu-seconds	         1.735 /cpu/classes/scavenge/background:cpu-seconds	         1.735 /cpu/classes/scavenge/total:cpu-seconds	     11784 /cpu/classes/total:cpu-seconds	       305.3 /cpu/classes/user:cpu-seconds	     39158 /gc/cycles/automatic:gc-cycles	       241.0 /gc/cycles/forced:gc-cycles	     39399 /gc/cycles/total:gc-cycles	       100.0 /gc/gogc:percent	9223372036854775808 /gc/gomemlimit:bytes	         9.000 /gc/heap/allocs-by-size:bytes	113533700456 /gc/heap/allocs:bytes	4318842781 /gc/heap/allocs:objects	         9.000 /gc/heap/frees-by-size:bytes	113528031664 /gc/heap/frees:bytes	4318837786 /gc/heap/frees:objects	   6875234 /gc/heap/goal:bytes	   3265208 /gc/heap/live:bytes	      4995 /gc/heap/objects:objects	1329877218 /gc/heap/tiny/allocs:objects	     39399 /gc/limiter/last-enabled:gc-cycle	         0.0000819 /gc/pauses:seconds	    322354 /gc/scan/globals:bytes	   1697720 /gc/scan/heap:bytes	     22464 /gc/scan/stack:bytes	   2042538 /gc/scan/total:bytes	      2048 /gc/stack/starting-size:bytes	   1671168 /memory/classes/heap/free:bytes	   5668792 /memory/classes/heap/objects:bytes	   7299072 /memory/classes/heap/released:bytes	   1277952 /memory/classes/heap/stacks:bytes	    761928 /memory/classes/heap/unused:bytes	      1208 /memory/classes/metadata/mcache/free:bytes	     77312 /memory/classes/metadata/mcache/inuse:bytes	    151200 /memory/classes/metadata/mspan/free:bytes	    371040 /memory/classes/metadata/mspan/inuse:bytes	   2822776 /memory/classes/metadata/other:bytes	   2718968 /memory/classes/other:bytes	   1448672 /memory/classes/profiling/buckets:bytes	  24270088 /memory/classes/total:bytes	        64.00 /sched/gomaxprocs:threads	         3.000 /sched/goroutines:goroutines	         0.0000001 /sched/latencies:seconds	         0.0000328 /sched/pauses/stopping/gc:seconds	         0.0000328 /sched/pauses/stopping/other:seconds	         0.0000819 /sched/pauses/total/gc:seconds	         0.0000819 /sched/pauses/total/other:seconds	        11.55 /sync/mutex/wait/total:seconds
-    malloc_batch_test.go:109: LargeStruct Run Cnt 59667873
-    malloc_batch_test.go:109: LargeStruct Run Cnt 59667973
-    malloc_batch_test.go:109: LargeStruct Run Cnt 59677973
-    malloc_batch_test.go:109: LargeStruct Run Cnt 60677973
-    malloc_batch_test.go:109: LargeStruct Run Cnt 69653309
-BenchmarkMallocLargeStruct-64    	 8975336	       399.9 ns/op	         1.000 /cgo/go-to-c-calls:calls	         1.026 /cpu/classes/gc/mark/assist:cpu-seconds	        53.11 /cpu/classes/gc/mark/dedicated:cpu-seconds	         0.7003 /cpu/classes/gc/mark/idle:cpu-seconds	       297.2 /cpu/classes/gc/pause:cpu-seconds	       352.1 /cpu/classes/gc/total:cpu-seconds	     11368 /cpu/classes/idle:cpu-seconds	         0.0000003 /cpu/classes/scavenge/assist:cpu-seconds	         1.975 /cpu/classes/scavenge/background:cpu-seconds	         1.975 /cpu/classes/scavenge/total:cpu-seconds	     12040 /cpu/classes/total:cpu-seconds	       317.9 /cpu/classes/user:cpu-seconds	     41837 /gc/cycles/automatic:gc-cycles	       246.0 /gc/cycles/forced:gc-cycles	     42083 /gc/cycles/total:gc-cycles	       100.0 /gc/gogc:percent	9223372036854775808 /gc/gomemlimit:bytes	         9.000 /gc/heap/allocs-by-size:bytes	122481035992 /gc/heap/allocs:bytes	4328834491 /gc/heap/allocs:objects	         9.000 /gc/heap/frees-by-size:bytes	122475023280 /gc/heap/frees:bytes	4328829348 /gc/heap/frees:objects	   6686706 /gc/heap/goal:bytes	   3170984 /gc/heap/live:bytes	      5143 /gc/heap/objects:objects	1329877252 /gc/heap/tiny/allocs:objects	     42083 /gc/limiter/last-enabled:gc-cycle	         0.0000819 /gc/pauses:seconds	    322354 /gc/scan/globals:bytes	   1269152 /gc/scan/heap:bytes	     22384 /gc/scan/stack:bytes	   1613890 /gc/scan/total:bytes	      2048 /gc/stack/starting-size:bytes	   2105344 /memory/classes/heap/free:bytes	   6012712 /memory/classes/heap/objects:bytes	   6504448 /memory/classes/heap/released:bytes	   1277952 /memory/classes/heap/stacks:bytes	    778456 /memory/classes/heap/unused:bytes	      1208 /memory/classes/metadata/mcache/free:bytes	     77312 /memory/classes/metadata/mcache/inuse:bytes	    173440 /memory/classes/metadata/mspan/free:bytes	    348800 /memory/classes/metadata/mspan/inuse:bytes	   2822776 /memory/classes/metadata/other:bytes	   2718968 /memory/classes/other:bytes	   1448672 /memory/classes/profiling/buckets:bytes	  24270088 /memory/classes/total:bytes	        64.00 /sched/gomaxprocs:threads	         3.000 /sched/goroutines:goroutines	         0.0000001 /sched/latencies:seconds	         0.0000328 /sched/pauses/stopping/gc:seconds	         0.0000328 /sched/pauses/stopping/other:seconds	         0.0000819 /sched/pauses/total/gc:seconds	         0.0000819 /sched/pauses/total/other:seconds	        12.40 /sync/mutex/wait/total:seconds
-    malloc_batch_test.go:109: LargeStruct Run Cnt 69653310
-    malloc_batch_test.go:109: LargeStruct Run Cnt 69653410
-    malloc_batch_test.go:109: LargeStruct Run Cnt 69663410
-    malloc_batch_test.go:109: LargeStruct Run Cnt 70663410
-    malloc_batch_test.go:109: LargeStruct Run Cnt 79698630
-BenchmarkMallocLargeStruct-64    	 9035220	       398.5 ns/op	         1.000 /cgo/go-to-c-calls:calls	         1.026 /cpu/classes/gc/mark/assist:cpu-seconds	        56.85 /cpu/classes/gc/mark/dedicated:cpu-seconds	         0.7543 /cpu/classes/gc/mark/idle:cpu-seconds	       317.4 /cpu/classes/gc/pause:cpu-seconds	       376.0 /cpu/classes/gc/total:cpu-seconds	     11588 /cpu/classes/idle:cpu-seconds	         0.0000003 /cpu/classes/scavenge/assist:cpu-seconds	         2.222 /cpu/classes/scavenge/background:cpu-seconds	         2.222 /cpu/classes/scavenge/total:cpu-seconds	     12297 /cpu/classes/total:cpu-seconds	       330.3 /cpu/classes/user:cpu-seconds	     44470 /gc/cycles/automatic:gc-cycles	       251.0 /gc/cycles/forced:gc-cycles	     44721 /gc/cycles/total:gc-cycles	       100.0 /gc/gogc:percent	9223372036854775808 /gc/gomemlimit:bytes	         9.000 /gc/heap/allocs-by-size:bytes	131482074632 /gc/heap/allocs:bytes	4338886041 /gc/heap/allocs:objects	         9.000 /gc/heap/frees-by-size:bytes	131476773280 /gc/heap/frees:bytes	4338881750 /gc/heap/frees:objects	   6887554 /gc/heap/goal:bytes	   3271400 /gc/heap/live:bytes	      4291 /gc/heap/objects:objects	1329877285 /gc/heap/tiny/allocs:objects	     44721 /gc/limiter/last-enabled:gc-cycle	         0.0000819 /gc/pauses:seconds	    322354 /gc/scan/globals:bytes	   3344840 /gc/scan/heap:bytes	     22400 /gc/scan/stack:bytes	   3689594 /gc/scan/total:bytes	      2048 /gc/stack/starting-size:bytes	   2621440 /memory/classes/heap/free:bytes	   5301352 /memory/classes/heap/objects:bytes	   6856704 /memory/classes/heap/released:bytes	   1277952 /memory/classes/heap/stacks:bytes	    719768 /memory/classes/heap/unused:bytes	      1208 /memory/classes/metadata/mcache/free:bytes	     77312 /memory/classes/metadata/mcache/inuse:bytes	    112160 /memory/classes/metadata/mspan/free:bytes	    410080 /memory/classes/metadata/mspan/inuse:bytes	   2726520 /memory/classes/metadata/other:bytes	   2978800 /memory/classes/other:bytes	   1448936 /memory/classes/profiling/buckets:bytes	  24532232 /memory/classes/total:bytes	        64.00 /sched/gomaxprocs:threads	         3.000 /sched/goroutines:goroutines	         0.0000001 /sched/latencies:seconds	         0.0000328 /sched/pauses/stopping/gc:seconds	         0.0000328 /sched/pauses/stopping/other:seconds	         0.0000819 /sched/pauses/total/gc:seconds	         0.0000819 /sched/pauses/total/other:seconds	        13.22 /sync/mutex/wait/total:seconds
-    malloc_batch_test.go:109: LargeStruct Run Cnt 79698631
-    malloc_batch_test.go:109: LargeStruct Run Cnt 79698731
-    malloc_batch_test.go:109: LargeStruct Run Cnt 79708731
-    malloc_batch_test.go:109: LargeStruct Run Cnt 80708731
-    malloc_batch_test.go:109: LargeStruct Run Cnt 89733841
-BenchmarkMallocLargeStruct-64    	 9025110	       400.4 ns/op	         1.000 /cgo/go-to-c-calls:calls	         1.026 /cpu/classes/gc/mark/assist:cpu-seconds	        60.68 /cpu/classes/gc/mark/dedicated:cpu-seconds	         0.8141 /cpu/classes/gc/mark/idle:cpu-seconds	       337.4 /cpu/classes/gc/pause:cpu-seconds	       399.9 /cpu/classes/gc/total:cpu-seconds	     11809 /cpu/classes/idle:cpu-seconds	         0.0000003 /cpu/classes/scavenge/assist:cpu-seconds	         2.486 /cpu/classes/scavenge/background:cpu-seconds	         2.486 /cpu/classes/scavenge/total:cpu-seconds	     12554 /cpu/classes/total:cpu-seconds	       342.7 /cpu/classes/user:cpu-seconds	     47063 /gc/cycles/automatic:gc-cycles	       256.0 /gc/cycles/forced:gc-cycles	     47319 /gc/cycles/total:gc-cycles	       100.0 /gc/gogc:percent	9223372036854775808 /gc/gomemlimit:bytes	         9.000 /gc/heap/allocs-by-size:bytes	140474003440 /gc/heap/allocs:bytes	4348927351 /gc/heap/allocs:objects	         9.000 /gc/heap/frees-by-size:bytes	140467926472 /gc/heap/frees:bytes	4348922148 /gc/heap/frees:objects	   7087666 /gc/heap/goal:bytes	   3371432 /gc/heap/live:bytes	      5203 /gc/heap/objects:objects	1329877319 /gc/heap/tiny/allocs:objects	     47319 /gc/limiter/last-enabled:gc-cycle	         0.0000819 /gc/pauses:seconds	    322354 /gc/scan/globals:bytes	   4055160 /gc/scan/heap:bytes	     22448 /gc/scan/stack:bytes	   4399962 /gc/scan/total:bytes	      2048 /gc/stack/starting-size:bytes	   1564672 /memory/classes/heap/free:bytes	   6076968 /memory/classes/heap/objects:bytes	   7086080 /memory/classes/heap/released:bytes	   1277952 /memory/classes/heap/stacks:bytes	    771544 /memory/classes/heap/unused:bytes	      1208 /memory/classes/metadata/mcache/free:bytes	     77312 /memory/classes/metadata/mcache/inuse:bytes	    131840 /memory/classes/metadata/mspan/free:bytes	    390400 /memory/classes/metadata/mspan/inuse:bytes	   2726520 /memory/classes/metadata/other:bytes	   2978800 /memory/classes/other:bytes	   1448936 /memory/classes/profiling/buckets:bytes	  24532232 /memory/classes/total:bytes	        64.00 /sched/gomaxprocs:threads	         3.000 /sched/goroutines:goroutines	         0.0000001 /sched/latencies:seconds	         0.0000328 /sched/pauses/stopping/gc:seconds	         0.0000328 /sched/pauses/stopping/other:seconds	         0.0000819 /sched/pauses/total/gc:seconds	         0.0000819 /sched/pauses/total/other:seconds	        14.02 /sync/mutex/wait/total:seconds
-    malloc_batch_test.go:109: LargeStruct Run Cnt 89733842
-    malloc_batch_test.go:109: LargeStruct Run Cnt 89733942
-    malloc_batch_test.go:109: LargeStruct Run Cnt 89743942
-    malloc_batch_test.go:109: LargeStruct Run Cnt 90743942
-    malloc_batch_test.go:109: LargeStruct Run Cnt 99769062
-BenchmarkMallocLargeStruct-64    	 9025120	       398.9 ns/op	         1.000 /cgo/go-to-c-calls:calls	         1.027 /cpu/classes/gc/mark/assist:cpu-seconds	        64.51 /cpu/classes/gc/mark/dedicated:cpu-seconds	         0.8715 /cpu/classes/gc/mark/idle:cpu-seconds	       357.3 /cpu/classes/gc/pause:cpu-seconds	       423.7 /cpu/classes/gc/total:cpu-seconds	     12030 /cpu/classes/idle:cpu-seconds	         0.0000003 /cpu/classes/scavenge/assist:cpu-seconds	         2.753 /cpu/classes/scavenge/background:cpu-seconds	         2.753 /cpu/classes/scavenge/total:cpu-seconds	     12811 /cpu/classes/total:cpu-seconds	       354.9 /cpu/classes/user:cpu-seconds	     49636 /gc/cycles/automatic:gc-cycles	       261.0 /gc/cycles/forced:gc-cycles	     49897 /gc/cycles/total:gc-cycles	       100.0 /gc/gogc:percent	9223372036854775808 /gc/gomemlimit:bytes	         9.000 /gc/heap/allocs-by-size:bytes	149465889880 /gc/heap/allocs:bytes	4358968487 /gc/heap/allocs:objects	         9.000 /gc/heap/frees-by-size:bytes	149460121232 /gc/heap/frees:bytes	4358963631 /gc/heap/frees:objects	   8327554 /gc/heap/goal:bytes	   3991368 /gc/heap/live:bytes	      4856 /gc/heap/objects:objects	1329877353 /gc/heap/tiny/allocs:objects	     49897 /gc/limiter/last-enabled:gc-cycle	         0.0000819 /gc/pauses:seconds	    322354 /gc/scan/globals:bytes	   2198304 /gc/scan/heap:bytes	     22464 /gc/scan/stack:bytes	   2543122 /gc/scan/total:bytes	      2048 /gc/stack/starting-size:bytes	   1949696 /memory/classes/heap/free:bytes	   5768648 /memory/classes/heap/objects:bytes	   6889472 /memory/classes/heap/released:bytes	   1277952 /memory/classes/heap/stacks:bytes	    760376 /memory/classes/heap/unused:bytes	      1208 /memory/classes/metadata/mcache/free:bytes	     77312 /memory/classes/metadata/mcache/inuse:bytes	    137760 /memory/classes/metadata/mspan/free:bytes	    384480 /memory/classes/metadata/mspan/inuse:bytes	   2857592 /memory/classes/metadata/other:bytes	   2978800 /memory/classes/other:bytes	   1448936 /memory/classes/profiling/buckets:bytes	  24532232 /memory/classes/total:bytes	        64.00 /sched/gomaxprocs:threads	         3.000 /sched/goroutines:goroutines	         0.0000001 /sched/latencies:seconds	         0.0000328 /sched/pauses/stopping/gc:seconds	         0.0000328 /sched/pauses/stopping/other:seconds	         0.0000819 /sched/pauses/total/gc:seconds	         0.0000819 /sched/pauses/total/other:seconds	        14.84 /sync/mutex/wait/total:seconds
-PASS
-ok  	runtime	200.361s
+BenchmarkMalloc8Concurrent
+fatal error: schedule: holding locks
+
+runtime stack:
+runtime.throw({0x4fd7a3?, 0x4000003340?})
+	/home/lqw/mygit/go1.24.2/src/runtime/panic.go:1101 +0x38 fp=0xffff3e7a66c0 sp=0xffff3e7a6690 pc=0x96348
+runtime.schedule()
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:3992 +0x280 fp=0xffff3e7a6700 sp=0xffff3e7a66c0 pc=0x61010
+runtime.park_m(0x40001276c0)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:4141 +0x2b0 fp=0xffff3e7a6760 sp=0xffff3e7a6700 pc=0x61320
+runtime.mcall()
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:193 +0x54 fp=0xffff3e7a6770 sp=0xffff3e7a6760 pc=0x9be44
+
+goroutine 1 gp=0x40000021c0 m=nil [chan receive, locked to thread]:
+runtime.gopark(0xffff863a9a78?, 0x10?, 0x80?, 0x96?, 0x4000286040?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x4000221620 sp=0x4000221600 pc=0x96468
+runtime.chanrecv(0x40001982a0, 0x0, 0x1)
+	/home/lqw/mygit/go1.24.2/src/runtime/chan.go:664 +0x42c fp=0x40002216a0 sp=0x4000221620 pc=0x1fa8c
+runtime.chanrecv1(0x400028a0d0?, 0x40000245e0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/chan.go:506 +0x14 fp=0x40002216d0 sp=0x40002216a0 pc=0x1f624
+testing.(*B).doBench(0x400020a008)
+	/home/lqw/mygit/go1.24.2/src/testing/benchmark.go:297 +0x78 fp=0x4000221730 sp=0x40002216d0 pc=0x1262d8
+testing.(*benchState).processBench(0x40001fc1e0, 0x1b?)
+	/home/lqw/mygit/go1.24.2/src/testing/benchmark.go:747 +0x2c8 fp=0x40002218d0 sp=0x4000221730 pc=0x127978
+testing.(*B).run(0x400020a008?)
+	/home/lqw/mygit/go1.24.2/src/testing/benchmark.go:288 +0x64 fp=0x4000221900 sp=0x40002218d0 pc=0x1260d4
+testing.(*B).Run(0x400020ab08, {0x50074c?, 0x4000221a38?}, 0x5223c0)
+	/home/lqw/mygit/go1.24.2/src/testing/benchmark.go:848 +0x3fc fp=0x4000221a00 sp=0x4000221900 pc=0x12824c
+testing.runBenchmarks.func1(0x400020ab08)
+	/home/lqw/mygit/go1.24.2/src/testing/benchmark.go:708 +0x40 fp=0x4000221a40 sp=0x4000221a00 pc=0x127670
+testing.(*B).runN(0x400020ab08, 0x1)
+	/home/lqw/mygit/go1.24.2/src/testing/benchmark.go:219 +0x1a4 fp=0x4000221ad0 sp=0x4000221a40 pc=0x125974
+testing.runBenchmarks({0x4f0285, 0x7}, 0x2?, {0x86a0c0, 0x124, 0x96928?})
+	/home/lqw/mygit/go1.24.2/src/testing/benchmark.go:717 +0x51c fp=0x4000221be0 sp=0x4000221ad0 pc=0x1275dc
+testing.(*M).Run(0x40001bc6e0)
+	/home/lqw/mygit/go1.24.2/src/testing/testing.go:2158 +0x86c fp=0x4000221e10 sp=0x4000221be0 pc=0x135a7c
+runtime_test.TestMain(0x40001bc6e0)
+	/home/lqw/mygit/go1.24.2/src/runtime/crash_test.go:49 +0xe8 fp=0x4000221ea0 sp=0x4000221e10 pc=0x322d28
+main.main()
+	_testmain.go:1613 +0x98 fp=0x4000221f40 sp=0x4000221ea0 pc=0x3feb68
+runtime.main()
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:283 +0x284 fp=0x4000221fd0 sp=0x4000221f40 pc=0x588a4
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x4000221fd0 sp=0x4000221fd0 pc=0x9e384
+
+goroutine 2 gp=0x4000002c40 m=nil [force gc (idle)]:
+runtime.gopark(0x0?, 0x841970?, 0x80?, 0x96?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40000e6790 sp=0x40000e6770 pc=0x96468
+runtime.goparkunlock(...)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:441
+runtime.forcegchelper()
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:348 +0xb8 fp=0x40000e67d0 sp=0x40000e6790 pc=0x58bf8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40000e67d0 sp=0x40000e67d0 pc=0x9e384
+created by runtime.init.7 in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:336 +0x24
+
+goroutine 18 gp=0x4000182380 m=nil [GC sweep wait]:
+runtime.gopark(0x1?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40000e2760 sp=0x40000e2740 pc=0x96468
+runtime.goparkunlock(...)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:441
+runtime.bgsweep(0x4000190000)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgcsweep.go:316 +0x108 fp=0x40000e27b0 sp=0x40000e2760 pc=0x404c8
+runtime.gcenable.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:204 +0x28 fp=0x40000e27d0 sp=0x40000e27b0 pc=0x33d48
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40000e27d0 sp=0x40000e27d0 pc=0x9e384
+created by runtime.gcenable in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:204 +0x6c
+
+goroutine 19 gp=0x4000182540 m=nil [GC scavenge wait]:
+runtime.gopark(0x10000?, 0x5a4ae0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40000e2f60 sp=0x40000e2f40 pc=0x96468
+runtime.goparkunlock(...)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:441
+runtime.(*scavengerState).park(0x878600)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgcscavenge.go:425 +0x5c fp=0x40000e2f90 sp=0x40000e2f60 pc=0x3df9c
+runtime.bgscavenge(0x4000190000)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgcscavenge.go:658 +0xac fp=0x40000e2fb0 sp=0x40000e2f90 pc=0x3e51c
+runtime.gcenable.gowrap2()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:205 +0x28 fp=0x40000e2fd0 sp=0x40000e2fb0 pc=0x33ce8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40000e2fd0 sp=0x40000e2fd0 pc=0x9e384
+created by runtime.gcenable in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:205 +0xac
+
+goroutine 20 gp=0x4000182a80 m=nil [finalizer wait]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40000e3590 sp=0x40000e3570 pc=0x96468
+runtime.runfinq()
+	/home/lqw/mygit/go1.24.2/src/runtime/mfinal.go:196 +0x108 fp=0x40000e37d0 sp=0x40000e3590 pc=0x32cd8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40000e37d0 sp=0x40000e37d0 pc=0x9e384
+created by runtime.createfing in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mfinal.go:166 +0x80
+
+goroutine 21 gp=0x4000182c40 m=nil [chan receive]:
+runtime.gopark(0x40001bc640?, 0x400000e060?, 0x48?, 0x3f?, 0x2e08b8?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40000e3ef0 sp=0x40000e3ed0 pc=0x96468
+runtime.chanrecv(0x40001980e0, 0x0, 0x1)
+	/home/lqw/mygit/go1.24.2/src/runtime/chan.go:664 +0x42c fp=0x40000e3f70 sp=0x40000e3ef0 pc=0x1fa8c
+runtime.chanrecv1(0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/chan.go:506 +0x14 fp=0x40000e3fa0 sp=0x40000e3f70 pc=0x1f624
+runtime.unique_runtime_registerUniqueMapCleanup.func2(...)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1796
+runtime.unique_runtime_registerUniqueMapCleanup.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1799 +0x3c fp=0x40000e3fd0 sp=0x40000e3fa0 pc=0x36f6c
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40000e3fd0 sp=0x40000e3fd0 pc=0x9e384
+created by unique.runtime_registerUniqueMapCleanup in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1794 +0x78
+
+goroutine 22 gp=0x4000182e00 m=nil [sleep]:
+runtime.gopark(0xd23edcf66f042?, 0x4000288000?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40000f6ee0 sp=0x40000f6ec0 pc=0x96468
+time.Sleep(0x5f5e100)
+	/home/lqw/mygit/go1.24.2/src/runtime/time.go:338 +0x158 fp=0x40000f6f40 sp=0x40000f6ee0 pc=0x9a208
+runtime/pprof.profileWriter({0x5ab090?, 0x40001a4168?})
+	/home/lqw/mygit/go1.24.2/src/runtime/pprof/pprof.go:871 +0x50 fp=0x40000f6fb0 sp=0x40000f6f40 pc=0x1c2cb0
+runtime/pprof.StartCPUProfile.gowrap2()
+	/home/lqw/mygit/go1.24.2/src/runtime/pprof/pprof.go:856 +0x2c fp=0x40000f6fd0 sp=0x40000f6fb0 pc=0x1c2b8c
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40000f6fd0 sp=0x40000f6fd0 pc=0x9e384
+created by runtime/pprof.StartCPUProfile in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/pprof/pprof.go:856 +0x188
+
+goroutine 23 gp=0x4000183340 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40000e4f10 sp=0x40000e4ef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40000e4fb0 sp=0x40000e4f10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40000e4fd0 sp=0x40000e4fb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40000e4fd0 sp=0x40000e4fd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 34 gp=0x40002ba380 m=nil [GC worker (idle)]:
+runtime.gopark(0x4000282000?, 0x4000284000?, 0x0?, 0x80?, 0x878580?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40000e4710 sp=0x40000e46f0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40000e47b0 sp=0x40000e4710 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40000e47d0 sp=0x40000e47b0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40000e47d0 sp=0x40000e47d0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 35 gp=0x40002ba540 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40002ca710 sp=0x40002ca6f0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40002ca7b0 sp=0x40002ca710 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40002ca7d0 sp=0x40002ca7b0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40002ca7d0 sp=0x40002ca7d0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 36 gp=0x40002ba700 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40002caf10 sp=0x40002caef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40002cafb0 sp=0x40002caf10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40002cafd0 sp=0x40002cafb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40002cafd0 sp=0x40002cafd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 37 gp=0x40002ba8c0 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40002cb710 sp=0x40002cb6f0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40002cb7b0 sp=0x40002cb710 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40002cb7d0 sp=0x40002cb7b0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40002cb7d0 sp=0x40002cb7d0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 38 gp=0x40002baa80 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40002cbf10 sp=0x40002cbef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40002cbfb0 sp=0x40002cbf10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40002cbfd0 sp=0x40002cbfb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40002cbfd0 sp=0x40002cbfd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 39 gp=0x40002bac40 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40002cc710 sp=0x40002cc6f0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40002cc7b0 sp=0x40002cc710 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40002cc7d0 sp=0x40002cc7b0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40002cc7d0 sp=0x40002cc7d0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 40 gp=0x40002bae00 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40002ccf10 sp=0x40002ccef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40002ccfb0 sp=0x40002ccf10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40002ccfd0 sp=0x40002ccfb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40002ccfd0 sp=0x40002ccfd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 41 gp=0x40002bafc0 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40002cd710 sp=0x40002cd6f0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40002cd7b0 sp=0x40002cd710 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40002cd7d0 sp=0x40002cd7b0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40002cd7d0 sp=0x40002cd7d0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 42 gp=0x40002bb180 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40002cdf10 sp=0x40002cdef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40002cdfb0 sp=0x40002cdf10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40002cdfd0 sp=0x40002cdfb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40002cdfd0 sp=0x40002cdfd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 3 gp=0x4000003500 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40000e6f10 sp=0x40000e6ef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40000e6fb0 sp=0x40000e6f10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40000e6fd0 sp=0x40000e6fb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40000e6fd0 sp=0x40000e6fd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 4 gp=0x40000036c0 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40000e7710 sp=0x40000e76f0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40000e77b0 sp=0x40000e7710 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40000e77d0 sp=0x40000e77b0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40000e77d0 sp=0x40000e77d0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 5 gp=0x4000003880 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40000e7f10 sp=0x40000e7ef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40000e7fb0 sp=0x40000e7f10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40000e7fd0 sp=0x40000e7fb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40000e7fd0 sp=0x40000e7fd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 6 gp=0x4000003a40 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40000e8710 sp=0x40000e86f0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40000e87b0 sp=0x40000e8710 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40000e87d0 sp=0x40000e87b0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40000e87d0 sp=0x40000e87d0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 7 gp=0x4000003c00 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40000e8f10 sp=0x40000e8ef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40000e8fb0 sp=0x40000e8f10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40000e8fd0 sp=0x40000e8fb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40000e8fd0 sp=0x40000e8fd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 8 gp=0x4000003dc0 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40000e9710 sp=0x40000e96f0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40000e97b0 sp=0x40000e9710 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40000e97d0 sp=0x40000e97b0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40000e97d0 sp=0x40000e97d0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 9 gp=0x400011c000 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40000e9f10 sp=0x40000e9ef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40000e9fb0 sp=0x40000e9f10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40000e9fd0 sp=0x40000e9fb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40000e9fd0 sp=0x40000e9fd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 10 gp=0x400011c1c0 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40002c6710 sp=0x40002c66f0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40002c67b0 sp=0x40002c6710 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40002c67d0 sp=0x40002c67b0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40002c67d0 sp=0x40002c67d0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 11 gp=0x400011c380 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40002c6f10 sp=0x40002c6ef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40002c6fb0 sp=0x40002c6f10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40002c6fd0 sp=0x40002c6fb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40002c6fd0 sp=0x40002c6fd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 12 gp=0x400011c540 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40002c7710 sp=0x40002c76f0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40002c77b0 sp=0x40002c7710 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40002c77d0 sp=0x40002c77b0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40002c77d0 sp=0x40002c77d0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 13 gp=0x400011c700 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40002c7f10 sp=0x40002c7ef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40002c7fb0 sp=0x40002c7f10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40002c7fd0 sp=0x40002c7fb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40002c7fd0 sp=0x40002c7fd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 14 gp=0x400011c8c0 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40002c8710 sp=0x40002c86f0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40002c87b0 sp=0x40002c8710 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40002c87d0 sp=0x40002c87b0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40002c87d0 sp=0x40002c87d0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 15 gp=0x400011ca80 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40002c8f10 sp=0x40002c8ef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40002c8fb0 sp=0x40002c8f10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40002c8fd0 sp=0x40002c8fb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40002c8fd0 sp=0x40002c8fd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 16 gp=0x400011cc40 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40002c9710 sp=0x40002c96f0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40002c97b0 sp=0x40002c9710 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40002c97d0 sp=0x40002c97b0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40002c97d0 sp=0x40002c97d0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 50 gp=0x400011ce00 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40002c9f10 sp=0x40002c9ef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40002c9fb0 sp=0x40002c9f10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40002c9fd0 sp=0x40002c9fb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40002c9fd0 sp=0x40002c9fd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 51 gp=0x400011cfc0 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x4000122710 sp=0x40001226f0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40001227b0 sp=0x4000122710 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40001227d0 sp=0x40001227b0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40001227d0 sp=0x40001227d0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 52 gp=0x400011d180 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x4000122f10 sp=0x4000122ef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x4000122fb0 sp=0x4000122f10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x4000122fd0 sp=0x4000122fb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x4000122fd0 sp=0x4000122fd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 53 gp=0x400011d340 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x4000123710 sp=0x40001236f0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40001237b0 sp=0x4000123710 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40001237d0 sp=0x40001237b0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40001237d0 sp=0x40001237d0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 54 gp=0x400011d500 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x4000123f10 sp=0x4000123ef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x4000123fb0 sp=0x4000123f10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x4000123fd0 sp=0x4000123fb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x4000123fd0 sp=0x4000123fd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 55 gp=0x400011d6c0 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x4000124710 sp=0x40001246f0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40001247b0 sp=0x4000124710 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40001247d0 sp=0x40001247b0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40001247d0 sp=0x40001247d0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 56 gp=0x400011d880 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x4000124f10 sp=0x4000124ef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x4000124fb0 sp=0x4000124f10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x4000124fd0 sp=0x4000124fb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x4000124fd0 sp=0x4000124fd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 57 gp=0x400011da40 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x4000125710 sp=0x40001256f0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40001257b0 sp=0x4000125710 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40001257d0 sp=0x40001257b0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40001257d0 sp=0x40001257d0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 58 gp=0x400011dc00 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x4000125f10 sp=0x4000125ef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x4000125fb0 sp=0x4000125f10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x4000125fd0 sp=0x4000125fb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x4000125fd0 sp=0x4000125fd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 59 gp=0x400011ddc0 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x400011e710 sp=0x400011e6f0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x400011e7b0 sp=0x400011e710 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x400011e7d0 sp=0x400011e7b0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x400011e7d0 sp=0x400011e7d0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 60 gp=0x4000126000 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x400011ef10 sp=0x400011eef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x400011efb0 sp=0x400011ef10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x400011efd0 sp=0x400011efb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x400011efd0 sp=0x400011efd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 61 gp=0x40001261c0 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x400011f710 sp=0x400011f6f0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x400011f7b0 sp=0x400011f710 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x400011f7d0 sp=0x400011f7b0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x400011f7d0 sp=0x400011f7d0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 62 gp=0x4000126380 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x400011ff10 sp=0x400011fef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x400011ffb0 sp=0x400011ff10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x400011ffd0 sp=0x400011ffb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x400011ffd0 sp=0x400011ffd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 63 gp=0x4000126540 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x4000120710 sp=0x40001206f0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40001207b0 sp=0x4000120710 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40001207d0 sp=0x40001207b0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40001207d0 sp=0x40001207d0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 64 gp=0x4000126700 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x4000120f10 sp=0x4000120ef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x4000120fb0 sp=0x4000120f10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x4000120fd0 sp=0x4000120fb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x4000120fd0 sp=0x4000120fd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 65 gp=0x40001268c0 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x4000121710 sp=0x40001216f0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40001217b0 sp=0x4000121710 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40001217d0 sp=0x40001217b0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40001217d0 sp=0x40001217d0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 66 gp=0x4000126a80 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x4000121f10 sp=0x4000121ef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x4000121fb0 sp=0x4000121f10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x4000121fd0 sp=0x4000121fb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x4000121fd0 sp=0x4000121fd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 67 gp=0x4000126c40 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x400012c710 sp=0x400012c6f0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x400012c7b0 sp=0x400012c710 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x400012c7d0 sp=0x400012c7b0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x400012c7d0 sp=0x400012c7d0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 68 gp=0x4000126e00 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x400012cf10 sp=0x400012cef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x400012cfb0 sp=0x400012cf10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x400012cfd0 sp=0x400012cfb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x400012cfd0 sp=0x400012cfd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 69 gp=0x4000126fc0 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x400012d710 sp=0x400012d6f0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x400012d7b0 sp=0x400012d710 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x400012d7d0 sp=0x400012d7b0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x400012d7d0 sp=0x400012d7d0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 70 gp=0x4000127180 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x400012df10 sp=0x400012def0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x400012dfb0 sp=0x400012df10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x400012dfd0 sp=0x400012dfb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x400012dfd0 sp=0x400012dfd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 43 gp=0x40002bb340 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x4000128710 sp=0x40001286f0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40001287b0 sp=0x4000128710 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40001287d0 sp=0x40001287b0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40001287d0 sp=0x40001287d0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 44 gp=0x40002bb500 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x4000128f10 sp=0x4000128ef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x4000128fb0 sp=0x4000128f10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x4000128fd0 sp=0x4000128fb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x4000128fd0 sp=0x4000128fd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 45 gp=0x40002bb6c0 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x4000129710 sp=0x40001296f0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40001297b0 sp=0x4000129710 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40001297d0 sp=0x40001297b0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40001297d0 sp=0x40001297d0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 46 gp=0x40002bb880 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x4000129f10 sp=0x4000129ef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x4000129fb0 sp=0x4000129f10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x4000129fd0 sp=0x4000129fb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x4000129fd0 sp=0x4000129fd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 47 gp=0x40002bba40 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x400012a710 sp=0x400012a6f0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x400012a7b0 sp=0x400012a710 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x400012a7d0 sp=0x400012a7b0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x400012a7d0 sp=0x400012a7d0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 48 gp=0x40002bbc00 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x400012af10 sp=0x400012aef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x400012afb0 sp=0x400012af10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x400012afd0 sp=0x400012afb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x400012afd0 sp=0x400012afd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 49 gp=0x40002bbdc0 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x400012b710 sp=0x400012b6f0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x400012b7b0 sp=0x400012b710 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x400012b7d0 sp=0x400012b7b0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x400012b7d0 sp=0x400012b7d0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 82 gp=0x40002ce000 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x400012bf10 sp=0x400012bef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x400012bfb0 sp=0x400012bf10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x400012bfd0 sp=0x400012bfb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x400012bfd0 sp=0x400012bfd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 83 gp=0x40002ce1c0 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40002d4710 sp=0x40002d46f0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40002d47b0 sp=0x40002d4710 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40002d47d0 sp=0x40002d47b0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40002d47d0 sp=0x40002d47d0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 84 gp=0x40002ce380 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40002d4f10 sp=0x40002d4ef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40002d4fb0 sp=0x40002d4f10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40002d4fd0 sp=0x40002d4fb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40002d4fd0 sp=0x40002d4fd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 85 gp=0x40002ce540 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40002d5710 sp=0x40002d56f0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40002d57b0 sp=0x40002d5710 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40002d57d0 sp=0x40002d57b0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40002d57d0 sp=0x40002d57d0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 86 gp=0x40002ce700 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40002d5f10 sp=0x40002d5ef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40002d5fb0 sp=0x40002d5f10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40002d5fd0 sp=0x40002d5fb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40002d5fd0 sp=0x40002d5fd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 87 gp=0x40002ce8c0 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40002d6710 sp=0x40002d66f0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40002d67b0 sp=0x40002d6710 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40002d67d0 sp=0x40002d67b0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40002d67d0 sp=0x40002d67d0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 88 gp=0x40002cea80 m=nil [GC worker (idle)]:
+runtime.gopark(0xd23edcf9bb106?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40002d6f10 sp=0x40002d6ef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40002d6fb0 sp=0x40002d6f10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40002d6fd0 sp=0x40002d6fb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40002d6fd0 sp=0x40002d6fd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 89 gp=0x40002cec40 m=nil [GC worker (idle)]:
+runtime.gopark(0xd23edcf9ba404?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40002d7710 sp=0x40002d76f0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40002d77b0 sp=0x40002d7710 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40002d77d0 sp=0x40002d77b0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40002d77d0 sp=0x40002d77d0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 24 gp=0x4000183500 m=nil [GC worker (idle)]:
+runtime.gopark(0xd23edcf9c01d8?, 0x1?, 0xc2?, 0x3d?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40000f7f10 sp=0x40000f7ef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40000f7fb0 sp=0x40000f7f10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40000f7fd0 sp=0x40000f7fb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40000f7fd0 sp=0x40000f7fd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 25 gp=0x40001836c0 m=nil [GC worker (idle)]:
+runtime.gopark(0xd23edcf9bc3a8?, 0x4000024580?, 0x1b?, 0xa?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40000e5f10 sp=0x40000e5ef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40000e5fb0 sp=0x40000e5f10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40000e5fd0 sp=0x40000e5fb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40000e5fd0 sp=0x40000e5fd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 71 gp=0x4000127340 m=nil [GC worker (idle)]:
+runtime.gopark(0xd23edcf9f3e34?, 0x1?, 0x92?, 0xfe?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40000fcf10 sp=0x40000fcef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x40000fcfb0 sp=0x40000fcf10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x40000fcfd0 sp=0x40000fcfb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40000fcfd0 sp=0x40000fcfd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 72 gp=0x4000127500 m=nil [GC worker (idle)]:
+runtime.gopark(0xd23edcf9baf4e?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x400012ef10 sp=0x400012eef0 pc=0x96468
+runtime.gcBgMarkWorker(0x4000198460)
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1423 +0xdc fp=0x400012efb0 sp=0x400012ef10 pc=0x361dc
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x28 fp=0x400012efd0 sp=0x400012efb0 pc=0x360c8
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x400012efd0 sp=0x400012efd0 pc=0x9e384
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/runtime/mgc.go:1339 +0x140
+
+goroutine 91 gp=0x40001276c0 m=nil [runnable]:
+runtime.gopark(0x8a7480?, 0x939e0?, 0xc8?, 0x25?, 0x2b3cc?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40000fdd60 sp=0x40000fdd40 pc=0x96468
+runtime.chansend(0x40001de1c0, 0x40000fde38, 0x1, 0x699d183c?)
+	/home/lqw/mygit/go1.24.2/src/runtime/chan.go:283 +0x3b8 fp=0x40000fddd0 sp=0x40000fdd60 pc=0x1eb58
+runtime.chansend1(0x40002d2618?, 0x12576c?)
+	/home/lqw/mygit/go1.24.2/src/runtime/chan.go:161 +0x18 fp=0x40000fde00 sp=0x40000fddd0 pc=0x1e788
+runtime_test.BenchmarkMalloc8Concurrent.func2(0x400020a008, 0x40001de1c0)
+	/home/lqw/mygit/go1.24.2/src/runtime/malloc_batch_test.go:156 +0xb8 fp=0x40000fde50 sp=0x40000fde00 pc=0x341128
+runtime_test.BenchmarkMalloc8Concurrent(0x400020a008)
+	/home/lqw/mygit/go1.24.2/src/runtime/malloc_batch_test.go:159 +0xc4 fp=0x40000fde90 sp=0x40000fde50 pc=0x341044
+testing.(*B).runN(0x400020a008, 0x64)
+	/home/lqw/mygit/go1.24.2/src/testing/benchmark.go:219 +0x1a4 fp=0x40000fdf20 sp=0x40000fde90 pc=0x125974
+testing.(*B).launch(0x400020a008)
+	/home/lqw/mygit/go1.24.2/src/testing/benchmark.go:354 +0x178 fp=0x40000fdfb0 sp=0x40000fdf20 pc=0x126518
+testing.(*B).doBench.gowrap1()
+	/home/lqw/mygit/go1.24.2/src/testing/benchmark.go:296 +0x28 fp=0x40000fdfd0 sp=0x40000fdfb0 pc=0x126368
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40000fdfd0 sp=0x40000fdfd0 pc=0x9e384
+created by testing.(*B).doBench in goroutine 1
+	/home/lqw/mygit/go1.24.2/src/testing/benchmark.go:296 +0x68
+
+goroutine 90 gp=0x4000127880 m=nil [chan receive]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40002d2e90 sp=0x40002d2e70 pc=0x96468
+runtime.chanrecv(0x40001de150, 0x40002d2fa0, 0x1)
+	/home/lqw/mygit/go1.24.2/src/runtime/chan.go:664 +0x42c fp=0x40002d2f10 sp=0x40002d2e90 pc=0x1fa8c
+runtime.chanrecv2(0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/chan.go:511 +0x14 fp=0x40002d2f40 sp=0x40002d2f10 pc=0x1f644
+runtime_test.BenchmarkMalloc8Concurrent.func1()
+	/home/lqw/mygit/go1.24.2/src/runtime/malloc_batch_test.go:141 +0x64 fp=0x40002d2fd0 sp=0x40002d2f40 pc=0x341224
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40002d2fd0 sp=0x40002d2fd0 pc=0x9e384
+created by runtime_test.BenchmarkMalloc8Concurrent in goroutine 98
+	/home/lqw/mygit/go1.24.2/src/runtime/malloc_batch_test.go:139 +0xb0
+
+goroutine 26 gp=0x40002cf880 m=nil [chan receive]:
+runtime.gopark(0x40001de1c0?, 0x4000280060?, 0x0?, 0x0?, 0x40002d1ef8?)
+	/home/lqw/mygit/go1.24.2/src/runtime/proc.go:435 +0xc8 fp=0x40002d1e90 sp=0x40002d1e70 pc=0x96468
+runtime.chanrecv(0x40001de1c0, 0x40002d1fa0, 0x1)
+	/home/lqw/mygit/go1.24.2/src/runtime/chan.go:664 +0x42c fp=0x40002d1f10 sp=0x40002d1e90 pc=0x1fa8c
+runtime.chanrecv2(0x0?, 0x0?)
+	/home/lqw/mygit/go1.24.2/src/runtime/chan.go:511 +0x14 fp=0x40002d1f40 sp=0x40002d1f10 pc=0x1f644
+runtime_test.BenchmarkMalloc8Concurrent.func1()
+	/home/lqw/mygit/go1.24.2/src/runtime/malloc_batch_test.go:141 +0x64 fp=0x40002d1fd0 sp=0x40002d1f40 pc=0x341224
+runtime.goexit({})
+	/home/lqw/mygit/go1.24.2/src/runtime/asm_arm64.s:1223 +0x4 fp=0x40002d1fd0 sp=0x40002d1fd0 pc=0x9e384
+created by runtime_test.BenchmarkMalloc8Concurrent in goroutine 91
+	/home/lqw/mygit/go1.24.2/src/runtime/malloc_batch_test.go:139 +0xb0
+exit status 2
+FAIL	runtime	0.017s
+FAIL

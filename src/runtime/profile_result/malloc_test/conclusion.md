@@ -2,7 +2,11 @@
 
 > 在循环前后添加 `b.ResetTimer()` `b.StopTimer()`
 
-## 当前commit 结果
+## 当前commit结果
+
+在 [proc.go](../../proc.go) `schedule`函数中由于`mp.locks != 0`导致`throw`崩溃。
+
+## 6d617ac 结果
 
 ```
 goos: linux
