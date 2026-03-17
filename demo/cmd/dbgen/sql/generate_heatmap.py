@@ -145,6 +145,24 @@ def main():
         help='输出目录（默认与CSV文件相同）'
     )
     
+    parser.add_argument(
+        '--prefix',
+        default='nonheap_root_causes',
+        help='输出文件名前缀（默认：nonheap_root_causes）'
+    )
+    
+    parser.add_argument(
+        '--title-count',
+        default='非堆根因分布',
+        help='Count热力图标题'
+    )
+    
+    parser.add_argument(
+        '--title-percentage',
+        default='非堆根因分布（百分比）',
+        help='Percentage热力图标题'
+    )
+    
     args = parser.parse_args()
     
     # 确定输出目录
@@ -167,10 +185,10 @@ def main():
     count_df_clean = clean_dataframe(count_df)
     
     # 生成Count热力图
-    count_output = os.path.join(output_dir, 'nonheap_root_causes_count_heatmap.png')
+    count_output = os.path.join(output_dir, f'{args.prefix}_count_heatmap.png')
     create_heatmap(
         count_df_clean,
-        '栈分配结点根因分布',
+        args.title_count,
         count_output,
         cmap='YlOrRd'
     )
@@ -187,7 +205,7 @@ def main():
     percentage_df_clean = clean_dataframe(percentage_df)
     
     # 生成Percentage热力图
-    percentage_output = os.path.join(output_dir, 'nonheap_root_causes_percentage_heatmap.png')
+    percentage_output = os.path.join(output_dir, f'{args.prefix}_percentage_heatmap.png')
     create_heatmap(
         percentage_df_clean,
         '栈分配结点逃逸根因分布（百分比）',

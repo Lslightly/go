@@ -267,7 +267,10 @@ echo "生成热力图..."
 python3 "$script_dir/generate_heatmap.py" \
     --count-file "$csv_count_transpose_file" \
     --percentage-file "$csv_percentage_transpose_file" \
-    --output-dir "$output_dir"
+    --output-dir "$output_dir" \
+    --prefix nonheap_root_causes \
+    --title-count "栈分配结点根因分布" \
+    --title-percentage "栈分配结点根因分布（百分比）"
 
 echo "热力图生成完成！"
 echo
