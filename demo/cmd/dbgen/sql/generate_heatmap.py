@@ -98,8 +98,8 @@ def create_heatmap(df, title, output_file, cmap='YlOrRd', figsize=(12, 8)):
     
     # 设置标题和标签
     plt.title(title, fontsize=14, fontweight='bold', pad=20)
-    plt.xlabel('Databases', fontsize=12)
-    plt.ylabel('Root Causes', fontsize=12)
+    plt.xlabel('仓库', fontsize=12)
+    plt.ylabel('根因', fontsize=12)
     
     # 旋转X轴标签以避免重叠
     plt.xticks(rotation=45, ha='right')
@@ -170,7 +170,7 @@ def main():
     count_output = os.path.join(output_dir, 'nonheap_root_causes_count_heatmap.png')
     create_heatmap(
         count_df_clean,
-        'Non-Heap Root Causes Distribution (Count)',
+        '栈分配结点根因分布',
         count_output,
         cmap='YlOrRd'
     )
@@ -190,7 +190,7 @@ def main():
     percentage_output = os.path.join(output_dir, 'nonheap_root_causes_percentage_heatmap.png')
     create_heatmap(
         percentage_df_clean,
-        'Non-Heap Root Causes Distribution (Percentage)',
+        '栈分配结点逃逸根因分布（百分比）',
         percentage_output,
         cmap='YlGnBu'
     )

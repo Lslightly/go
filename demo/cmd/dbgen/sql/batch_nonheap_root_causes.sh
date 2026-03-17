@@ -55,17 +55,49 @@ databases=(
 # ClickHouse连接配置
 CLICKHOUSE_PORT=19001
 
+# 数据库到仓库名称的映射表
+# 格式: 数据库名:仓库名
+declare -A db_repo_mapping=(
+    ["bench_cli"]="cli"
+    ["bench_fzf"]="fzf"
+    ["bench_gogs"]="gogs"
+    ["bench_grpc_go"]="grpc-go"
+    ["bench_hugo"]="hugo"
+    ["bench_rclone"]="rclone"
+)
+
 # 获取脚本所在目录
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+output_dir=$script_dir/output
+
+# 创建输出目录
+mkdir -p "$output_dir"
 
 # SQL文件路径
 sql_file="$script_dir/nonheap_root_causes.sql"
 
 # 输出文件路径
-csv_count_file="$script_dir/nonheap_root_causes_count.csv"
-csv_percentage_file="$script_dir/nonheap_root_causes_percentage.csv"
-csv_count_transpose_file="$script_dir/nonheap_root_causes_count_transpose.csv"
-csv_percentage_transpose_file="$script_dir/nonheap_root_causes_percentage_transpose.csv"
+csv_count_file="$output_dir/nonheap_root_causes_count.csv"
+csv_percentage_file="$output_dir/nonheap_root_causes_percentage.csv"
+csv_count_transpose_file="$output_dir/nonheap_root_causes_count_transpose.csv"
+csv_percentage_transpose_file="$output_dir/nonheap_root_causes_percentage_transpose.csv"
+
+# 获取仓库名称的函数
+get_repo_name() {
+    local db_name=$1
+    local repo_name="${db_repo_mapping[$db_name]}"
+    if [ -z "$repo_name" ]; then
+        # 如果映射表中没有，移除bench_前缀
+        repo_name="${db_name#bench_}"
+    fi
+    echo "$repo_name"
+}
+
+# 获取所有仓库名称列表（用于CSV表头）
+repo_names=()
+for db in "${databases[@]}"; do
+    repo_names+=("$(get_repo_name "$db")")
+done
 
 # 临时文件用于收集所有数据库的原始数据
 tmp_raw_data=$(mktemp)
@@ -108,14 +140,15 @@ for db in "${databases[@]}"; do
     
     # 检查是否有数据
     if [ -s "$tmp_db_result" ]; then
-        echo "### ${db}"
+        repo_name=$(get_repo_name "$db")
+        echo "### ${repo_name}"
         echo
-        echo "| Root Cause        | Count | Percentage |"
-        echo "|-------------------|-------|------------|"
+        echo "| 根因                | 数量   | 百分比     |"
+        echo "|---------------------|--------|------------|"
         
         # 输出表格行
         while IFS=',' read -r db_name root_cause count percentage; do
-            printf "| %-17s | %-5s | %.2f%% |\n" "$root_cause" "$count" "$percentage"
+            printf "| %-19s | %-6s | %.2f%% |\n" "$root_cause" "$count" "$percentage"
         done < "$tmp_db_result"
         
         echo
@@ -140,15 +173,16 @@ echo
 # =============================================================================
 
 # 生成Count表格
-echo "生成CSV文件（Count - 数据库为行）..."
-printf "Database" > "$csv_count_file"
+echo "生成CSV文件（Count - 仓库为行）..."
+printf "仓库" > "$csv_count_file"
 for cause in "${root_causes[@]}"; do
     printf ",%s" "$cause" >> "$csv_count_file"
 done
 echo >> "$csv_count_file"
 
 for db in "${databases[@]}"; do
-    printf "%s" "$db" >> "$csv_count_file"
+    repo_name=$(get_repo_name "$db")
+    printf "%s" "$repo_name" >> "$csv_count_file"
     for cause in "${root_causes[@]}"; do
         # 从原始数据中查找对应的count值
         val=$(awk -F',' -v db="$db" -v cause="$cause" '$1==db && $2==cause {print $3}' "$tmp_raw_data")
@@ -158,15 +192,16 @@ for db in "${databases[@]}"; do
 done
 
 # 生成Percentage表格
-echo "生成CSV文件（Percentage - 数据库为行）..."
-printf "Database" > "$csv_percentage_file"
+echo "生成CSV文件（Percentage - 仓库为行）..."
+printf "仓库" > "$csv_percentage_file"
 for cause in "${root_causes[@]}"; do
     printf ",%s" "$cause" >> "$csv_percentage_file"
 done
 echo >> "$csv_percentage_file"
 
 for db in "${databases[@]}"; do
-    printf "%s" "$db" >> "$csv_percentage_file"
+    repo_name=$(get_repo_name "$db")
+    printf "%s" "$repo_name" >> "$csv_percentage_file"
     for cause in "${root_causes[@]}"; do
         # 从原始数据中查找对应的percentage值
         val=$(awk -F',' -v db="$db" -v cause="$cause" '$1==db && $2==cause {printf "%.2f", $4}' "$tmp_raw_data")
@@ -181,9 +216,10 @@ done
 
 # 生成Count表格（转置）到单独文件
 echo "生成CSV文件（Count - 根因为行，转置版本）..."
-printf "Root Cause" > "$csv_count_transpose_file"
+printf "根因" > "$csv_count_transpose_file"
 for db in "${databases[@]}"; do
-    printf ",%s" "$db" >> "$csv_count_transpose_file"
+    repo_name=$(get_repo_name "$db")
+    printf ",%s" "$repo_name" >> "$csv_count_transpose_file"
 done
 echo >> "$csv_count_transpose_file"
 
@@ -199,9 +235,10 @@ done
 
 # 生成Percentage表格（转置）到单独文件
 echo "生成CSV文件（Percentage - 根因为行，转置版本）..."
-printf "Root Cause" > "$csv_percentage_transpose_file"
+printf "根因" > "$csv_percentage_transpose_file"
 for db in "${databases[@]}"; do
-    printf ",%s" "$db" >> "$csv_percentage_transpose_file"
+    repo_name=$(get_repo_name "$db")
+    printf ",%s" "$repo_name" >> "$csv_percentage_transpose_file"
 done
 echo >> "$csv_percentage_transpose_file"
 
@@ -229,7 +266,8 @@ echo
 echo "生成热力图..."
 python3 "$script_dir/generate_heatmap.py" \
     --count-file "$csv_count_transpose_file" \
-    --percentage-file "$csv_percentage_transpose_file"
+    --percentage-file "$csv_percentage_transpose_file" \
+    --output-dir "$output_dir"
 
 echo "热力图生成完成！"
 echo
@@ -246,10 +284,10 @@ echo "==========================================================================
 echo
 echo "生成的文件："
 echo "1. Markdown表格 - 已输出到控制台"
-echo "2. $csv_count_file - Count数据（数据库为行）"
-echo "3. $csv_percentage_file - Percentage数据（数据库为行）"
+echo "2. $csv_count_file - Count数据（仓库为行）"
+echo "3. $csv_percentage_file - Percentage数据（仓库为行）"
 echo "4. $csv_count_transpose_file - Count数据（根因为行，转置版本）"
 echo "5. $csv_percentage_transpose_file - Percentage数据（根因为行，转置版本）"
-echo "6. nonheap_root_causes_count_heatmap.png - Count热力图"
-echo "7. nonheap_root_causes_percentage_heatmap.png - Percentage热力图"
+echo "6. output/nonheap_root_causes_count_heatmap.png - Count热力图"
+echo "7. output/nonheap_root_causes_percentage_heatmap.png - Percentage热力图"
 echo
