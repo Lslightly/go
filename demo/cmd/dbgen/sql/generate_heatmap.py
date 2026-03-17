@@ -97,7 +97,7 @@ def create_heatmap(df, title, output_file, cmap='YlOrRd', figsize=(12, 8)):
     )
     
     # 设置标题和标签
-    plt.title(title, fontsize=14, fontweight='bold', pad=20)
+    # plt.title(title, fontsize=14, fontweight='bold', pad=20) # ignore title for latex
     plt.xlabel('仓库', fontsize=12)
     plt.ylabel('根因', fontsize=12)
     
