@@ -161,7 +161,7 @@ func (e *escape) call(ks []hole, call ir.Node) {
 			argument(appendedK, args[1])
 		} else {
 			for i := 1; i < len(args); i++ {
-				argument(e.heapHole(), args[i])
+				argument(e.heapHole().note(call, "appended elems"), args[i])
 			}
 		}
 		e.discard(call.RType)
