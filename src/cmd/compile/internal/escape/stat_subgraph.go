@@ -37,7 +37,7 @@ don't enable EAReason when building standard library
 EAReasonStat=0 go build // disabled
 */
 func isEAReasonStatEnabled() (res bool) {
-	if base.Flag.Std {
+	if base.Flag.Std || base.Flag.CompilingRuntime {
 		return false
 	}
 	v, ok := os.LookupEnv("EAReasonStat")
@@ -54,7 +54,7 @@ disabled:
 go build
 */
 func isESGDumpEnabled() (res bool) {
-	if base.Flag.Std {
+	if base.Flag.Std || base.Flag.CompilingRuntime {
 		return false
 	}
 	v, ok := os.LookupEnv("ESGDumpEnabled")
@@ -207,6 +207,7 @@ var why2reason map[string]escapeReason = map[string]escapeReason{
 	"return":                ERReturn,
 	"appendee slice":        ERAppend,
 	"appended slice...":     ERAppend,
+	"appended elems":        ERAppend,
 	"copied slice":          ERCopy,
 	"too large for stack":   ERMust,
 	"too aligned for stack": ERMust,
