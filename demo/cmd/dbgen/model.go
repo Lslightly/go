@@ -13,6 +13,7 @@ type NodeInfo struct {
 	NodeID         uint64 `json:"node_id"`
 	NodeLocation   string `json:"node_location"`
 	RootCauseCount uint16 `json:"root_cause_count"`
+	Size           uint64 `json:"size"`
 	Uid            uint64 `json:"uid"` // 唯一标识符，用于优化连接性能
 }
 

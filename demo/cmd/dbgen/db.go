@@ -79,6 +79,7 @@ func (db *DBClient) InsertNodeInfoAndRootCausesBatch(ctx context.Context, nodeIn
 				nodeInfo.NodeID,
 				nodeInfo.NodeLocation,
 				nodeInfo.RootCauseCount,
+				nodeInfo.Size,
 				nodeInfo.Uid,
 			); err != nil {
 				return fmt.Errorf("failed to append to node_info batch: %w", err)
