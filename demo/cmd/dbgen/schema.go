@@ -28,6 +28,7 @@ func OverwriteDB(ctx context.Context, hostPort, dbName string) (*DBClient, error
         node_id UInt64,
         node_location String,
         root_cause_count UInt16,
+        size UInt64,
         uid UInt64
     ) ENGINE = MergeTree()
     ORDER BY (uid)

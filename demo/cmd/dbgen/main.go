@@ -25,6 +25,7 @@ import (
 
 var (
 	enableProfile *bool = flag.Bool("profile", false, "enable profiling")
+	port          *int  = flag.Int("port", 19001, "clickhouse port")
 )
 
 func init() {
@@ -71,7 +72,7 @@ func importStatRootData(statRoot string, fixname string, dbPrefix string) {
 
 	// 创建数据库连接
 	ctx := context.Background()
-	dbClient, err := OverwriteDB(ctx, "localhost:9000", dbName)
+	dbClient, err := OverwriteDB(ctx, fmt.Sprintf("localhost:%d", *port), dbName)
 	if err != nil {
 		fmt.Printf("创建数据库失败: %v\n", err)
 		return
@@ -145,8 +146,8 @@ func importStatRootData(statRoot string, fixname string, dbPrefix string) {
 					continue // 跳过表头
 				}
 
-				if len(record) < 3 {
-					log.Fatalf("line %d is incomplete. expected 3, actual %d\n", i+1, len(records))
+				if len(record) < 4 {
+					log.Fatalf("line %d is incomplete. expected 4, actual %d\n", i+1, len(records))
 				}
 
 				nodeID, err := strconv.ParseUint(record[0], 10, 64)
@@ -161,6 +162,11 @@ func importStatRootData(statRoot string, fixname string, dbPrefix string) {
 
 				loc := record[2]
 
+				size, err := strconv.ParseUint(record[3], 10, 64)
+				if err != nil {
+					return fmt.Errorf("invalid size: %s", record[3])
+				}
+
 				// 计算 RootCauseCount (reason 中 1 的位数)
 				rootCauseCount := uint16(bits.OnesCount64(uint64(reason)))
 
@@ -171,6 +177,7 @@ func importStatRootData(statRoot string, fixname string, dbPrefix string) {
 					NodeID:         nodeID,
 					NodeLocation:   loc,
 					RootCauseCount: rootCauseCount,
+					Size:           size,
 					Uid:            uidCounter,
 				}
 				nodeInfos = append(nodeInfos, nodeInfo)

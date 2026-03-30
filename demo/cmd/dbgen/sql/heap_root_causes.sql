@@ -1,6 +1,6 @@
 -- 查看带ERHeap的结点包含的其他根因（排除ERHeap本身）
 -- 统计带ERHeap的结点中，各个其他根因的出现次数
--- 百分比基于带ERHeat的总节点数（排除ERHeap本身的根因统计）
+-- 百分比基于带ERHeap的总节点数（排除ERHeap本身的根因统计）
 
 WITH 
 -- 获取所有带ERHeap的节点ID（不包含ERHeap根因）

@@ -25,6 +25,7 @@ func ExampleDBClient_InsertNodeInfoAndRootCauses() {
 		NodeID:         1001,
 		NodeLocation:   "main.go:42",
 		RootCauseCount: 2,
+		Size:           1024,
 		Uid:            0,
 	}
 

@@ -6,6 +6,7 @@ package escape
 import (
 	"cmd/compile/internal/base"
 	"cmd/compile/internal/ir"
+	"cmd/compile/internal/typecheck"
 	"context"
 	"flag"
 	"fmt"
@@ -486,10 +487,11 @@ func (esg *escapeSubGraph) EdgeTo(id int64) []*escFlow {
 
 // escape subgraph node
 type escLocNode struct {
-	id     int64 // start from 1
-	loc    *location
-	label  string // cache field for Label()
-	reason escapeReason
+	id         int64 // start from 1
+	loc        *location
+	label      string // cache field for Label()
+	reason     escapeReason
+	cachedSize int64
 }
 
 // returns a graph-unique integer ID.
@@ -550,6 +552,10 @@ func (n *escLocNode) Attributes() []encoding.Attribute {
 		Key:   "xlabel",
 		Value: n.reasonsStr(),
 	})
+	resAttrs = append(resAttrs, encoding.Attribute{
+		Key:   "size",
+		Value: strconv.FormatInt(n.Size(), 10),
+	})
 	colors := make([]string, 0, ERNumber)
 	for reason, color := range reason2fillcolor {
 		if n.reason.containAll(reason) {
@@ -586,8 +592,50 @@ func (n *escLocNode) SetAttribute(attr encoding.Attribute) error {
 			}
 			n.reason |= r // always OR here because addReason will delete some reasons
 		}
+	case "size":
+		size, _ := strconv.Atoi(attr.Value)
+		n.cachedSize = int64(size)
 	}
 	return nil
+}
+
+func (eln *escLocNode) Size() (res int64) {
+	if eln.cachedSize != 0 {
+		return eln.cachedSize
+	}
+	defer func() {
+		eln.cachedSize = res // cache results
+	}()
+	if eln.loc == nil {
+		return 0
+	}
+	n := eln.loc.n
+	if n == nil {
+		return 0
+	}
+	if n.Op() == ir.ONEW || n.Op() == ir.OPTRLIT {
+		return n.Type().Elem().Size()
+	}
+	if n.Op() == ir.OCLOSURE {
+		return typecheck.ClosureType(n.(*ir.ClosureExpr)).Size()
+	}
+	if n.Op() == ir.OMETHVALUE {
+		return typecheck.MethodValueType(n.(*ir.SelectorExpr)).Size()
+	}
+	if n.Op() == ir.OMAKESLICE {
+		n := n.(*ir.MakeExpr)
+		r := n.Cap
+		if r == nil {
+			r = n.Len
+		}
+		if !ir.IsSmallIntConst(r) {
+			return n.RType.Type().Elem().Size() * 5
+		}
+		if t := n.Type(); t.Elem().Size() != 0 {
+			return t.Elem().Size() * ir.Int64Val(r)
+		}
+	}
+	return n.Type().Size()
 }
 
 type escLocNodeIter struct {
@@ -1044,10 +1092,13 @@ func (esg *escapeSubGraph) summarize(csvBatchRoot string) {
 		if node.loc.n != nil {
 			locPos = base.FmtPos(node.loc.n.Pos())
 		}
-		nrLines = append(nrLines, fmt.Sprintf("%d,%d,%s", node.id, node.reason, locPos))
+		nrLines = append(nrLines, fmt.Sprintf("%d,%d,%s,%d", node.id, node.reason, locPos, node.Size()))
+	}
+	if len(nrLines) == 0 { // if no esg.nodes, then don't create all.csv
+		return
 	}
 
-	content := fmt.Sprintf(`nodeid,reason,loc
+	content := fmt.Sprintf(`nodeid,reason,loc,size
 %s
 `, strings.Join(nrLines, "\n"))
 	writeToFile(path.Join(csvBatchRoot, "all.csv"), content)
