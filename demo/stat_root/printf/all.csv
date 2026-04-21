@@ -1,2 +1,2 @@
-nodeid,reason,loc,pkg
-1,1,/home/lqw/mygit/go1.24.2/demo/fixtures/printf/main.go:6:2,main/home/lqw/mygit/go1.24.2/demo/fixtures/printf
+nodeid,reason,loc,size,pkg
+1,1,/home/lqw/mygit/closure-go/demo/fixtures/printf/main.go:6:2,8,main/home/lqw/mygit/closure-go/demo/fixtures/printf

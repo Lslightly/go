@@ -1,0 +1,10 @@
+nodeid,reason,loc,size,pkg
+4,4225,/home/lqw/mygit/closure-go/demo/fixtures/append/main.go:18:11,8,main/home/lqw/mygit/closure-go/demo/fixtures/append
+5,129,/home/lqw/mygit/closure-go/demo/fixtures/append/main.go:20:14,24,main/home/lqw/mygit/closure-go/demo/fixtures/append
+6,0,/home/lqw/mygit/closure-go/demo/fixtures/append/main.go:17:18,24,main/home/lqw/mygit/closure-go/demo/fixtures/append
+1,4097,/home/lqw/mygit/closure-go/demo/fixtures/append/main.go:21:18,8,main/home/lqw/mygit/closure-go/demo/fixtures/append
+3,4225,/home/lqw/mygit/closure-go/demo/fixtures/append/main.go:19:11,8,main/home/lqw/mygit/closure-go/demo/fixtures/append
+4,129,/home/lqw/mygit/closure-go/demo/fixtures/append/main.go:12:12,0,main/home/lqw/mygit/closure-go/demo/fixtures/append
+5,0,/home/lqw/mygit/closure-go/demo/fixtures/append/main.go:9:19,24,main/home/lqw/mygit/closure-go/demo/fixtures/append
+1,4097,/home/lqw/mygit/closure-go/demo/fixtures/append/main.go:11:11,8,main/home/lqw/mygit/closure-go/demo/fixtures/append
+3,4097,/home/lqw/mygit/closure-go/demo/fixtures/append/main.go:10:11,8,main/home/lqw/mygit/closure-go/demo/fixtures/append

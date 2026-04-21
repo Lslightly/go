@@ -1,0 +1,3 @@
+nodeid,reason,loc,size,pkg
+1,33025,/home/lqw/mygit/closure-go/demo/fixtures/intermediate_escape/main.go:6:11,8,main/home/lqw/mygit/closure-go/demo/fixtures/intermediate_escape
+1,33024,/home/lqw/mygit/closure-go/demo/fixtures/intermediate_escape/main.go:11:10,8,main/home/lqw/mygit/closure-go/demo/fixtures/intermediate_escape

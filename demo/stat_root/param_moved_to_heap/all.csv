@@ -1,6 +1,6 @@
-nodeid,reason,loc,pkg
-1,33,/home/lqw/mygit/go1.24.2/demo/fixtures/param_moved_to_heap/main.go:11:5,demo/fixtures/param_moved_to_heap
-3,49,/home/lqw/mygit/go1.24.2/demo/fixtures/param_moved_to_heap/main.go:9:21,demo/fixtures/param_moved_to_heap
-4,304,/home/lqw/mygit/go1.24.2/demo/fixtures/param_moved_to_heap/main.go:9:13,demo/fixtures/param_moved_to_heap
-3,49,/home/lqw/mygit/go1.24.2/demo/fixtures/param_moved_to_heap/main.go:3:25,demo/fixtures/param_moved_to_heap
-1,33,/home/lqw/mygit/go1.24.2/demo/fixtures/param_moved_to_heap/main.go:5:5,demo/fixtures/param_moved_to_heap
+nodeid,reason,loc,size,pkg
+1,33,/home/lqw/mygit/closure-go/demo/fixtures/param_moved_to_heap/main.go:11:5,32,demo/fixtures/param_moved_to_heap
+3,49,/home/lqw/mygit/closure-go/demo/fixtures/param_moved_to_heap/main.go:9:21,8,demo/fixtures/param_moved_to_heap
+4,304,/home/lqw/mygit/closure-go/demo/fixtures/param_moved_to_heap/main.go:9:13,8,demo/fixtures/param_moved_to_heap
+3,49,/home/lqw/mygit/closure-go/demo/fixtures/param_moved_to_heap/main.go:3:25,8,demo/fixtures/param_moved_to_heap
+1,33,/home/lqw/mygit/closure-go/demo/fixtures/param_moved_to_heap/main.go:5:5,24,demo/fixtures/param_moved_to_heap

@@ -1,8 +1,8 @@
 Number of nodes: 3
 [1] Frequency and percentage of each reason:
 ERHeap                   2 (66.67%)
-ERReturn                 2 (66.67%)
 ERClosure                1 (33.33%)
+ERReturn                 2 (66.67%)
 
 [2] Distribution of number of reasons per node:
 0 reasons: 1 nodes

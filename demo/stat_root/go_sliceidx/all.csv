@@ -1,0 +1,4 @@
+nodeid,reason,loc,size,pkg
+1,33,/home/lqw/mygit/closure-go/demo/fixtures/go_sliceidx/main.go:5:5,32,main/home/lqw/mygit/closure-go/demo/fixtures/go_sliceidx
+3,1025,/home/lqw/mygit/closure-go/demo/fixtures/go_sliceidx/main.go:6:3,8,main/home/lqw/mygit/closure-go/demo/fixtures/go_sliceidx
+4,49,/home/lqw/mygit/closure-go/demo/fixtures/go_sliceidx/main.go:4:11,80,main/home/lqw/mygit/closure-go/demo/fixtures/go_sliceidx

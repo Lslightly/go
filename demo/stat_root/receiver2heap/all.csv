@@ -1,4 +1,4 @@
-nodeid,reason,loc,pkg
-1,33025,/home/lqw/mygit/go1.24.2/demo/fixtures/receiver2heap/main.go:18:2,main/home/lqw/mygit/go1.24.2/demo/fixtures/receiver2heap
-1,32769,/home/lqw/mygit/go1.24.2/demo/fixtures/receiver2heap/main.go:11:11,main/home/lqw/mygit/go1.24.2/demo/fixtures/receiver2heap
-3,33024,/home/lqw/mygit/go1.24.2/demo/fixtures/receiver2heap/main.go:10:7,main/home/lqw/mygit/go1.24.2/demo/fixtures/receiver2heap
+nodeid,reason,loc,size,pkg
+1,33025,/home/lqw/mygit/closure-go/demo/fixtures/receiver2heap/main.go:18:2,8,main/home/lqw/mygit/closure-go/demo/fixtures/receiver2heap
+1,32769,/home/lqw/mygit/closure-go/demo/fixtures/receiver2heap/main.go:11:11,8,main/home/lqw/mygit/closure-go/demo/fixtures/receiver2heap
+3,33024,/home/lqw/mygit/closure-go/demo/fixtures/receiver2heap/main.go:10:7,8,main/home/lqw/mygit/closure-go/demo/fixtures/receiver2heap

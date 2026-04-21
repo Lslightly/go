@@ -1,8 +1,8 @@
-nodeid,reason,loc,pkg
-1,33,/home/lqw/mygit/go1.24.2/demo/fixtures/closure_go/closure_go.go:24:5,main/home/lqw/mygit/go1.24.2/demo/fixtures/closure_go
-1,65,/home/lqw/mygit/go1.24.2/demo/fixtures/closure_go/closure_go.go:62:9,main/home/lqw/mygit/go1.24.2/demo/fixtures/closure_go
-3,81,/home/lqw/mygit/go1.24.2/demo/fixtures/closure_go/closure_go.go:60:2,main/home/lqw/mygit/go1.24.2/demo/fixtures/closure_go
-1,33,/home/lqw/mygit/go1.24.2/demo/fixtures/closure_go/closure_go.go:15:5,main/home/lqw/mygit/go1.24.2/demo/fixtures/closure_go
-3,49,/home/lqw/mygit/go1.24.2/demo/fixtures/closure_go/closure_go.go:14:2,main/home/lqw/mygit/go1.24.2/demo/fixtures/closure_go
-3,49,/home/lqw/mygit/go1.24.2/demo/fixtures/closure_go/closure_go.go:55:2,main/home/lqw/mygit/go1.24.2/demo/fixtures/closure_go
-1,33,/home/lqw/mygit/go1.24.2/demo/fixtures/closure_go/closure_go.go:56:2,main/home/lqw/mygit/go1.24.2/demo/fixtures/closure_go
+nodeid,reason,loc,size,pkg
+1,33,/home/lqw/mygit/closure-go/demo/fixtures/closure_go/closure_go.go:24:5,16,main/home/lqw/mygit/closure-go/demo/fixtures/closure_go
+1,65,/home/lqw/mygit/closure-go/demo/fixtures/closure_go/closure_go.go:62:9,24,main/home/lqw/mygit/closure-go/demo/fixtures/closure_go
+3,81,/home/lqw/mygit/closure-go/demo/fixtures/closure_go/closure_go.go:60:2,8,main/home/lqw/mygit/closure-go/demo/fixtures/closure_go
+1,33,/home/lqw/mygit/closure-go/demo/fixtures/closure_go/closure_go.go:15:5,16,main/home/lqw/mygit/closure-go/demo/fixtures/closure_go
+3,49,/home/lqw/mygit/closure-go/demo/fixtures/closure_go/closure_go.go:14:2,8,main/home/lqw/mygit/closure-go/demo/fixtures/closure_go
+3,49,/home/lqw/mygit/closure-go/demo/fixtures/closure_go/closure_go.go:55:2,8,main/home/lqw/mygit/closure-go/demo/fixtures/closure_go
+1,33,/home/lqw/mygit/closure-go/demo/fixtures/closure_go/closure_go.go:56:2,16,main/home/lqw/mygit/closure-go/demo/fixtures/closure_go
