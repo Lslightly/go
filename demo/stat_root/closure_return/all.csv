@@ -1,4 +1,4 @@
-nodeid,reason,loc,pkg
-1,129,/home/lqw/mygit/go1.24.2/demo/fixtures/closure_return/closure_.go:9:8,main/home/lqw/mygit/go1.24.2/demo/fixtures/closure_return
-2,0,/home/lqw/mygit/go1.24.2/demo/fixtures/closure_return/closure_.go:7:12,main/home/lqw/mygit/go1.24.2/demo/fixtures/closure_return
-3,145,/home/lqw/mygit/go1.24.2/demo/fixtures/closure_return/closure_.go:8:2,main/home/lqw/mygit/go1.24.2/demo/fixtures/closure_return
+nodeid,reason,loc,size,pkg
+2,0,/home/lqw/mygit/closure-go/demo/fixtures/closure_return/closure_.go:7:12,8,main/home/lqw/mygit/closure-go/demo/fixtures/closure_return
+3,145,/home/lqw/mygit/closure-go/demo/fixtures/closure_return/closure_.go:8:2,8,main/home/lqw/mygit/closure-go/demo/fixtures/closure_return
+1,129,/home/lqw/mygit/closure-go/demo/fixtures/closure_return/closure_.go:9:8,16,main/home/lqw/mygit/closure-go/demo/fixtures/closure_return

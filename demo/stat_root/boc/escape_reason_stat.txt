@@ -1,9 +1,9 @@
 Number of nodes: 106
 [1] Frequency and percentage of each reason:
 ERParamLeak             75 (70.75%)
+ERHeap                  30 (28.30%)
 ERStar                  10 (9.43%)
 ERClosure               10 (9.43%)
-ERHeap                  30 (28.30%)
 ERReturn                 3 (2.83%)
 ERGo                     3 (2.83%)
 

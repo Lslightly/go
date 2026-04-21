@@ -9,16 +9,16 @@ ERRootStack              8 (2.45%)
 ERSliceIdx               2 (0.61%)
 ERStar                  20 (6.13%)
 ERDefer                 23 (7.06%)
+ERAppend                 4 (1.23%)
 ERComm                   1 (0.31%)
 ERCopy                   3 (0.92%)
 ERGo                    19 (5.83%)
 ERMapIdx                 2 (0.61%)
-ERAppend                 1 (0.31%)
 
 [2] Distribution of number of reasons per node:
 0 reasons: 71 nodes
-1 reasons: 74 nodes
-2 reasons: 132 nodes
+1 reasons: 71 nodes
+2 reasons: 135 nodes
 3 reasons: 41 nodes
 4 reasons: 6 nodes
 5 reasons: 2 nodes

@@ -1,5 +1,5 @@
-nodeid,reason,loc,pkg
-1,259,/home/lqw/mygit/go1.24.2/demo/fixtures/easyPkg/main.go:10:2,main/home/lqw/mygit/go1.24.2/demo/fixtures/easyPkg
-1,258,/home/lqw/mygit/go1.24.2/demo/fixtures/easyPkg/utils/utils.go:9:13,demo/fixtures/easyPkg/utils
-2,0,/home/lqw/mygit/go1.24.2/demo/fixtures/easyPkg/utils/utils.go:4:19,demo/fixtures/easyPkg/utils
-1,384,/home/lqw/mygit/go1.24.2/demo/fixtures/easyPkg/utils/utils.go:4:11,demo/fixtures/easyPkg/utils
+nodeid,reason,loc,size,pkg
+1,259,/home/lqw/mygit/closure-go/demo/fixtures/easyPkg/main.go:10:2,8,main/home/lqw/mygit/closure-go/demo/fixtures/easyPkg
+1,258,/home/lqw/mygit/closure-go/demo/fixtures/easyPkg/utils/utils.go:9:13,8,demo/fixtures/easyPkg/utils
+1,384,/home/lqw/mygit/closure-go/demo/fixtures/easyPkg/utils/utils.go:4:11,8,demo/fixtures/easyPkg/utils
+2,0,/home/lqw/mygit/closure-go/demo/fixtures/easyPkg/utils/utils.go:4:19,8,demo/fixtures/easyPkg/utils
