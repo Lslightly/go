@@ -361,13 +361,13 @@ def demo():
     
 def escapeReasonRepos():
     for repo, repobuild in tqdm([
-        # ("fzf", build),
-        # ("cli", cli_build),
-        # ("tidb", tidb_build),
-        # ("hugo", build),
-        # ("gogs", build),
-        # ("grpc-go", grpc_go_build),
-        # ("rclone", rclone_build),
+        ("fzf", build),
+        ("cli", cli_build),
+        ("tidb", tidb_build),
+        ("hugo", build),
+        ("gogs", build),
+        ("grpc-go", grpc_go_build),
+        ("rclone", rclone_build),
 
         # # build method unknown
         # ("sonic", build),
